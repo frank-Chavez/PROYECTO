@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{title}}</title>
 </head>
-<body>
+<body class="Fallecidos">
     {% extends "dashboar.html" %}
     {% block content %}
     <section class="opciones">
-        <h1>Planes</h1>
+        <h1>Fallecidos</h1>
         <div class="opciones_bt">
             <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
             <a href="#" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
@@ -18,29 +18,26 @@
     </section>
     <section class="tabla">
         <div class="titulo">
-            <p>Tipo De Plan</p>
-            <p>Precio</p>
-            <p>Duracion</p>
-            <p>Categoria</p>
-            <p>Condiciones</p>
+            <p>Nombre</p>
+            <p>Fecha Defuncion</p>
             <p>Estado</p>
+            <p>Edad</p>
             <p>Acciones</p>
         </div>
-        {% for p in planes %}
+        {% for f in Fallecidos %}
         <div class="contenido">
-            <p>{{ p['tipo_plan'] }}</p>
-            <p>{{ p['precio_plan'] }}</p>
-            <p>{{ p['duracion_plan'] }}</p>  
-            <p>{{ p['categoria_plan'] }}</p>    
-            <p>{{ p['condiciones_plan'] }}</p>  
-            <p>{{ p['estado_plan'] }}</p>    
+            <p>{{ f['nombre_f'] }}</p>
+            <p>{{ f['fecha_defuncion'] }}</p>
+            <p>{{ f['estado_f'] }}</p>
+            <p>{{ f['edad_f'] }}</p>    
             <div class="acciones">
                 <a href="#"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('eliminar', id=p['id_plan']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
+                <a href="{{ url_for('fallecidos.eliminar', id=f['id_fallecido']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
             </div>
         </div>
         {% endfor %}
     </section>
     {% endblock %}
+
 </body>
 </html>

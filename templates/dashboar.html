@@ -17,12 +17,12 @@
 
     <nav>
       <a href="{{ url_for('dashboar') }}" class="{% if request.endpoint == 'dashboar' %}active{% endif %}"><img class="{% if request.endpoint == 'dashboar' %}active{% endif %}" src="{{ url_for('static', filename='icons/home.svg') }}"  alt=""> Dashboard</a>
-      <a href="{{ url_for('familiares')}}" class="{% if request.endpoint == 'familiares' %}active{% endif %}"><img class="{% if request.endpoint == 'familiares' %}active{% endif %}" src="{{ url_for('static', filename='icons/familiares.svg')}}" alt=""> Familiares</a>
-      <a href="{{ url_for('fallecidos')}}" class="{% if request.endpoint == 'fallecidos' %}active{% endif %}"><img class="{% if request.endpoint == 'fallecidos' %}active{% endif %}" src="{{ url_for('static', filename='icons/fallecidos.svg')}}" alt=""> Fallecidos</a>
-      <a href="{{ url_for('proveedor')}}" class="{% if request.endpoint == 'proveedor' %}active{% endif %}"><img class="{% if request.endpoint == 'proveedor' %}active{% endif %}" src="{{ url_for('static', filename='icons/proveedor.svg')}}" alt=""> Proveedores</a>
-      <a href="{{ url_for('planes')}}" class="{% if request.endpoint == 'planes' %}active{% endif %}"><img class="{% if request.endpoint == 'planes' %}active{% endif %}" src="{{ url_for('static', filename='icons/planes.svg')}}" alt=""> Planes</a>
-      <a href="{{ url_for('servicios')}}" class="{% if request.endpoint == 'servicios' %}active{% endif %}"><img class="{% if request.endpoint == 'servicios' %}active{% endif %}" src="{{ url_for('static', filename='icons/servicios.svg')}}" alt=""> Servicios</a>
-      <a href="{{ url_for('cotizacion')}}" class="{% if request.endpoint == 'cotizacion' %}active{% endif %}"><img class="{% if request.endpoint == 'cotizacion' %}active{% endif %}" src="{{ url_for('static', filename='icons/cotizaciones.svg')}}" alt=""> Cotizaciones</a>
+      <a href="{{ url_for('familiares.listar')}}" class="{% if request.endpoint == 'familiares' %}active{% endif %}"><img class="{% if request.endpoint == 'familiares' %}active{% endif %}" src="{{ url_for('static', filename='icons/familiares.svg')}}" alt=""> Familiares</a>
+      <a href="{{ url_for('fallecidos.listar')}}" class="{% if request.endpoint == 'fallecidos' %}active{% endif %}"><img class="{% if request.endpoint == 'fallecidos' %}active{% endif %}" src="{{ url_for('static', filename='icons/fallecidos.svg')}}" alt=""> Fallecidos</a>
+      <a href="{{ url_for('proveedor.listar')}}" class="{% if request.endpoint == 'proveedor' %}active{% endif %}"><img class="{% if request.endpoint == 'proveedor' %}active{% endif %}" src="{{ url_for('static', filename='icons/proveedor.svg')}}" alt=""> Proveedores</a>
+      <a href="{{ url_for('planes.listar')}}" class="{% if request.endpoint == 'planes' %}active{% endif %}"><img class="{% if request.endpoint == 'planes' %}active{% endif %}" src="{{ url_for('static', filename='icons/planes.svg')}}" alt=""> Planes</a>
+      <a href="{{ url_for('servicios.listar')}}" class="{% if request.endpoint == 'servicios' %}active{% endif %}"><img class="{% if request.endpoint == 'servicios' %}active{% endif %}" src="{{ url_for('static', filename='icons/servicios.svg')}}" alt=""> Servicios</a>
+      <a href="{{ url_for('cotizacion.listar')}}" class="{% if request.endpoint == 'cotizacion' %}active{% endif %}"><img class="{% if request.endpoint == 'cotizacion' %}active{% endif %}" src="{{ url_for('static', filename='icons/cotizaciones.svg')}}" alt=""> Cotizaciones</a>
     </nav>
   </aside>
 

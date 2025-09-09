@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{title}}</title>
 </head>
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
     <section class="opciones">
-        <h1>Servicios</h1>
+        <h1>Proveedor</h1>
         <div class="opciones_bt">
             <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
             <a href="#" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
@@ -18,29 +18,30 @@
     </section>
     <section class="tabla">
         <div class="titulo">
-            <p>Tipo De Servicio</p>
-            <p>Descripcion</p>
-            <p>Categoria</p>
-            <p>Precio</p>
-            <p>Proveedor</p>
+            <p>Nombre Proveedor</p>
+            <p>Telefono</p>
+            <p>Correo</p>
+            <p>Servicio</p>
             <p>Estado</p>
+            <p>Fecha Registro</p>
             <p>Acciones</p>
         </div>
-        {% for s in servicios %}
+        {% for f in proveedor %}
         <div class="contenido">
-            <p>{{ s['tipo_serv'] }}</p>
-            <p>{{ s['descripcion_serv'] }}</p>
-            <p>{{ s['categoria_serv'] }}</p>  
-            <p>{{ s['precio_serv'] }}</p>    
-            <p>{{ s['proveedor_id'] }}</p>  
-            <p>{{ s['estado_serv'] }}</p>    
+            <p>{{ f['nombre_p'] }}</p>
+            <p>{{ f['telefono_p'] }}</p>
+            <p>{{ f['correo_p'] }}</p>  
+            <p>{{ f['servicio_p'] }}</p>    
+            <p>{{ f['estado_p'] }}</p>  
+            <p>{{ f['fechaRegistro_p'] }}</p>    
             <div class="acciones">
                 <a href="#"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('eliminar', id=s['id_servicio']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
+                <a href="{{ url_for('proveedor.eliminar', id=f['id_proveedor']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
             </div>
         </div>
         {% endfor %}
     </section>
     {% endblock %}
+
 </body>
 </html>

@@ -37,7 +37,7 @@
             <p>{{ f['fechaRegistro'] }}</p>
             <div class="acciones">
                 <a href="#"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('eliminar', id=f['id_familiar']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
+                <a href="{{ url_for('familiares.eliminar', id=f['id_familiar']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
             </div>
         </div>
         {% endfor %}

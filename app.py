@@ -1,14 +1,26 @@
-import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from database import conection
+from modules.familiares.routes import familiares_bd
+from modules.fallecidos.routes import fallecidos_bd
+from modules.plan.routes import planes_bd
+from modules.proveedores.routes import proveedor_bd
+from modules.servicios.routes import servicios_bd
+from modules.cotizaciones.routes import cotizaciones_bd 
+
+
+
 
 app = Flask(__name__)
 
+app.register_blueprint(familiares_bd)
+app.register_blueprint(fallecidos_bd)
+app.register_blueprint(planes_bd)
+app.register_blueprint(proveedor_bd)
+app.register_blueprint(servicios_bd)
+app.register_blueprint(cotizaciones_bd )
 
-# Conexión a la base de datos (función para abrirla)
-def conection():
-    conn = sqlite3.connect("database.db")  # tu archivo .db
-    conn.row_factory = sqlite3.Row  # para acceder a las columnas por nombre
-    return conn
+
+
 
 @app.route('/', methods=["GET", "POST"])
 def login():
@@ -18,7 +30,7 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        conn = sqlite3.connect("database.db")  # 👈 cambia al nombre de tu BD
+        conn = conection() # 👈 cambia al nombre de tu BD
         cursor = conn.cursor()
 
         # Verificar usuario y contraseña
@@ -36,62 +48,14 @@ def login():
     return render_template("login.html", error=error)
 
 
-
 @app.route('/dashboar')
 def dashboar():
     return render_template('dashboar.html', title="dashboar")
 
-@app.route('/familiares')
-def familiares():
-    conn= conection()
-    familiares = conn.execute("SELECT * FROM Familiares").fetchall()
-    conn.close()
-    return render_template("familiares.html", familiares=familiares, title="Familiares")
 
 
-@app.route('/fallecidos')
-def fallecidos():
-    conn=conection()
-    fallecidos = conn.execute("SELECT * FROM Fallecidos").fetchall()
-    conn.close()
-    return render_template("Fallecidos.html", Fallecidos=fallecidos, title="Fallecidos")
 
 
-@app.route('/proveedor')
-def proveedor():
-    conn=conection()
-    proveedor = conn.execute("SELECT * FROM Proveedores").fetchall()
-    conn.close()
-    return render_template("proveedor.html", proveedor=proveedor, title="Proveedor")
-
-@app.route('/planes')
-def planes():
-    conn=conection()
-    planes = conn.execute("SELECT * FROM planes").fetchall()
-    conn.close()
-    return render_template("planes.html", planes=planes, title="planes")
-
-@app.route('/servicios')
-def servicios():
-    conn=conection()
-    servicios = conn.execute("SELECT * FROM servicios").fetchall()
-    conn.close()
-    return render_template("servicios.html", servicios=servicios, title="servicios")
-
-@app.route('/cotizacion')
-def cotizacion():
-    conn=conection()
-    cotizacion = conn.execute("SELECT * FROM cotizacion").fetchall()
-    conn.close()
-    return render_template("cotizacion.html", cotizacion=cotizacion, title="cotizaciones")
-
-
-@app.route('/eliminar/<int:id>', methods=['GET'])
-def eliminar(id):
-    conn=conection()
-    conn.execute("DELETE FROM Familiares WHERE id_familiar = ?", (id,))
-    conn.commit()
-    return redirect(url_for('familiares'))
 
 
 
