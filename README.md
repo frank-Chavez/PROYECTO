@@ -3,9 +3,6 @@
 Este proyecto es una aplicación web desarrollada con **Flask**, utilizando **Blueprints** para una arquitectura modular y escalable.  
 Incluye plantillas HTML, archivos estáticos (CSS, JavaScript e imágenes) y una base de datos **SQLite**.
 
-👉 **Descripción:** Aplicación web desarrollada como proyecto final, con un enfoque modular para aprender y aplicar buenas prácticas en Flask.  
-*(Puedes personalizar esta descripción según el propósito real de tu app, por ejemplo: “Aplicación para gestión de tareas con autenticación de usuarios y un panel de administración”).*
-
 ---
 
 ## 📋 Requisitos Previos
@@ -127,14 +124,3 @@ sqlite3 base_de_datos.db < script.sql
 
 ---
 
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas.  
-Para colaborar, por favor crea un **pull request** o abre un **issue** en el repositorio.
-
----
-
-## 📜 Licencia
-
-Este proyecto fue desarrollado como **proyecto final académico**.  
-Puedes adaptarlo o reutilizarlo según tus necesidades.
