@@ -1,85 +1,140 @@
-Proyecto Final - Flask con Blueprints
-Este proyecto es una aplicación web desarrollada con Flask, utilizando Blueprints para una arquitectura modular y escalable. Incluye plantillas HTML, archivos estáticos (CSS, JavaScript e imágenes) y una base de datos SQLite.
-Descripción: [Incluya aquí una breve descripción del propósito de la aplicación, por ejemplo: "Aplicación para la gestión de tareas con autenticación de usuarios y un panel de administración."]
+# Proyecto Final - Flask con Blueprints
 
-Requisitos Previos
-Antes de comenzar, asegúrese de tener instalado lo siguiente:
+Este proyecto es una aplicación web desarrollada con **Flask**, utilizando **Blueprints** para una arquitectura modular y escalable.  
+Incluye plantillas HTML, archivos estáticos (CSS, JavaScript e imágenes) y una base de datos **SQLite**.
 
-Python 3.8 o superior
-Git para clonar el repositorio
-SQLite para la gestión de la base de datos
-Opcional: Un editor de código como Visual Studio Code o PyCharm
+👉 **Descripción:** Aplicación web desarrollada como proyecto final, con un enfoque modular para aprender y aplicar buenas prácticas en Flask.  
+*(Puedes personalizar esta descripción según el propósito real de tu app, por ejemplo: “Aplicación para gestión de tareas con autenticación de usuarios y un panel de administración”).*
 
+---
 
-Instalación y Ejecución
-Siga los pasos a continuación para configurar y ejecutar el proyecto:
-1. Clonar el Repositorio
+## 📋 Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado lo siguiente:
+
+- Python **3.8 o superior**  
+- Git para clonar el repositorio  
+- SQLite para la gestión de la base de datos  
+- Opcional: un editor de código como **Visual Studio Code** o **PyCharm**  
+
+---
+
+## ⚙️ Instalación y Ejecución
+
+### 1. Clonar el repositorio
+```bash
 git clone https://github.com/frank-Chavez/PROYECTO.git
 cd PROYECTO
+```
 
-2. Crear y Activar un Entorno Virtual
-En Windows:
+### 2. Crear y activar un entorno virtual
+En **Windows**:
+```bash
 python -m venv venv
 venv\Scripts\activate
+```
 
-En Linux/Mac:
+En **Linux/Mac**:
+```bash
 python3 -m venv venv
 source venv/bin/activate
+```
 
-Nota: Al activar el entorno virtual, aparecerá (venv) en la terminal. Si no es así, verifique que el comando de activación se ejecutó correctamente.
-3. Instalar Dependencias
-Asegúrese de que el archivo requirements.txt esté presente en el repositorio, luego ejecute:
+> 📌 Nota: Al activar el entorno virtual aparecerá `(venv)` en la terminal. Si no es así, verifica que el comando se ejecutó correctamente.
+
+### 3. Instalar dependencias
+```bash
 pip install -r requirements.txt
+```
 
-4. Configurar la Base de Datos
-El proyecto utiliza SQLite como motor de base de datos. Tiene dos opciones para configurarla:
-Opción 1: Generar la Base de Datos
-Ejecute el siguiente comando para crear la estructura de la base de datos:
+### 4. Configurar la base de datos
+Este proyecto utiliza **SQLite** como motor de base de datos. Tienes dos opciones:
+
+#### Opción 1: Generar tu propia base de datos
+```bash
 sqlite3 base_de_datos.db < script.sql
+```
 
-Opción 2: Usar la Base de Datos Incluida
-El archivo base_de_datos.db está incluido en el repositorio. Puede utilizarlo directamente, aunque se recomienda generar una nueva base con el script para garantizar consistencia.
-5. Ejecutar la Aplicación
-Con el entorno virtual activado, inicie el servidor Flask en modo de desarrollo:
+#### Opción 2: Usar la base de datos incluida
+Ya se incluye un archivo `base_de_datos.db` en el repositorio. Puedes usarlo directamente, aunque se recomienda generar uno nuevo desde `script.sql`.
+
+### 5. Ejecutar la aplicación
+Con el entorno virtual activado, inicia el servidor Flask:
+```bash
 flask --app app --debug run
+```
 
-La aplicación estará disponible en:http://127.0.0.1:5000/
+La aplicación estará disponible en:  
+👉 [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 
-Estructura del Proyecto
+---
 
-app.py: Archivo principal de la aplicación Flask.
-blueprints/: Directorio que contiene los módulos de Blueprints para organizar las rutas.
-templates/: Plantillas HTML para la interfaz de usuario.
-static/: Archivos CSS, JavaScript e imágenes.
-base_de_datos.db: Base de datos SQLite (opcional).
-script.sql: Script SQL para generar la base de datos.
+## 📂 Estructura del Proyecto
 
+```
+PROYECTO/
+│── app.py              # Archivo principal de la aplicación Flask
+│── base_de_datos.db    # Base de datos SQLite (opcional)
+│── script.sql          # Script SQL para generar la base de datos
+│── requirements.txt    # Dependencias del proyecto
+│
+├── blueprints/         # Directorio con los módulos de Blueprints
+├── templates/          # Plantillas HTML
+└── static/             # Archivos estáticos (CSS, JS, imágenes)
+```
 
-Acerca de los Blueprints
-Los Blueprints de Flask permiten estructurar la aplicación en módulos reutilizables, lo que facilita la organización, escalabilidad y mantenimiento del código. Este proyecto los utiliza para separar las rutas y la lógica de negocio en componentes independientes.
+---
 
-Notas Importantes
+## 🔹 Acerca de los Blueprints
 
-Entorno Virtual: Active siempre el entorno virtual antes de ejecutar comandos para evitar conflictos de dependencias.
-Base de Datos: Si utiliza el archivo script.sql, ejecútelo antes de iniciar la aplicación.
-Puerto Ocupado: Si el puerto 5000 está en uso, puede especificar otro puerto con:
+Los **Blueprints** de Flask permiten estructurar la aplicación en módulos reutilizables, facilitando la organización, escalabilidad y mantenimiento del código.  
+Este proyecto los utiliza para separar las rutas y la lógica de negocio en componentes independientes.
 
-flask --app app --debug run --port 5001
+---
 
+## ⚠️ Notas Importantes
 
-Solución de Problemas
+- Activa siempre el **entorno virtual** antes de ejecutar comandos.  
+- Si usas `script.sql`, ejecútalo antes de iniciar la aplicación.  
+- Si el puerto **5000** está en uso, puedes iniciar en otro puerto:  
+  ```bash
+  flask --app app --debug run --port 5001
+  ```
 
-Error: "No module named flask": Verifique que el entorno virtual está activado y que las dependencias se instalaron correctamente con:
+---
 
+## 🛠️ Solución de Problemas
+
+**Error:** `No module named flask`  
+👉 Verifica que el entorno virtual está activado e instala dependencias con:
+```bash
 pip install -r requirements.txt
+```
 
+**Error en la base de datos**  
+👉 Comprueba que `base_de_datos.db` existe o vuelve a ejecutar:
+```bash
+sqlite3 base_de_datos.db < script.sql
+```
 
-Error en la base de datos: Asegúrese de que el archivo base_de_datos.db existe o ejecute nuevamente el script script.sql.
-Para más información, consulte la documentación oficial de Flask o SQLite.
+---
 
+## 📚 Recursos Adicionales
 
-Recursos Adicionales
+- [Documentación oficial de Flask](https://flask.palletsprojects.com/)  
+- [Documentación de SQLite](https://www.sqlite.org/docs.html)  
+- [Guía sobre entornos virtuales en Python](https://docs.python.org/3/library/venv.html)  
 
-Documentación de Flask
-Documentación de SQLite
+---
 
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas.  
+Para colaborar, por favor crea un **pull request** o abre un **issue** en el repositorio.
+
+---
+
+## 📜 Licencia
+
+Este proyecto fue desarrollado como **proyecto final académico**.  
+Puedes adaptarlo o reutilizarlo según tus necesidades.
