@@ -48,14 +48,51 @@ def login():
     return render_template("login.html", error=error)
 
 
-@app.route('/dashboar')
+@app.route('/dashboard')
 def dashboar():
-    return render_template('dashboar.html', title="dashboar")
+    conn = conection()
+    cursor = conn.cursor()
 
+    # --- Contadores ---
+    cursor.execute("SELECT COUNT(*) FROM Familiares")
+    familiares_count = cursor.fetchone()[0]
 
+    cursor.execute("SELECT COUNT(*) FROM Servicios")
+    servicios_count = cursor.fetchone()[0]
 
+    cursor.execute("SELECT COUNT(*) FROM Cotizacion")
+    cotizaciones_count = cursor.fetchone()[0]
 
+    cursor.execute("SELECT COUNT(*) FROM Proveedores")
+    proveedores_count = cursor.fetchone()[0]
 
+    # --- Actividad reciente (últimos 5 registros por tabla) ---
+    cursor.execute("SELECT f_nombre, fechaRegistro FROM Familiares ORDER BY fechaRegistro DESC LIMIT 5")
+    recientes_familiares = cursor.fetchall()
+
+    cursor.execute("SELECT numero_cot, fecha_cot FROM Cotizacion ORDER BY fecha_cot DESC LIMIT 5")
+    recientes_cotizaciones = cursor.fetchall()
+
+    cursor.execute("SELECT tipo_serv, estado_serv FROM Servicios ORDER BY id_servicio DESC LIMIT 5")
+    recientes_servicios = cursor.fetchall()
+
+    cursor.execute("SELECT nombre_p, fechaRegistro_p FROM Proveedores ORDER BY fechaRegistro_p DESC LIMIT 5")
+    recientes_proveedores = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "dashboar.html",
+        title="Dashboard",
+        familiares_count=familiares_count,
+        servicios_count=servicios_count,
+        cotizaciones_count=cotizaciones_count,
+        proveedores_count=proveedores_count,
+        recientes_familiares=recientes_familiares,
+        recientes_cotizaciones=recientes_cotizaciones,
+        recientes_servicios=recientes_servicios,
+        recientes_proveedores=recientes_proveedores
+    )
 
 
 
