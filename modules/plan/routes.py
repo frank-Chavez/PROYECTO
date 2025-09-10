@@ -18,6 +18,6 @@ def listar():
 @planes_bd.route('/eliminar/<int:id>', methods=['GET'])
 def eliminar(id):
     conn=conection()
-    conn.execute("DELETE FROM Planes  WHERE id_plan = ?", (id,))
+    conn.execute("DELETE FROM Planes WHERE id_plan = ?", (id,))
     conn.commit()
     return redirect(url_for('planes.listar'))
