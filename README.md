@@ -53,7 +53,7 @@ sqlite3 base_de_datos.db < script.sql
 ```
 
 #### Opción 2: Usar la base de datos incluida
-Ya se incluye un archivo `base_de_datos.db` en el repositorio. Puedes usarlo directamente, aunque se recomienda generar uno nuevo desde `script.sql`.
+Ya se incluye un archivo `dataase.db` en el repositorio. Puedes usarlo directamente, aunque se recomienda generar uno nuevo desde `script.sql`.
 
 ### 5. Ejecutar la aplicación
 Con el entorno virtual activado, inicia el servidor Flask:
