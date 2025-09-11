@@ -66,19 +66,7 @@ La aplicación estará disponible en:
 
 ---
 
-## 📂 Estructura del Proyecto
 
-```
-PROYECTO/
-│── app.py              # Archivo principal de la aplicación Flask
-│── base_de_datos.db    # Base de datos SQLite (opcional)
-│── script.sql          # Script SQL para generar la base de datos
-│── requirements.txt    # Dependencias del proyecto
-│
-├── blueprints/         # Directorio con los módulos de Blueprints
-├── templates/          # Plantillas HTML
-└── static/             # Archivos estáticos (CSS, JS, imágenes)
-```
 
 ---
 
