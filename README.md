@@ -66,10 +66,6 @@ La aplicación estará disponible en:
 
 ---
 
-
-
----
-
 ## 🔹 Acerca de los Blueprints
 
 Los **Blueprints** de Flask permiten estructurar la aplicación en módulos reutilizables, facilitando la organización, escalabilidad y mantenimiento del código.  
