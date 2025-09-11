@@ -23,8 +23,8 @@
             <p>telefono</p>
             <p>correo</p>
             <p>parentesco</p>
-            <p>estado</p>
             <p>fecha Registro</p>
+            <p>estado</p>
             <p>acciones</p>
         </div>
         {% for f in familiares %}
@@ -32,12 +32,19 @@
             <p>{{ f['f_nombre'] }} {{ f['f_apellido'] }}</p>
             <p>{{ f['f_telefono'] }}</p>
             <p>{{ f['f_correo'] }}</p>
-            <p>{{ f['f_parentesco'] }}</p>    
-            <p>{{ f['f_estado'] }}</p>
+            <p>{{ f['f_parentesco'] }}</p>  
             <p>{{ f['fechaRegistro'] }}</p>
+            <p><td>
+                {% if f['f_estado'] == 1 %}
+                    Activo
+                {% else %}
+                    Inactivo
+                {% endif %}
+                </td>
+            </p>  
             <div class="acciones">
                 <a href="#"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('familiares.eliminar', id=f['id_familiar']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
+                <a href="{{ url_for('familiares.cambiar_estado', id=f['id_familiar']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
             </div>
         </div>
         {% endfor %}

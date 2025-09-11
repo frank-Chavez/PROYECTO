@@ -20,19 +20,30 @@
         <div class="titulo">
             <p>Nombre</p>
             <p>Fecha Defuncion</p>
-            <p>Estado</p>
             <p>Edad</p>
+            <p>Fecha registro</p>
+            <p>fecha actualizacion</p>
+            <p>Estado</p>
             <p>Acciones</p>
         </div>
         {% for f in Fallecidos %}
         <div class="contenido">
             <p>{{ f['nombre_f'] }}</p>
             <p>{{ f['fecha_defuncion'] }}</p>
-            <p>{{ f['estado_f'] }}</p>
-            <p>{{ f['edad_f'] }}</p>    
+            <p>{{ f['edad_f'] }}</p> 
+            <p>{{ f['fechaRegistro_f'] }}</p>    
+            <p>{{ f['fechaActualizacion_f'] }}</p> 
+            <p><td>
+                {% if f['estado_f'] == 1 %}
+                    Activo
+                {% else %}
+                    Inactivo
+                {% endif %}
+                </td>
+            </p>
             <div class="acciones">
                 <a href="#"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('fallecidos.eliminar', id=f['id_fallecido']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
+                <a href="{{ url_for('fallecidos.cambiar_estado', id=f['id_fallecido']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
             </div>
         </div>
         {% endfor %}

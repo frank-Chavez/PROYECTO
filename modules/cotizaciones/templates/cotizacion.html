@@ -30,11 +30,18 @@
             <p>{{ c['numero_cot'] }}</p>
             <p>{{ c['fecha_cot'] }}</p>
             <p>{{ c['monto_cot'] }}</p>  
-            <p>{{ c['estado_cot'] }}</p>    
             <p>{{ c['validacion_cot'] }}</p>  
+            <p><td>
+                {% if c['estado_cot'] == 1 %}
+                    Activo
+                {% else %}
+                    Inactivo
+                {% endif %}
+                </td>
+            </p> 
             <div class="acciones">
                 <a href="#"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('cotizacion.eliminar', id=c['id_cotizacion']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
+                <a href="{{ url_for('cotizacion.cambiar_estado', id=c['id_cotizacion']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
             </div>
         </div>
         {% endfor %}

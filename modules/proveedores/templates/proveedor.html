@@ -22,8 +22,8 @@
             <p>Telefono</p>
             <p>Correo</p>
             <p>Servicio</p>
-            <p>Estado</p>
             <p>Fecha Registro</p>
+            <p>Estado</p>
             <p>Acciones</p>
         </div>
         {% for f in proveedor %}
@@ -31,12 +31,19 @@
             <p>{{ f['nombre_p'] }}</p>
             <p>{{ f['telefono_p'] }}</p>
             <p>{{ f['correo_p'] }}</p>  
-            <p>{{ f['servicio_p'] }}</p>    
-            <p>{{ f['estado_p'] }}</p>  
+            <p>{{ f['servicio_p'] }}</p>   
             <p>{{ f['fechaRegistro_p'] }}</p>    
+            <p><td>
+                {% if f['estado_p'] == 1 %}
+                    Activo
+                {% else %}
+                    Inactivo
+                {% endif %}
+                </td>
+            </p>
             <div class="acciones">
                 <a href="#"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('proveedor.eliminar', id=f['id_proveedor']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
+                <a href="{{ url_for('proveedor.cambiar_estado', id=f['id_proveedor']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
             </div>
         </div>
         {% endfor %}

@@ -125,7 +125,7 @@ section.opciones .opciones_bt a{
 
 section.opciones .opciones_bt .buscar{
     border: 1px solid black;
-    width: 13rem;
+    width: 14rem;
     outline: none;
 }
 section.opciones .opciones_bt .buscar:focus{
@@ -136,12 +136,12 @@ section.opciones .opciones_bt .buscar:focus{
 section.opciones .opciones_bt .agregar {
     background: #7C3BED;
     color: #eee;
-    width: 6rem;
+    width: 7rem;
 }
 
 section.opciones .opciones_bt .descargar {
     border: 1px solid black;
-    width: 4rem;
+    width: 5rem;
 }
 
 section.opciones .opciones_bt img{

@@ -14,9 +14,15 @@ def listar():
 
 
 
-@familiares_bd.route('/eliminar/<int:id>', methods=['GET'])
-def eliminar(id):
-    conn=conection()
-    conn.execute("DELETE FROM Familiares WHERE id_familiar = ?", (id,))
-    conn.commit()
+@familiares_bd.route('/cambiar_estado/<int:id>', methods=['GET'])
+def cambiar_estado(id):
+    conn = conection()
+    familiares = conn.execute("SELECT f_estado FROM Familiares WHERE id_familiar = ?", (id,)).fetchone()
+    
+    if familiares:
+        nuevo_estado = 0 if familiares["f_estado"] == 1 else 1
+        conn.execute("UPDATE Familiares SET f_estado = ? WHERE id_familiar = ?", (nuevo_estado, id))
+        conn.commit()
+    
+    conn.close()
     return redirect(url_for('familiares.listar'))

@@ -14,10 +14,15 @@ def listar():
 
 
 
-
-@planes_bd.route('/eliminar/<int:id>', methods=['GET'])
-def eliminar(id):
-    conn=conection()
-    conn.execute("DELETE FROM Planes WHERE id_plan = ?", (id,))
-    conn.commit()
+@planes_bd.route('/cambiar_estado/<int:id>', methods=['GET'])
+def cambiar_estado(id):
+    conn = conection()
+    planes = conn.execute("SELECT estado_plan FROM Planes WHERE id_plan = ?", (id,)).fetchone()
+    
+    if planes:
+        nuevo_estado = 0 if planes["estado_plan"] == 1 else 1
+        conn.execute("UPDATE Planes SET estado_plan = ? WHERE id_plan = ?", (nuevo_estado, id))
+        conn.commit()
+    
+    conn.close()
     return redirect(url_for('planes.listar'))
