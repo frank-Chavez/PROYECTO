@@ -6,7 +6,7 @@ cotizaciones_bd = Blueprint("cotizacion", __name__, url_prefix="/cotizacion", te
 
 
 
-@cotizaciones_bd .route('/cotizacion')
+@cotizaciones_bd .route('/')
 def listar():
     conn=conection()
     cotizacion = conn.execute("SELECT * FROM Cotizacion").fetchall()

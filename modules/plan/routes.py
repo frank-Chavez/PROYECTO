@@ -5,7 +5,7 @@ from database import conection
 
 planes_bd = Blueprint("planes", __name__, url_prefix="/planes", template_folder="templates")
 
-@planes_bd.route('/planes')
+@planes_bd.route('/')
 def listar():
     conn=conection()
     planes = conn.execute("SELECT * FROM planes").fetchall()

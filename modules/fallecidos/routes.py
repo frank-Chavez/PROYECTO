@@ -5,7 +5,7 @@ from database import conection
 fallecidos_bd = Blueprint("fallecidos", __name__, url_prefix="/fallecidos", template_folder="templates")
 
 
-@fallecidos_bd.route('/fallecidos')
+@fallecidos_bd.route('/')
 def listar():
     conn=conection()
     fallecidos = conn.execute("SELECT * FROM Fallecidos").fetchall()

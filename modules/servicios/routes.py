@@ -6,7 +6,7 @@ servicios_bd = Blueprint("servicios", __name__, url_prefix="/servicios", templat
 
 
 
-@servicios_bd.route('/servicios')
+@servicios_bd.route('/')
 def listar():
     conn=conection()
     servicios = conn.execute("SELECT * FROM servicios").fetchall()
