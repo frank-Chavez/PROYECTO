@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <form method="POST">
+        <label for="tipo_plan">Tipo de Plan:</label><br>
+        <select name="tipo_plan" id="tipo_plan" required>
+            <option value="Basico" {% if plan['tipo_plan'] == 'Basico' %}selected{% endif %}>Básico</option>
+            <option value="Intermedio" {% if plan['tipo_plan'] == 'Intermedio' %}selected{% endif %}>Intermedio</option>
+            <option value="Premium" {% if plan['tipo_plan'] == 'Premium' %}selected{% endif %}>Premium</option>
+            <option value="Empresarial" {% if plan['tipo_plan'] == 'Empresarial' %}selected{% endif %}>Empresarial</option>
+        </select>
+        <br><br>
+
+        <label for="Precio">Precio del Plan:</label><br>
+        <input type="number" step="0.01" min="0" name="precio_plan" value="{{ plan['precio_plan'] }}" required><br><br>
+
+        <label for="Duracion">Duracion del Plan:</label><br>
+        <input type="text"name="duracion_plan" value="{{ plan['duracion_plan'] }}"><br><br>
+
+        <label for="Categoria">Categoría del Plan:</label><br>
+        <select name="categoria_plan" id="categoria_plan" required>
+            <option value="Personal" {% if plan['categoria_plan'] == "Personal" %}selected{% endif %}>Personal</option>
+            <option value="Empresarial" {% if plan['categoria_plan'] == "Empresarial" %}selected{% endif %}>Empresarial</option>
+            <option value="Estudiantil" {% if plan['categoria_plan'] == "Estudiantil" %}selected{% endif %}>Estudiantil</option>
+        </select><br><br>
+
+
+        <label for="Condicion">Condicion del Plan:</label><br>
+        <textarea name="condiciones_plan" rows="4" cols="40" required>{{ plan['condiciones_plan'] }}</textarea><br><br>
+
+
+        <label for="estado">Estado:</label><br>
+        <input type="text" name="estado_plan" value="{{ plan['estado_plan'] }}"><br><br>
+
+
+        <button type="submit">Guardar</button>
+    </form>
+    {% endblock %}
+</body>
+</html>

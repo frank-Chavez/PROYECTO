@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <form method="POST">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" name="nombre_f" value="{{ fallecidos['nombre_f'] }}" required><br><br>
+
+        <label for="edad">Edad:</label><br>
+        <input type="text" name="edad_f" value="{{ fallecidos['edad_f'] }}" required><br><br>
+
+        <label for="fecha_defuncion">Fecha Defunción:</label><br>
+        <input type="date" name="fecha_defuncion" value="{{ fallecidos['fecha_defuncion'] }}"><br><br>
+
+        <label for="fechaRegistro">Fecha Registro:</label><br>
+        <input type="date" name="fechaRegistro_f" value="{{ fallecidos['fechaRegistro_f'] }}"><br><br>
+
+        <label for="fechaActualizacion">Fecha Actualización:</label><br>
+        <input type="date" name="fechaActualizacion_f" value="{{ fallecidos['fechaActualizacion_f'] }}" required><br><br>
+
+        <label for="direccion">Estado:</label><br>
+        <input type="text" name="estado_f" value="{{ fallecidos['estado_f'] }}"><br><br>
+
+
+        <button type="submit">Guardar</button>
+    </form>
+    {% endblock %}
+</body>
+</html>

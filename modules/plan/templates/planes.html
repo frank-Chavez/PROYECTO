@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <section class="opciones">
+        <h1>{{title}}</h1>
+        <div class="opciones_bt">
+            <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
+            <a href="#" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
+            <a href="#" class="descargar"><img src="/static/icons/descargar.svg" alt="descargar">PDF</a>
+        </div>
+    </section>
+    <section class="tabla">
+        <div class="titulo">
+            <p>Tipo De Plan</p>
+            <p>Precio</p>
+            <p>Duracion</p>
+            <p>Categoria</p>
+            <p>Condiciones</p>
+            <p>Estado</p>
+            <p>Acciones</p>
+        </div>
+        {% for p in planes %}
+        <div class="contenido">
+            <p>{{ p['tipo_plan'] }}</p>
+            <p>{{ p['precio_plan'] }}</p>
+            <p>{{ p['duracion_plan'] }}</p>  
+            <p>{{ p['categoria_plan'] }}</p>    
+            <p>{{ p['condiciones_plan'] }}</p>  
+            <p><td>
+                {% if p['estado_plan'] == 1 %}
+                    Activo
+                {% else %}
+                    Inactivo
+                {% endif %}
+                </td>
+            </p>     
+            <div class="acciones">
+                <a href="{{ url_for('planes.editar', id=p['id_plan']) }}"><img src="/static/icons/editar.svg" alt=""></a>
+                <a href="{{ url_for('planes.cambiar_estado', id=p['id_plan']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    {% endblock %}
+</body>
+</html>

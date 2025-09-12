@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <form method="POST">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" name="nombre_p" value="{{ Proveedor['nombre_p'] }}" required><br><br>
+
+        <label for="telefono">Telefono:</label><br>
+        <input type="text" name="telefono_p" value="{{ Proveedor['telefono_p'] }}" required><br><br>
+
+        <label for="correo">Correo:</label><br>
+        <input type="email" name="correo_p" value="{{ Proveedor['correo_p'] }}"><br><br>
+
+        <label for="Servicio">Servicio:</label><br>
+        <input type="text" name="servicio_p" value="{{ Proveedor['servicio_p'] }}"><br><br>
+
+        <label for="fechaRegistro">Fecha Registro:</label><br>
+        <input type="date" name="fechaRegistro_p" value="{{ Proveedor['fechaRegistro_p'] }}" required><br><br>
+
+        <label for="estado">Estado:</label><br>
+        <input type="text" name="estado_p" value="{{ Proveedor['estado_p'] }}"><br><br>
+
+
+        <button type="submit">Guardar</button>
+    </form>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <form method="POST">
+        <label for="Tipo">Numero de Cotizacion:</label><br>
+        <input type="text" name="numero_cot" value="{{ cot['numero_cot'] }}" required><br><br>
+
+        <label for="Descripcion">Fecha de Cotizacion:</label><br>
+        <input type="date" rows="4" cols="40" value="{{ cot['fecha_cot'] }}" required><br><br>
+
+        <label for="monto_cot">Monto de Cotizacion:</label><br>
+        <input type="number" name="monto_cot" value="{{ cot['monto_cot'] }}"><br><br>
+
+        <label for="validacion_cot">Validacion de Cotizacion:</label><br>
+        <input type="text" step="0.01" min="0" name="validacion_cot" value="{{ cot['validacion_cot'] }}"><br><br>
+
+
+        <label for="estado_cot">Estado:</label><br>
+        <input type="text" name="estado_cot" value="{{ cot['estado_cot'] }}"><br><br>
+
+
+        <button type="submit">Guardar</button>
+    </form>
+    {% endblock %}
+</body>
+</html>

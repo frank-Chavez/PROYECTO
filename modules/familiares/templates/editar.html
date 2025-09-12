@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Familiar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>Registrar Familiar</h2>
+
+    <form method="POST">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" name="f_nombre" value="{{ familiar[1] }}" required><br><br>
+
+        <label for="apellido">Apellido:</label><br>
+        <input type="text" name="f_apellido" value="{{ familiar[2] }}" required><br><br>
+
+        <label for="parentesco">Parentesco:</label><br>
+        <input type="text" name="f_parentesco" value="{{ familiar[3] }}" placeholder="Ej: madre, hermano" ><br><br>
+
+        <label for="telefono">Teléfono:</label><br>
+        <input type="text" name="f_telefono" value="{{ familiar[4] }}"><br><br>
+
+        <label for="direccion">Correo:</label><br>
+        <input type="email" name="f_correo" value="{{ familiar[5] }}"><br><br>
+
+        <label for="direccion">Estado:</label><br>
+        <input type="text" name="f_estado" value="{{ familiar[6] }}"><br><br>
+
+        <label for="direccion">Fecha Registro:</label><br>
+        <input type="date" name="fechaRegistro" value="{{ familiar[7] }}"><br><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+    {% endblock %}
+</body>
+</html>

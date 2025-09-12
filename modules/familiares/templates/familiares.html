@@ -1,0 +1,54 @@
+<!DOCTYh4E html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewh4ort" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body class="familiares">
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <section class="opciones">
+        <h1>{{title}}</h1>
+        <div class="opciones_bt">
+            <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
+            <a href="#" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
+            <a href="#" class="descargar"><img src="/static/icons/descargar.svg" alt="descargar">PDF</a>
+        </div>
+    </section>
+    <section class="tabla">
+        <div class="titulo">
+            <p>nombre</p>
+            <p>telefono</p>
+            <p>correo</p>
+            <p>parentesco</p>
+            <p>fecha Registro</p>
+            <p>estado</p>
+            <p>acciones</p>
+        </div>
+        {% for f in familiares %}
+        <div class="contenido">
+            <p>{{ f['f_nombre'] }} {{ f['f_apellido'] }}</p>
+            <p>{{ f['f_telefono'] }}</p>
+            <p>{{ f['f_correo'] }}</p>
+            <p>{{ f['f_parentesco'] }}</p>  
+            <p>{{ f['fechaRegistro'] }}</p>
+            <p><td>
+                {% if f['f_estado'] == 1 %}
+                    Activo
+                {% else %}
+                    Inactivo
+                {% endif %}
+                </td>
+            </p>  
+            <div class="acciones">
+                <a href="{{ url_for('familiares.editar', id=f['id_familiar'])}}"><img src="/static/icons/editar.svg" alt=""></a>
+                <a href="{{ url_for('familiares.cambiar_estado', id=f['id_familiar']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    {% endblock %}
+</body>
+</html>
