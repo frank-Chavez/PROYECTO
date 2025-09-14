@@ -48,50 +48,80 @@ def login():
     return render_template("login.html", error=error)
 
 
-@app.route('/dashboard')
+@app.route("/dashboard", endpoint="dashboar")
 def dashboar():
     conn = conection()
-    cursor = conn.cursor()
 
-    # --- Contadores ---
-    cursor.execute("SELECT COUNT(*) FROM Familiares")
-    familiares_count = cursor.fetchone()[0]
+    familiares_count = conn.execute("""
+        SELECT COUNT(*) AS n
+        FROM Familiares
+        WHERE LOWER(TRIM(f_estado)) = 'activo' OR TRIM(f_estado) = '1'
+    """).fetchone()["n"]
 
-    cursor.execute("SELECT COUNT(*) FROM Servicios")
-    servicios_count = cursor.fetchone()[0]
+    servicios_count = conn.execute("""
+        SELECT COUNT(*) AS n
+        FROM Servicios
+        WHERE LOWER(TRIM(estado_serv)) = 'activo' OR TRIM(estado_serv) = '1'
+    """).fetchone()["n"]
 
-    cursor.execute("SELECT COUNT(*) FROM Cotizacion")
-    cotizaciones_count = cursor.fetchone()[0]
+    cotizaciones_count = conn.execute("""
+        SELECT COUNT(*) AS n
+        FROM Cotizacion
+        WHERE substr(fecha_cot, 1, 7) = substr(date('now'), 1, 7)
+    """).fetchone()["n"]
 
-    cursor.execute("SELECT COUNT(*) FROM Proveedores")
-    proveedores_count = cursor.fetchone()[0]
+    proveedores_count = conn.execute("""
+        SELECT COUNT(*) AS n
+        FROM Proveedores
+        WHERE LOWER(TRIM(estado_p)) = 'activo' OR TRIM(estado_p) = '1'
+    """).fetchone()["n"]
 
-    # --- Actividad reciente (últimos 5 registros por tabla) ---
-    cursor.execute("SELECT f_nombre, fechaRegistro FROM Familiares ORDER BY fechaRegistro DESC LIMIT 5")
-    recientes_familiares = cursor.fetchall()
+    # === Últimos (igual que ya tenías) ===
+    rf = conn.execute("""
+        SELECT (COALESCE(f_nombre,'') || ' ' || COALESCE(f_apellido,'')) AS nombre, fechaRegistro
+        FROM Familiares
+        ORDER BY (fechaRegistro IS NULL), datetime(fechaRegistro) DESC, id_familiar DESC
+        LIMIT 1
+    """).fetchone()
+    reciente_familiar = (rf["nombre"], rf["fechaRegistro"]) if rf else None
 
-    cursor.execute("SELECT numero_cot, fecha_cot FROM Cotizacion ORDER BY fecha_cot DESC LIMIT 5")
-    recientes_cotizaciones = cursor.fetchall()
+    rc = conn.execute("""
+        SELECT numero_cot, fecha_cot
+        FROM Cotizacion
+        ORDER BY datetime(fecha_cot) DESC, id_cotizacion DESC
+        LIMIT 1
+    """).fetchone()
+    reciente_cotizacion = (rc["numero_cot"], rc["fecha_cot"]) if rc else None
 
-    cursor.execute("SELECT tipo_serv, estado_serv FROM Servicios ORDER BY id_servicio DESC LIMIT 5")
-    recientes_servicios = cursor.fetchall()
+    rs = conn.execute("""
+        SELECT tipo_serv, estado_serv
+        FROM Servicios
+        ORDER BY id_servicio DESC
+        LIMIT 1
+    """).fetchone()
+    reciente_servicio = (rs["tipo_serv"], rs["estado_serv"]) if rs else None
 
-    cursor.execute("SELECT nombre_p, fechaRegistro_p FROM Proveedores ORDER BY fechaRegistro_p DESC LIMIT 5")
-    recientes_proveedores = cursor.fetchall()
+    rp = conn.execute("""
+        SELECT nombre_p, fechaRegistro_p
+        FROM Proveedores
+        ORDER BY datetime(fechaRegistro_p) DESC, id_proveedor DESC
+        LIMIT 1
+    """).fetchone()
+    reciente_proveedor = (rp["nombre_p"], rp["fechaRegistro_p"]) if rp else None
 
     conn.close()
 
     return render_template(
         "dashboar.html",
-        title="Dashboard",
         familiares_count=familiares_count,
         servicios_count=servicios_count,
         cotizaciones_count=cotizaciones_count,
         proveedores_count=proveedores_count,
-        recientes_familiares=recientes_familiares,
-        recientes_cotizaciones=recientes_cotizaciones,
-        recientes_servicios=recientes_servicios,
-        recientes_proveedores=recientes_proveedores
+        reciente_familiar=reciente_familiar,
+        reciente_cotizacion=reciente_cotizacion,
+        reciente_servicio=reciente_servicio,
+        reciente_proveedor=reciente_proveedor,
+        title="Dashboard"
     )
 
 
