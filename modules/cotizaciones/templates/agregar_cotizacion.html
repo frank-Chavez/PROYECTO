@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Agregar Cotización</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="agregar-cotizacion">
+  <div class="cotizacion-card">
+    <h2>Agregar Cotización</h2>
+    <form method="POST">
+      
+      <label for="numero_cot" class="cotizacion-label">Número de Cotización</label>
+      <input type="text" class="cotizacion-control" name="numero_cot" required>
+
+      <label for="fecha_cot" class="cotizacion-label">Fecha de Cotización</label>
+      <input type="date" class="cotizacion-control" name="fecha_cot" required>
+
+      <label for="monto_cot" class="cotizacion-label">Monto</label>
+      <input type="number" step="0.01" min="0" class="cotizacion-control" name="monto_cot" required>
+
+      <label for="validacion_cot" class="cotizacion-label">Validación</label>
+      <select class="cotizacion-control" name="validacion_cot" required>
+        <option value="Validada">Validada</option>
+        <option value="No validada">No validada</option>
+      </select>
+
+
+      <label for="estado_cot" class="cotizacion-label">Estado</label>
+      <select class="cotizacion-control" name="estado_cot" required>
+        <option value="1">Activo</option>
+        <option value="0">Inactivo</option>
+      </select>
+
+      <button type="submit" class="btn-guardar-cotizacion">Agregar</button>
+    </form>
+  </div>
+</body>
+</html>
