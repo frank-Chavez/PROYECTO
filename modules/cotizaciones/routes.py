@@ -44,7 +44,7 @@ def editar(id):
                 UPDATE Cotizacion 
                 SET numero_cot = ?, fecha_cot = ?, monto_cot = ?, estado_cot = ?, validacion_cot = ?
                 WHERE id_cotizacion = ?
-            """, (numerocot, fechacot, montocot, validacioncot, estado, id))
+            """, (numerocot, fechacot, montocot, estado, validacioncot,  id))
         conn.commit()  
         conn.close()
 

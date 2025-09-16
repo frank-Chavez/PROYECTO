@@ -27,7 +27,10 @@
         <input type="date" name="fechaRegistro_p" value="{{ Proveedor['fechaRegistro_p'] }}" required><br><br>
 
         <label for="estado">Estado:</label><br>
-        <input type="text" name="estado_p" value="{{ Proveedor['estado_p'] }}"><br><br>
+        <select  name="estado_p" required>
+            <option value="1" {% if Proveedor[estado_p] == 1 %}selected{% endif %}>Activo</option>
+            <option value="0" {% if Proveedor[estado_p] == 0 %}selected{% endif %}>Inactivo</option>
+        </select><br><br>
 
 
         <button type="submit">Guardar</button>

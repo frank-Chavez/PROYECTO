@@ -26,8 +26,11 @@
         <label for="fechaActualizacion">Fecha Actualización:</label><br>
         <input type="date" name="fechaActualizacion_f" value="{{ fallecidos['fechaActualizacion_f'] }}" required><br><br>
 
-        <label for="direccion">Estado:</label><br>
-        <input type="text" name="estado_f" value="{{ fallecidos['estado_f'] }}"><br><br>
+        <label for="estado">Estado:</label><br>
+        <select  name="estado_f" required>
+            <option value="1" {% if fallecidos[estado_f] == 1 %}selected{% endif %}>Activo</option>
+            <option value="0" {% if fallecidos[estado_f] == 0 %}selected{% endif %}>Inactivo</option>
+        </select><br><br>
 
 
         <button type="submit">Guardar</button>

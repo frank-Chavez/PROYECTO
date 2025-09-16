@@ -67,7 +67,7 @@ def dashboar():
     cotizaciones_count = conn.execute("""
         SELECT COUNT(*) AS n
         FROM Cotizacion
-        WHERE substr(fecha_cot, 1, 7) = substr(date('now'), 1, 7)
+        WHERE LOWER(TRIM(fecha_cot)) = 'activo' OR TRIM(estado_cot) = '1'
     """).fetchone()["n"]
 
     proveedores_count = conn.execute("""
@@ -121,7 +121,7 @@ def dashboar():
         reciente_cotizacion=reciente_cotizacion,
         reciente_servicio=reciente_servicio,
         reciente_proveedor=reciente_proveedor,
-        title="Dashboard"
+        title="Dashboar"
     )
 
 
