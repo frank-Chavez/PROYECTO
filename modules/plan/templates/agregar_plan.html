@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Agregar Plan</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{url_for('planes.static', filename='plan.css')}}">
 </head>
 <body class="agregar-plan">
+  {% extends "dashboar.html" %}
+  {% block content %}
   <div class="plan-card">
     <h2>Agregar Plan</h2>
     <form method="POST">
@@ -39,5 +41,6 @@
       <button type="submit" class="btn-guardar-plan">Agregar</button>
     </form>
   </div>
+  {% endblock %}
 </body>
 </html>

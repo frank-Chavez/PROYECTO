@@ -1,8 +1,7 @@
-from flask import Blueprint,render_template, abort, redirect, url_for, request
-from jinja2 import TemplateNotFound
+from flask import Blueprint,render_template, redirect, url_for, request
 from database import conection
 
-cotizaciones_bd = Blueprint("cotizacion", __name__, url_prefix="/cotizacion", template_folder="templates")
+cotizaciones_bd = Blueprint("cotizacion", __name__, url_prefix="/cotizacion", template_folder="templates", static_folder="static")
 
 
 

@@ -1,9 +1,7 @@
-from flask import Blueprint,render_template, abort, redirect, url_for,request
-from jinja2 import TemplateNotFound
-from jinja2 import TemplateNotFound
+from flask import Blueprint,render_template, redirect, url_for,request
 from database import conection
 
-planes_bd = Blueprint("planes", __name__, url_prefix="/planes", template_folder="templates")
+planes_bd = Blueprint("planes", __name__, url_prefix="/planes", template_folder="templates", static_folder="static")
 
 @planes_bd.route('/')
 def listar():

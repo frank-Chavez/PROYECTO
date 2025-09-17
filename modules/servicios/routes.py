@@ -1,5 +1,4 @@
-from flask import Blueprint,render_template, abort, redirect, url_for,request
-from jinja2 import TemplateNotFound
+from flask import Blueprint,render_template, redirect, url_for,request
 from database import conection
 
 servicios_bd = Blueprint("servicios", __name__, url_prefix="/servicios", template_folder="templates")
@@ -33,7 +32,7 @@ def editar(id):
     conn= conection()
 
     if request.method == "POST":
-        tipoServicio = request.form['tipo_serv']
+        tipoServvicio = request.form['tipo_serv']
         descripcion = request.form['descripcion_serv']
         categoria = request.form['categoria_serv']
         servicio = request.form['precio_serv']
@@ -44,7 +43,7 @@ def editar(id):
                 UPDATE Servicios 
                 SET tipo_serv = ?, descripcion_serv = ?, categoria_serv = ?, precio_serv = ?, proveedor_id = ?, estado_serv    = ?
                 WHERE id_servicio = ?
-            """, (tipoServicio, descripcion, categoria,  servicio, proveedor, estado, id))
+            """, (tipoServvicio, descripcion, categoria,  servicio, proveedor, estado, id))
         conn.commit()  
         conn.close()
 
@@ -58,3 +57,30 @@ def editar(id):
     conn.close()
 
     return render_template("editar_servicios.html", servicioss=editar, title="Registrar servico")
+
+
+
+
+@servicios_bd.route('/agregar', methods=["GET", "POST"] , endpoint='agregar')
+def agregar_fallecido():
+    if request.method == "POST":
+        tipoServ = request.form["tipoServ"]
+        descripcionServ = request.form["descripcionServ"]
+        categoriaServ = request.form["categoriaServ"]
+        precio_serv = request.form["precio_serv"]
+        estado = request.form["estado"]
+
+
+        conn = conection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO Servicios (
+                tipo_serv, descripcion_serv, categoria_serv, precio_serv, estado_serv
+            ) VALUES (?, ?, ?, ?, ?)
+        """, (tipoServ, descripcionServ, categoriaServ, precio_serv,  estado))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for("servicios.listar"))
+
+    return render_template("agregar_servicio.html", title="Servicio")

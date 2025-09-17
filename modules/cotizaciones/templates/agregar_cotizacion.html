@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Agregar Cotización</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='cotizacion.css')}}">
 </head>
 <body class="agregar-cotizacion">
+  {% extends "dashboar.html" %}
+  {% block content %}
   <div class="cotizacion-card">
     <h2>Agregar Cotización</h2>
     <form method="POST">
@@ -35,5 +37,6 @@
       <button type="submit" class="btn-guardar-cotizacion">Agregar</button>
     </form>
   </div>
+  {% endblock %}
 </body>
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request
 from database import conection
 from modules.familiares.routes import familiares_bd
 from modules.fallecidos.routes import fallecidos_bd

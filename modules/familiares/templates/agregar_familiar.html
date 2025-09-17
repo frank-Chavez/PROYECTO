@@ -2,12 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Agregar Familiar</title>
-  <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+  <title>Agregar {{title}}</title>
+  <link rel="stylesheet" href="{{url_for('familiares.static', filename='familiares.css')}}">
 </head>
 <body class="agregar-familiar">
+  {% extends "dashboar.html" %}
+  {% block content %}
   <div class="form-card">
-    <h2>Agregar Familiar</h2>
+    <h2>Agregar {{title}}</h2>
     <form method="POST">
       <label for="nombre" class="form-label">Nombre</label>
       <input type="text" class="form-control" name="nombre" required>
@@ -36,6 +38,7 @@
       <button type="submit" class="btn-guardar">Agregar</button>
     </form>
   </div>
+  {% endblock %}
 </body>
 
 

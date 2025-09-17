@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar {{title}}</title>
+</head>
+<body>
+    {% extends "dashboar.html" %} 
+    {% block content %}
+    <h2>Agregar {{title}}</h2>
+    <form method="POST">
+        <label for="tipoServ">Tipo de Servico</label>
+        <input type="text" name="tipoServ" required>
+        
+        <label for="descripcionServ">Descripcion</label>
+        <textarea name="descripcionServ" rows="4" cols="40" required></textarea>
+
+        <label for="categoriaServ">categoria</label>
+        <input type="text" name="categoriaServ" required>
+
+        <label for="precio_serv">precio</label>
+        <input type="text" name="precio_serv" required>
+
+
+        <label for="estado">Estado</label>
+        <select name="estado">
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+        </select>
+
+        <button type="submit">Agregar</button>
+    </form>
+    {% endblock %}
+</body>
+</html>

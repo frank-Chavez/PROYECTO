@@ -12,7 +12,7 @@
         <h1>{{title}}</h1>
         <div class="opciones_bt">
             <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
-            <a href="#" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
+            <a href="{{ url_for('planes.agregar') }}" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
             <a href="#" class="descargar"><img src="/static/icons/descargar.svg" alt="descargar">PDF</a>
         </div>
     </section>
