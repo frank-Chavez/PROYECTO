@@ -2,7 +2,7 @@ from flask import Blueprint,render_template, redirect, url_for,request
 from database import conection
 
 
-familiares_bd = Blueprint("familiares", __name__, url_prefix="/familiares", template_folder="templates")
+familiares_bd = Blueprint("familiares", __name__, url_prefix="/familiares", template_folder="templates", static_folder="static")
 
 @familiares_bd.route("/")
 def listar():
@@ -59,3 +59,33 @@ def editar(id):
     conn.close()
 
     return render_template("editar.html", familiar=editar)
+
+
+@familiares_bd.route('/agregar', methods=["GET", "POST"] ,endpoint='agregar')
+def agregar_familiar():
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        apellido = request.form["apellido"]
+        parentesco = request.form["parentesco"]
+        telefono = request.form["telefono"]
+        correo = request.form["correo"]
+        estado = request.form["estado"]
+        fechaRegistro = request.form["fechaRegistro"]
+
+        usuario_id = 1  # ajusta según tu lógica de login
+
+        conn = conection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO Familiares (
+                f_nombre, f_apellido, f_parentesco, f_telefono, f_correo, f_estado, fechaRegistro, usuario_id
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (nombre, apellido, parentesco, telefono, correo, estado, fechaRegistro, usuario_id))
+        conn.commit()
+        conn.close()
+
+        # 👇 Aquí el cambio: redirige a la lista de familiares
+        return redirect(url_for("familiares.listar"))
+    
+
+    return render_template("agregar_familiar.html", title="Familiar")

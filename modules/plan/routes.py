@@ -1,9 +1,7 @@
-from flask import Blueprint,render_template, abort, redirect, url_for,request
-from jinja2 import TemplateNotFound
-from jinja2 import TemplateNotFound
+from flask import Blueprint,render_template, redirect, url_for,request
 from database import conection
 
-planes_bd = Blueprint("planes", __name__, url_prefix="/planes", template_folder="templates")
+planes_bd = Blueprint("planes", __name__, url_prefix="/planes", template_folder="templates", static_folder="static")
 
 @planes_bd.route('/')
 def listar():
@@ -59,3 +57,26 @@ def editar(id):
     conn.close()
 
     return render_template("editar_plan.html", plan=editar, title="Registrar plan")
+
+@planes_bd.route('/agregar', methods=['GET', 'POST'], endpoint='agregar')
+def agregar_plan():
+    if request.method == "POST":
+        tipo_plan = request.form["tipo_plan"]
+        precio_plan = request.form["precio_plan"]
+        duracion_plan = request.form["duracion_plan"]
+        categoria_plan = request.form["categoria_plan"]
+        condiciones_plan = request.form["condiciones_plan"]
+        estado_plan = request.form["estado_plan"]
+
+        conn = conection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO Planes (tipo_plan, precio_plan, duracion_plan, categoria_plan, condiciones_plan, estado_plan)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (tipo_plan, precio_plan, duracion_plan, categoria_plan, condiciones_plan, estado_plan))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for("planes.listar"))
+
+    return render_template("agregar_plan.html", title="Agregar Plan")

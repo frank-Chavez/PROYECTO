@@ -1,6 +1,6 @@
-/*css de Añadir Familiar*/
-/* -------- Formulario Agregar Familiar -------- */
-body.agregar-familiar {
+
+/* -------- Formulario Agregar Cotización -------- */
+body.agregar-cotizacion {
     background: #f4f6f9;
     display: flex;
     justify-content: center;
@@ -8,7 +8,7 @@ body.agregar-familiar {
     padding: 2rem;
 }
 
-.form-card {
+.cotizacion-card {
     width: 100%;
     max-width: 600px;
     background: #fff;
@@ -17,21 +17,21 @@ body.agregar-familiar {
     box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
 }
 
-.form-card h2 {
+.cotizacion-card h2 {
     text-align: center;
     margin-bottom: 1.5rem;
     color: #333;
 }
 
 /* inputs */
-.form-card .form-label {
+.cotizacion-card .cotizacion-label {
     font-weight: bold;
     color: #444;
     display: block;
     margin-bottom: 0.3rem;
 }
 
-.form-card .form-control {
+.cotizacion-card .cotizacion-control {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #ccc;
@@ -41,14 +41,14 @@ body.agregar-familiar {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-card .form-control:focus {
+.cotizacion-card .cotizacion-control:focus {
     border-color: #7C3BED;
     outline: none;
     box-shadow: 0px 0px 6px rgba(124,59,237,0.4);
 }
 
 /* botón */
-.form-card .btn-guardar {
+.cotizacion-card .btn-guardar-cotizacion {
     width: 100%;
     background: #7C3BED;
     color: #fff;
@@ -60,6 +60,6 @@ body.agregar-familiar {
     transition: background 0.3s;
 }
 
-.form-card .btn-guardar:hover {
+.cotizacion-card .btn-guardar-cotizacion:hover {
     background: #5b2ab1;
 }

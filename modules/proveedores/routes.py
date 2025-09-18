@@ -1,5 +1,4 @@
-from flask import Blueprint,render_template, abort, redirect, url_for, request
-from jinja2 import TemplateNotFound 
+from flask import Blueprint,render_template, redirect, url_for, request
 from database import conection
 
 proveedor_bd = Blueprint("proveedor", __name__, url_prefix="/proveedor", template_folder="templates")
@@ -59,3 +58,30 @@ def editar(id):
     conn.close()
 
     return render_template("editar_proveedor.html", Proveedor=editar, title="Registrar proveedor")
+
+
+
+@proveedor_bd.route('/agregar', methods=["GET", "POST"] , endpoint='agregar')
+def agregar_fallecido():
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        telefono = request.form["Telefono"]
+        correo = request.form["correo"]
+        servicio = request.form["servicio"]
+        fechaRegistro = request.form["fechaRegistro"]
+        estado = request.form["estado"]
+
+
+        conn = conection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO Proveedores (
+                nombre_p, telefono_p, correo_p, servicio_p, fechaRegistro_p, estado_p
+            ) VALUES (?, ?, ?, ?, ?, ?)
+        """, (nombre, telefono, correo, servicio,  fechaRegistro, estado))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for("proveedor.listar"))
+
+    return render_template("agregar_proveedor.html", title="Proveedor")

@@ -1,8 +1,7 @@
-from flask import Blueprint,render_template, abort, redirect, url_for, request
-from jinja2 import TemplateNotFound
+from flask import Blueprint,render_template, redirect, url_for, request
 from database import conection
 
-cotizaciones_bd = Blueprint("cotizacion", __name__, url_prefix="/cotizacion", template_folder="templates")
+cotizaciones_bd = Blueprint("cotizacion", __name__, url_prefix="/cotizacion", template_folder="templates", static_folder="static")
 
 
 
@@ -44,7 +43,7 @@ def editar(id):
                 UPDATE Cotizacion 
                 SET numero_cot = ?, fecha_cot = ?, monto_cot = ?, estado_cot = ?, validacion_cot = ?
                 WHERE id_cotizacion = ?
-            """, (numerocot, fechacot, montocot, validacioncot, estado, id))
+            """, (numerocot, fechacot, montocot, estado, validacioncot,  id))
         conn.commit()  
         conn.close()
 
@@ -58,3 +57,30 @@ def editar(id):
     conn.close()
 
     return render_template("editar_Cotizaciones.html", cot=editar, title="Registrar servico")
+
+@cotizaciones_bd.route('/agregar', methods=["GET", "POST"])
+def agregar():
+    if request.method == "POST":
+        numero_cot = request.form.get("numero_cot")
+        fecha_cot = request.form.get("fecha_cot")
+        monto_cot = request.form.get("monto_cot")
+        validacion_cot = request.form.get("validacion_cot")
+        estado_cot = request.form.get("estado_cot", "Activo")
+
+        # Validaciones simples
+        if not (numero_cot and fecha_cot and monto_cot and validacion_cot):
+            # Si quieres, podrías usar flash() para mostrar mensajes
+            return render_template("agregar_cotizacion.html", title="Agregar Cotización", error="Completa todos los campos.")
+
+        conn = conection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO Cotizacion (numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot)
+            VALUES (?, ?, ?, ?, ?)
+        """, (numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('cotizacion.listar'))
+
+    return render_template("agregar_cotizacion.html", title="Agregar Cotización")

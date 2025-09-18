@@ -26,10 +26,14 @@
         <label for="direccion">Correo:</label><br>
         <input type="email" name="f_correo" value="{{ familiar[5] }}"><br><br>
 
-        <label for="direccion">Estado:</label><br>
-        <input type="text" name="f_estado" value="{{ familiar[6] }}"><br><br>
+        <label for="estado">Estado:</label><br>
+        <select  name="f_estado" required>
+            <option value="1" {% if familiar[6] == 1 %}selected{% endif %}>Activo</option>
+            <option value="0" {% if familiar[6] == 0 %}selected{% endif %}>Inactivo</option>
+        </select><br><br>
 
-        <label for="direccion">Fecha Registro:</label><br>
+
+        <label for="Fecha">Fecha Registro:</label><br>
         <input type="date" name="fechaRegistro" value="{{ familiar[7] }}"><br><br>
 
         <button type="submit">Guardar</button>
