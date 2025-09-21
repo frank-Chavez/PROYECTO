@@ -58,6 +58,25 @@ def editar(id):
 
     return render_template("editar_plan.html", plan=editar, title="Registrar plan")
 
+
+
+@planes_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+def VerDetalles(id):
+    conn = conection()
+    plan = conn.execute("""
+        SELECT id_plan, tipo_plan, precio_plan, duracion_plan, categoria_plan, condiciones_plan, estado_plan  
+        FROM Planes 
+        WHERE id_plan = ?
+    """, (id,)).fetchone()
+    conn.close()
+
+    if not plan:
+        return "plan no encontrado", 404
+
+    return render_template("detalles_plan.html", plan=plan, title="Detalles del plan")
+
+
+
 @planes_bd.route('/agregar', methods=['GET', 'POST'], endpoint='agregar')
 def agregar_plan():
     if request.method == "POST":

@@ -60,6 +60,27 @@ def editar(id):
     return render_template("editar_fallecido.html", fallecidos=editar, title="Registrar Fallecido")
 
 
+
+
+
+@fallecidos_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+def VerDetalles(id):
+    conn = conection()
+    fallecidos = conn.execute("""
+        SELECT id_fallecido, nombre_f, edad_f, fecha_defuncion, fechaRegistro_f, fechaActualizacion_f, estado_f
+        FROM Fallecidos 
+        WHERE id_fallecido = ?
+    """, (id,)).fetchone()
+    conn.close()
+
+    if not fallecidos:
+        return "fallecido no encontrado", 404
+
+    return render_template("detalles_fallecidos.html", fallecidos=fallecidos, title="Detalles del fallecido")
+
+
+
+
 @fallecidos_bd.route('/agregar', methods=["GET", "POST"] , endpoint='agregar')
 def agregar_fallecido():
     if request.method == "POST":

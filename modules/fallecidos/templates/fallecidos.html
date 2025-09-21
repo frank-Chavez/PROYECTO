@@ -21,8 +21,6 @@
             <p>Nombre</p>
             <p>Edad</p>
             <p>Fecha Defuncion</p>
-            <p>Fecha registro</p>
-            <p>fecha actualizacion</p>
             <p>Estado</p>
             <p>Acciones</p>
         </div>
@@ -30,9 +28,7 @@
         <div class="contenido">
             <p>{{ f['nombre_f'] }}</p>
             <p>{{ f['edad_f'] }}</p> 
-            <p>{{ f['fecha_defuncion'] }}</p>
-            <p>{{ f['fechaRegistro_f'] }}</p> 
-            <p>{{ f['fechaActualizacion_f'] }}</p> 
+            <p>{{ f['fecha_defuncion']|replace('-', '/') }}</p>
             <p><td>
                 {% if f['estado_f'] == 1 %}
                     Activo
@@ -43,6 +39,7 @@
             </p>
             <div class="acciones">
                 <a href="{{ url_for('fallecidos.editar', id=f['id_fallecido']) }}"><img src="/static/icons/editar.svg" alt=""></a>
+                <a href="{{ url_for('fallecidos.VerDetalles', id=f['id_fallecido']) }}"><img src="/static/icons/ver.svg" alt="cambiar estado"></a>
                 <a href="{{ url_for('fallecidos.cambiar_estado', id=f['id_fallecido']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
             </div>
         </div>

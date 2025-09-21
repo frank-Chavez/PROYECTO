@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <p><strong>ID:</strong> {{ servicio['id_servicio'] }}</p>
+    <p><strong>Tipo:</strong> {{ servicio['tipo_serv'] }}</p>
+    <p><strong>Descripción:</strong> {{ servicio['descripcion_serv'] }}</p>
+    <p><strong>Categoría:</strong> {{ servicio['categoria_serv'] }}</p>
+    <p><strong>Precio:</strong> S/. {{ servicio['precio_serv'] }}</p>
+    <p><strong>Proveedor:</strong> {{ servicio['proveedor'] }}</p>
+    <p><strong>Estado:</strong> {{ servicio['estado_serv'] }}</p>
+
+    <br>
+    <a href="{{ url_for('servicios.listar') }}" class="btn-regresar">Regresar</a>
+
+    {% endblock %}
+</body>
+</html>

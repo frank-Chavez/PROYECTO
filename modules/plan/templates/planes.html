@@ -21,18 +21,14 @@
             <p>Tipo De Plan</p>
             <p>Precio</p>
             <p>Duracion</p>
-            <p>Categoria</p>
-            <p>Condiciones</p>
             <p>Estado</p>
             <p>Acciones</p>
         </div>
         {% for p in planes %}
         <div class="contenido">
             <p>{{ p['tipo_plan'] }}</p>
-            <p>{{ p['precio_plan'] }}</p>
+            <p>S/.{{ p['precio_plan'] }}</p>
             <p>{{ p['duracion_plan'] }}</p>  
-            <p>{{ p['categoria_plan'] }}</p>    
-            <p>{{ p['condiciones_plan'] }}</p>  
             <p><td>
                 {% if p['estado_plan'] == 1 %}
                     Activo
@@ -43,6 +39,7 @@
             </p>     
             <div class="acciones">
                 <a href="{{ url_for('planes.editar', id=p['id_plan']) }}"><img src="/static/icons/editar.svg" alt=""></a>
+                <a href="{{ url_for('planes.VerDetalles', id=p['id_plan']) }}"><img src="/static/icons/ver.svg" alt="cambiar estado"></a>
                 <a href="{{ url_for('planes.cambiar_estado', id=p['id_plan']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
             </div>
         </div>

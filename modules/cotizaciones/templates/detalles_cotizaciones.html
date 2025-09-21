@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <p><strong>ID:</strong> {{ cotizacion['id_cotizacion'] }}</p>
+    <p><strong>Numero de Cotizacion:</strong> {{ cotizacion['numero_cot'] }}</p>
+    <p><strong>Fecha de Cotizacion:</strong> {{ cotizacion['fecha_cot']|replace('-', '/') }}</p>
+    <p><strong>Monto de cotizacion:</strong> S/.{{ cotizacion['monto_cot'] }}</p>
+    <p><strong>Validacion:</strong> {{ cotizacion['validacion_cot'] }}</p>
+    <p><strong>Estado:</strong> {{ cotizacion['estado_cot'] }}</p>
+
+    <a href="{{ url_for('cotizacion.listar') }}" class="btn-regresar">Regresar</a>
+
+    {% endblock %}
+</body>
+</html>

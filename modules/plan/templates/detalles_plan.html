@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <p><strong>ID:</strong> {{ plan['id_plan'] }}</p>
+    <p><strong>Tipo de Plan:</strong> {{ plan['tipo_plan'] }}</p>
+    <p><strong>Precio:</strong> S/.{{ plan['precio_plan'] }}</p>
+    <p><strong>Duracion del Plan:</strong> {{ plan['duracion_plan'] }}</p>
+    <p><strong>Categoria:</strong> {{ plan['categoria_plan'] }}</p>
+    <p><strong>Condiciones del Plan:</strong> {{ plan['condiciones_plan']}}</p>
+    <p><strong>Estado:</strong> {{ plan['estado_plan'] }}</p>
+
+    <a href="{{ url_for('planes.listar') }}" class="btn-regresar">Regresar</a>
+
+    {% endblock %}
+</body>
+</html>

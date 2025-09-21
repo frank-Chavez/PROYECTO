@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <p><strong>ID:</strong> {{ familiar['id_familiar'] }}</p>
+    <p><strong>Nombre:</strong> {{ familiar['f_nombre'] }}</p>
+    <p><strong>Apellido:</strong> {{ familiar['f_apellido'] }}</p>
+    <p><strong>Parentesco:</strong> {{ familiar['f_parentesco'] }}</p>
+    <p><strong>Telefono:</strong> {{ familiar['f_telefono'] }}</p>
+    <p><strong>Correo:</strong> {{ familiar['f_correo'] }}</p>
+    <p><strong>Fecha de Registro:</strong> {{ familiar['fechaRegistro']|replace('-', '/') }}</p>
+    <p><strong>Estado:</strong> {{ familiar['f_estado'] }}</p>
+
+    <br>
+    <a href="{{ url_for('familiares.listar') }}" class="btn-regresar">Regresar</a>
+
+    {% endblock %}
+</body>
+</html>

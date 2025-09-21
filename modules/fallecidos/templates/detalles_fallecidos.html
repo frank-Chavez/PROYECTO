@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <p><strong>ID:</strong> {{ fallecidos['id_fallecido'] }}</p>
+    <p><strong>Nombre:</strong> {{ fallecidos['nombre_f'] }}</p>
+    <p><strong>Edad:</strong> {{ fallecidos['edad_f'] }}</p>
+    <p><strong>Fecha de Defuncion:</strong> {{ fallecidos['fecha_defuncion']|replace('-', '/') }}</p>
+    <p><strong>Fecha de Registro:</strong> {{ fallecidos['fechaRegistro_f']|replace('-', '/') }}</p>
+    <p><strong>Fecha de Actualizacion:</strong> {{ fallecidos['fechaActualizacion_f']|replace('-', '/') }}</p>
+    <p><strong>Estado:</strong> {{ fallecidos['estado_f'] }}</p>
+
+    <br>
+    <a href="{{ url_for('fallecidos.listar') }}" class="btn-regresar">Regresar</a>
+
+    {% endblock %}
+</body>
+</html>

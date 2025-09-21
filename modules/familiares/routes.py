@@ -61,6 +61,25 @@ def editar(id):
     return render_template("editar.html", familiar=editar)
 
 
+
+
+@familiares_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+def VerDetalles(id):
+    conn = conection()
+    familiar = conn.execute("""
+        SELECT id_familiar, f_nombre, f_apellido, f_parentesco, f_telefono, f_correo, fechaRegistro, f_estado
+        FROM Familiares 
+        WHERE id_familiar = ?
+    """, (id,)).fetchone()
+    conn.close()
+
+    if not familiar:
+        return "Familiar no encontrado", 404
+
+    return render_template("detalles_familiares.html", familiar=familiar, title="Detalles del Familiar")
+
+
+
 @familiares_bd.route('/agregar', methods=["GET", "POST"] ,endpoint='agregar')
 def agregar_familiar():
     if request.method == "POST":

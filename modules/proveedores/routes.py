@@ -61,6 +61,23 @@ def editar(id):
 
 
 
+@proveedor_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+def VerDetalles(id):
+    conn = conection()
+    proveedor = conn.execute("""
+        SELECT id_proveedor, nombre_p, telefono_p, correo_p, servicio_p, fechaRegistro_p, estado_p  
+        FROM Proveedores 
+        WHERE id_proveedor = ?
+    """, (id,)).fetchone()
+    conn.close()
+
+    if not proveedor:
+        return "proveedor no encontrado", 404
+
+    return render_template("detalles_proveedores.html", proveedor=proveedor, title="Detalles del proveedor")
+
+
+
 @proveedor_bd.route('/agregar', methods=["GET", "POST"] , endpoint='agregar')
 def agregar_fallecido():
     if request.method == "POST":
