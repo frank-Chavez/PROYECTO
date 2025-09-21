@@ -20,20 +20,16 @@
     <section class="tabla">
         <div class="titulo">
             <p>nombre</p>
-            <p>telefono</p>
-            <p>correo</p>
             <p>parentesco</p>
-            <p>fecha Registro</p>
+            <p>telefono</p>
             <p>estado</p>
             <p>acciones</p>
         </div>
         {% for f in familiares %}
         <div class="contenido">
             <p>{{ f['f_nombre'] }} {{ f['f_apellido'] }}</p>
-            <p>{{ f['f_telefono'] }}</p>
-            <p>{{ f['f_correo'] }}</p>
             <p>{{ f['f_parentesco'] }}</p>  
-            <p>{{ f['fechaRegistro'] }}</p>
+            <p>{{ f['f_telefono'] }}</p>
             <p><td>
                 {% if f['f_estado'] == 1 %}
                     Activo
@@ -44,6 +40,7 @@
             </p>  
             <div class="acciones">
                 <a href="{{ url_for('familiares.editar', id=f['id_familiar'])}}"><img src="/static/icons/editar.svg" alt=""></a>
+                <a href="{{ url_for('familiares.VerDetalles', id=f['id_familiar']) }}"><img src="/static/icons/ver.svg" alt="cambiar estado"></a>
                 <a href="{{ url_for('familiares.cambiar_estado', id=f['id_familiar']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
             </div>
         </div>

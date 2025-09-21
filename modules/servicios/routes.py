@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template, redirect, url_for,request
+from flask import Blueprint, render_template, redirect, url_for, request
 from database import conection
 
 servicios_bd = Blueprint("servicios", __name__, url_prefix="/servicios", template_folder="templates")
@@ -8,9 +8,19 @@ servicios_bd = Blueprint("servicios", __name__, url_prefix="/servicios", templat
 @servicios_bd.route('/')
 def listar():
     conn=conection()
-    servicios = conn.execute("SELECT * FROM servicios").fetchall()
+    servicios = conn.execute("""
+    SELECT s.id_servicio,
+           s.tipo_serv,
+           s.descripcion_serv,
+           s.categoria_serv,
+           s.precio_serv,
+           p.nombre_p ,
+           s.estado_serv
+    FROM Servicios s
+    JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
+""").fetchall()
     conn.close()
-    return render_template("servicios.html", servicios=servicios, title="servicios")
+    return render_template("servicios.html", servicios=servicios, title="Servicios")
 
 
 @servicios_bd.route('/cambiar_estado/<int:id>', methods=['GET'])
@@ -57,6 +67,30 @@ def editar(id):
     conn.close()
 
     return render_template("editar_servicios.html", servicioss=editar, title="Registrar servico")
+
+
+@servicios_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+def VerDetalles(id):
+    conn = conection()
+    servicio = conn.execute("""
+        SELECT s.id_servicio,
+               s.tipo_serv,
+               s.descripcion_serv,
+               s.categoria_serv,
+               s.precio_serv,
+               p.nombre_p,
+               s.estado_serv
+        FROM Servicios s
+        JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
+        WHERE s.id_servicio = ?
+    """, (id,)).fetchone()
+    conn.close()
+
+    if not servicio:
+        return "Servicio no encontrado", 404
+
+    return render_template("detalles_servicio.html", servicio=servicio, title="Detalles del Servicio")
+
 
 
 

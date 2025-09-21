@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    {% extends "dashboar.html" %}
+    {% block content %}
+    <h2>{{title}}</h2>
+
+    <p><strong>ID:</strong> {{ proveedor['id_proveedor'] }}</p>
+    <p><strong>Nombre:</strong> {{ proveedor['nombre_p'] }}</p>
+    <p><strong>Telefono:</strong> {{ proveedor['telefono_p'] }}</p>
+    <p><strong>Correo:</strong> {{ proveedor['correo_p'] }}</p>
+    <p><strong>Servicio:</strong> {{ proveedor['servicio_p'] }}</p>
+    <p><strong>Fecha de Registro:</strong> {{ proveedor['fechaRegistro_p']|replace('-', '/')  }}</p>
+    <p><strong>Estado:</strong> {{ proveedor['estado_p'] }}</p>
+
+    <br>
+    <a href="{{ url_for('proveedor.listar') }}" class="btn-regresar">Regresar</a>
+
+    {% endblock %}
+</body>
+</html>

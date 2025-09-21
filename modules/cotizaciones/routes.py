@@ -58,6 +58,25 @@ def editar(id):
 
     return render_template("editar_Cotizaciones.html", cot=editar, title="Registrar servico")
 
+
+
+@cotizaciones_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+def VerDetalles(id):
+    conn = conection()
+    cotizacion = conn.execute("""
+        SELECT id_cotizacion, numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot
+        FROM Cotizacion 
+        WHERE id_cotizacion = ?
+    """, (id,)).fetchone()
+    conn.close()
+
+    if not cotizacion:
+        return "cotizacion no encontrado", 404
+
+    return render_template("detalles_cotizaciones.html", cotizacion=cotizacion, title="Detalles del cotizacion")
+
+
+
 @cotizaciones_bd.route('/agregar', methods=["GET", "POST"])
 def agregar():
     if request.method == "POST":
