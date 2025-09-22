@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+        <link rel="stylesheet" href="{{url_for('proveedor.static', filename='proveedores.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     {% extends "dashboar.html" %}
@@ -29,12 +31,11 @@
             <p>{{ f['nombre_p'] }}</p>
             <p>{{ f['telefono_p'] }}</p>
             <p>{{ f['servicio_p'] }}</p>   
-            <p><td>
-                {% if f['estado_p'] == 1 %}
-                    Activo
-                {% else %}
-                    Inactivo
-                {% endif %}
+            <p>
+                <td>
+                    <span class="{{ 'text-green' if f['estado_p'] == 1 else 'text-red' }}">
+                        {{ 'Activo' if f['estado_p'] == 1 else 'Inactivo' }}
+                    </span>
                 </td>
             </p>
             <div class="acciones">

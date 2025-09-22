@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from database import conection
 from modules.familiares.routes import familiares_bd
 from modules.fallecidos.routes import fallecidos_bd
@@ -40,7 +40,7 @@ def login():
 
         if user:
             # Si encuentra coincidencia
-            return render_template("dashboar.html")
+            return redirect(url_for("dashboar"))
         else:
             # Si no coincide
             error = "❌ Usuario o contraseña incorrectos"

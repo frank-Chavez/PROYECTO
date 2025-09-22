@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    <link rel="stylesheet" href="{{url_for('planes.static', filename='plan.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     {% extends "dashboar.html" %}
@@ -29,12 +31,11 @@
             <p>{{ p['tipo_plan'] }}</p>
             <p>S/.{{ p['precio_plan'] }}</p>
             <p>{{ p['duracion_plan'] }}</p>  
-            <p><td>
-                {% if p['estado_plan'] == 1 %}
-                    Activo
-                {% else %}
-                    Inactivo
-                {% endif %}
+            <p>
+                <td>
+                    <span class="{{ 'text-green' if p['estado_plan'] == 1 else 'text-red' }}">
+                        {{ 'Activo' if p['estado_plan'] == 1 else 'Inactivo' }}
+                    </span>
                 </td>
             </p>     
             <div class="acciones">

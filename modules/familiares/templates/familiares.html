@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewh4ort" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="{{url_for('familiares.static', filename='familiares.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body class="familiares">
     {% extends "dashboar.html" %}
@@ -30,12 +31,11 @@
             <p>{{ f['f_nombre'] }} {{ f['f_apellido'] }}</p>
             <p>{{ f['f_parentesco'] }}</p>  
             <p>{{ f['f_telefono'] }}</p>
-            <p><td>
-                {% if f['f_estado'] == 1 %}
-                    Activo
-                {% else %}
-                    Inactivo
-                {% endif %}
+            <p>
+                <td>
+                    <span class="{{ 'text-green' if f['f_estado'] == 1 else 'text-red' }}">
+                        {{ 'Activo' if f['f_estado'] == 1 else 'Inactivo' }}
+                    </span>
                 </td>
             </p>  
             <div class="acciones">
