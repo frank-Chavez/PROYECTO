@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template, redirect, url_for, request
 from database import conection
 
-fallecidos_bd = Blueprint("fallecidos", __name__, url_prefix="/fallecidos", template_folder="templates")
+fallecidos_bd = Blueprint("fallecidos", __name__, url_prefix="/fallecidos", template_folder="templates", static_folder="static")
 
 
 @fallecidos_bd.route('/')

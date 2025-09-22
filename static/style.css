@@ -206,3 +206,19 @@ section.tabla .acciones {
     gap: 20px;
 }
 
+/*estilo del estado Activo - Inactivo*/
+.text-green {
+    background: #7C3BED;
+    color: white;
+    padding: 4px;
+    border-radius: 1rem;
+    font-size: 12px;
+}
+.text-red {
+     background: #c1c1c1;
+    color: #ffffff;
+    padding: 4px;
+    border-radius: 1rem;
+    font-size: 12px;
+}
+/*-----------------------------------*/

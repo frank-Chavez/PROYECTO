@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    <link rel="stylesheet" href="{{url_for('fallecidos.static', filename='fallecidos.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 <body class="Fallecidos">
     {% extends "dashboar.html" %}
@@ -29,12 +32,11 @@
             <p>{{ f['nombre_f'] }}</p>
             <p>{{ f['edad_f'] }}</p> 
             <p>{{ f['fecha_defuncion']|replace('-', '/') }}</p>
-            <p><td>
-                {% if f['estado_f'] == 1 %}
-                    Activo
-                {% else %}
-                    Inactivo
-                {% endif %}
+            <p>
+                <td>
+                    <span class="{{ 'text-green' if f['estado_f'] == 1 else 'text-red' }}">
+                        {{ 'Activo' if f['estado_f'] == 1 else 'Inactivo' }}
+                    </span>
                 </td>
             </p>
             <div class="acciones">
