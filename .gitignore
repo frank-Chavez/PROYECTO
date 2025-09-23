@@ -1,12 +1,13 @@
 # Entorno virtual
 venv/
-.env/
 
-# Archivos de configuración locales
-*.sqlite3
-*.db
+# Archivos compilados de Python
 __pycache__/
 *.pyc
+
+# Bases de datos locales
+*.sqlite3
+*.db
 
 # Configuración de VS Code
 .vscode/
