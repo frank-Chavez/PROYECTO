@@ -16,7 +16,13 @@
     <p><strong>Duracion del Plan:</strong> {{ plan['duracion_plan'] }}</p>
     <p><strong>Categoria:</strong> {{ plan['categoria_plan'] }}</p>
     <p><strong>Condiciones del Plan:</strong> {{ plan['condiciones_plan']}}</p>
-    <p><strong>Estado:</strong> {{ plan['estado_plan'] }}</p>
+    <p><strong>Estado:</strong> 
+    {% if plan['estado_plan'] == 1 %}
+        Activo
+    {% else %}
+        Inactivo
+    {% endif %}
+    </p>
 
     <a href="{{ url_for('planes.listar') }}" class="btn-regresar">Regresar</a>
 

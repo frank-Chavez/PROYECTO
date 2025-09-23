@@ -15,7 +15,14 @@
     <p><strong>Fecha de Cotizacion:</strong> {{ cotizacion['fecha_cot']|replace('-', '/') }}</p>
     <p><strong>Monto de cotizacion:</strong> S/.{{ cotizacion['monto_cot'] }}</p>
     <p><strong>Validacion:</strong> {{ cotizacion['validacion_cot'] }}</p>
-    <p><strong>Estado:</strong> {{ cotizacion['estado_cot'] }}</p>
+    <p><strong>Estado:</strong> 
+    {% if cotizacion['estado_cot'] == 1 %}
+        Activo
+    {% else %}
+        Inactivo
+    {% endif %}
+    </p>
+
 
     <a href="{{ url_for('cotizacion.listar') }}" class="btn-regresar">Regresar</a>
 

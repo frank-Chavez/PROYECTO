@@ -17,7 +17,13 @@
     <p><strong>Telefono:</strong> {{ familiar['f_telefono'] }}</p>
     <p><strong>Correo:</strong> {{ familiar['f_correo'] }}</p>
     <p><strong>Fecha de Registro:</strong> {{ familiar['fechaRegistro']|replace('-', '/') }}</p>
-    <p><strong>Estado:</strong> {{ familiar['f_estado'] }}</p>
+    <p><strong>Estado:</strong> 
+    {% if familiar['f_estado'] == 1 %}
+        Activo
+    {% else %}
+        Inactivo
+    {% endif %}
+    </p>
 
     <br>
     <a href="{{ url_for('familiares.listar') }}" class="btn-regresar">Regresar</a>

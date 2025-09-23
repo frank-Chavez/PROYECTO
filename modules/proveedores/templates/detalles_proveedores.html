@@ -16,7 +16,13 @@
     <p><strong>Correo:</strong> {{ proveedor['correo_p'] }}</p>
     <p><strong>Servicio:</strong> {{ proveedor['servicio_p'] }}</p>
     <p><strong>Fecha de Registro:</strong> {{ proveedor['fechaRegistro_p']|replace('-', '/')  }}</p>
-    <p><strong>Estado:</strong> {{ proveedor['estado_p'] }}</p>
+    <p><strong>Estado:</strong> 
+    {% if proveedor['estado_p'] == 1 %}
+        Activo
+    {% else %}
+        Inactivo
+    {% endif %}
+    </p>
 
     <br>
     <a href="{{ url_for('proveedor.listar') }}" class="btn-regresar">Regresar</a>

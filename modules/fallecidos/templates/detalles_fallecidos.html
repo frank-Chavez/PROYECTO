@@ -16,7 +16,13 @@
     <p><strong>Fecha de Defuncion:</strong> {{ fallecidos['fecha_defuncion']|replace('-', '/') }}</p>
     <p><strong>Fecha de Registro:</strong> {{ fallecidos['fechaRegistro_f']|replace('-', '/') }}</p>
     <p><strong>Fecha de Actualizacion:</strong> {{ fallecidos['fechaActualizacion_f']|replace('-', '/') }}</p>
-    <p><strong>Estado:</strong> {{ fallecidos['estado_f'] }}</p>
+    <p><strong>Estado:</strong> 
+    {% if fallecidos['estado_f'] == 1 %}
+        Activo
+    {% else %}
+        Inactivo
+    {% endif %}
+    </p>
 
     <br>
     <a href="{{ url_for('fallecidos.listar') }}" class="btn-regresar">Regresar</a>

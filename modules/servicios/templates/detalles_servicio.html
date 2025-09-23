@@ -16,7 +16,13 @@
     <p><strong>Categoría:</strong> {{ servicio['categoria_serv'] }}</p>
     <p><strong>Precio:</strong> S/. {{ servicio['precio_serv'] }}</p>
     <p><strong>Proveedor:</strong> {{ servicio['proveedor'] }}</p>
-    <p><strong>Estado:</strong> {{ servicio['estado_serv'] }}</p>
+    <p><strong>Estado:</strong> 
+    {% if servicio['estado_serv'] == 1 %}
+        Activo
+    {% else %}
+        Inactivo
+    {% endif %}
+    </p>
 
     <br>
     <a href="{{ url_for('servicios.listar') }}" class="btn-regresar">Regresar</a>

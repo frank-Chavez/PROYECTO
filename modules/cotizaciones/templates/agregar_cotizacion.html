@@ -13,7 +13,8 @@
     <form method="POST">
       
       <label for="numero_cot" class="cotizacion-label">Número de Cotización</label>
-      <input type="text" class="cotizacion-control" name="numero_cot" required>
+      <input type="text" class="cotizacion-control" name="numero_cot" value="{{ numero_cot }}" readonly>
+
 
       <label for="fecha_cot" class="cotizacion-label">Fecha de Cotización</label>
       <input type="date" class="cotizacion-control" name="fecha_cot" required>

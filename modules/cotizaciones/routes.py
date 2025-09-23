@@ -79,20 +79,32 @@ def VerDetalles(id):
 
 @cotizaciones_bd.route('/agregar', methods=["GET", "POST"])
 def agregar():
+    conn = conection()
+    cur = conn.cursor()
+
+    ultimo = cur.execute("SELECT numero_cot FROM Cotizacion ORDER BY id_cotizacion DESC LIMIT 1").fetchone()
+
+    if ultimo and ultimo["numero_cot"]:
+        try:
+            numero = int(ultimo["numero_cot"].split('-')[1])
+        except:
+            numero = 0
+        new_num = numero + 1
+    else:
+        new_num = 1
+
+    numero_cot = f"COT-{new_num:03d}"
+
     if request.method == "POST":
-        numero_cot = request.form.get("numero_cot")
         fecha_cot = request.form.get("fecha_cot")
         monto_cot = request.form.get("monto_cot")
         validacion_cot = request.form.get("validacion_cot")
-        estado_cot = request.form.get("estado_cot", "Activo")
+        estado_cot = request.form.get("estado_cot", 1)
 
-        # Validaciones simples
-        if not (numero_cot and fecha_cot and monto_cot and validacion_cot):
-            # Si quieres, podrías usar flash() para mostrar mensajes
-            return render_template("agregar_cotizacion.html", title="Agregar Cotización", error="Completa todos los campos.")
+        if not (fecha_cot and monto_cot and validacion_cot):
+            conn.close()
+            return render_template("agregar_cotizacion.html", title="Agregar Cotización", error="Completa todos los campos.",numero_cot=numero_cot)
 
-        conn = conection()
-        cur = conn.cursor()
         cur.execute("""
             INSERT INTO Cotizacion (numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot)
             VALUES (?, ?, ?, ?, ?)
@@ -102,4 +114,6 @@ def agregar():
 
         return redirect(url_for('cotizacion.listar'))
 
-    return render_template("agregar_cotizacion.html", title="Agregar Cotización")
+    conn.close()
+    return render_template("agregar_cotizacion.html", title="Agregar Cotización", numero_cot=numero_cot)
+
