@@ -3,39 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <title>Agregar Cotización</title>
-  <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='cotizacion.css')}}">
 </head>
-<body class="agregar-cotizacion">
+<body >
   {% extends "dashboar.html" %}
   {% block content %}
-  <div class="cotizacion-card">
+  <div>
     <h2>Agregar Cotización</h2>
     <form method="POST">
       
-      <label for="numero_cot" class="cotizacion-label">Número de Cotización</label>
-      <input type="text" class="cotizacion-control" name="numero_cot" value="{{ numero_cot }}" readonly>
+      <label for="numero_cot">Número de Cotización</label>
+      <input type="text" name="numero_cot" value="{{ numero_cot }}" readonly>
+      <br><br>
+
+      <label for="nombre_cliente">Nombre del Cliente</label>
+      <select name="nombre_cliente" required>
+          {% for familiar in familiares %}
+            <option value="{{ familiar['id_familiar'] }}">
+              {{ familiar['f_nombre'] }} {{ familiar['f_apellido'] }}
+            </option>
+          {% endfor %}
+      </select>
+      <br><br>
+
+      <label for="plan_cremacion">Plan de cremación</label>
+      <select name="plan_cremacion" required>
+          {% for plan in planes %}
+            <option value="{{ plan['id_plan'] }}">
+              {{ plan['tipo_plan'] }} - S/. {{ plan['precio_plan'] }}
+            </option>
+          {% endfor %}
+      </select>
+
+      <br><br>
+
+      <label for="servicios_adicionales">Servicios adicionales</label><br>
+      {% for servicio in servicios %}
+        <input type="checkbox" name="servicios_adicionales" value="{{ servicio['id_servicio'] }}">
+        {{ servicio['tipo_serv'] }} - S/. {{ servicio['precio_serv'] }}<br>
+      {% endfor %}
+      <br><br>
 
 
-      <label for="fecha_cot" class="cotizacion-label">Fecha de Cotización</label>
-      <input type="date" class="cotizacion-control" name="fecha_cot" required>
+      <label for="fecha_cot">Fecha de Cotización</label>
+      <input type="date" name="fecha_cot" required>
+      <br><br>
 
-      <label for="monto_cot" class="cotizacion-label">Monto</label>
-      <input type="number" step="0.01" min="0" class="cotizacion-control" name="monto_cot" required>
-
-      <label for="validacion_cot" class="cotizacion-label">Validación</label>
-      <select class="cotizacion-control" name="validacion_cot" required>
+      <label for="validacion_cot">Validación</label>
+      <select name="validacion_cot" required>
         <option value="Validada">Validada</option>
         <option value="No validada">No validada</option>
       </select>
+      <br><br>
 
 
-      <label for="estado_cot" class="cotizacion-label">Estado</label>
-      <select class="cotizacion-control" name="estado_cot" required>
+      <label for="estado_cot">Estado</label>
+      <select  name="estado_cot" required>
         <option value="1">Activo</option>
         <option value="0">Inactivo</option>
       </select>
+      <br><br>
 
-      <button type="submit" class="btn-guardar-cotizacion">Agregar</button>
+      <p>Total: S/.</p>
+      <button type="submit">Agregar</button>
     </form>
   </div>
   {% endblock %}

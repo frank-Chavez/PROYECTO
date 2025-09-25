@@ -24,10 +24,13 @@
         <input type="text" name="validacion_cot" value="{{ cot['validacion_cot'] }}"><br><br>
 
 
-        <label for="estado_cot">Estado:</label><br>
-        <input type="text" name="estado_cot" value="{{ cot['estado_cot'] }}"><br><br>
-
-
+        <label for="estado_cot">Estado</label>
+        <br>
+        <select  name="estado_cot" required>
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+        </select>
+        <br><br>
         <button type="submit">Guardar</button>
     </form>
     {% endblock %}

@@ -85,6 +85,7 @@ CREATE TABLE cotizacion_detalles (
     FOREIGN KEY (id_cotizacion) REFERENCES Cotizacion(id_cotizacion),
     FOREIGN KEY (id_plan) REFERENCES Planes(id_plan),
     FOREIGN KEY (id_servicio) REFERENCES Servicios(id_servicio)
+    FOREIGN KEY (id_familiar) REFERENCES Familiares(id_familiar)
 );
 
 CREATE TABLE servicio_planes (

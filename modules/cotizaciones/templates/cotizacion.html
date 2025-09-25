@@ -6,7 +6,6 @@
     <title>{{title}}</title>
     <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='cotizacion.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
 </head>
 <body>
     {% extends "dashboar.html" %}
@@ -16,7 +15,6 @@
         <div class="opciones_bt">
             <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
             <a href="{{ url_for('cotizacion.agregar') }}" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
-            <a href="#" class="descargar"><img src="/static/icons/descargar.svg" alt="descargar">PDF</a>
         </div>
     </section>
     <section class="tabla">

@@ -10,22 +10,30 @@
     {% block content %}
     <h2>{{title}}</h2>
 
-    <p><strong>ID:</strong> {{ cotizacion['id_cotizacion'] }}</p>
+    <p><strong>ID Cotización:</strong> {{ cotizacion['id_cotizacion'] }}</p>
+    <p><strong>Familiares asociados:</strong>
+    {% if familiares %}
+        {{ familiares | map(attribute='f_nombre') | join(', ') }}
+    {% else %}
+        No hay familiares asociados
+    {% endif %}
+    </p>
+
+
     <p><strong>Numero de Cotizacion:</strong> {{ cotizacion['numero_cot'] }}</p>
     <p><strong>Fecha de Cotizacion:</strong> {{ cotizacion['fecha_cot']|replace('-', '/') }}</p>
     <p><strong>Monto de cotizacion:</strong> S/.{{ cotizacion['monto_cot'] }}</p>
     <p><strong>Validacion:</strong> {{ cotizacion['validacion_cot'] }}</p>
     <p><strong>Estado:</strong> 
-    {% if cotizacion['estado_cot'] == 1 %}
-        Activo
-    {% else %}
-        Inactivo
-    {% endif %}
+        {% if cotizacion['estado_cot'] == 1 %}
+            Activo
+        {% else %}
+            Inactivo
+        {% endif %}
     </p>
 
-
+    
     <a href="{{ url_for('cotizacion.listar') }}" class="btn-regresar">Regresar</a>
-
     {% endblock %}
 </body>
 </html>

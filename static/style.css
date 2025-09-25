@@ -1,4 +1,7 @@
-/* 🎨 Estilos generales */
+/* 🎨Estilos generales */
+* {
+    box-sizing: border-box;
+}
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
@@ -11,6 +14,7 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;  
 }
+/* ----------------------*/
 
 /* Sidebar - dashboar */
 .sidebar {
@@ -68,6 +72,9 @@ nav a {
     transition: background 0.3s, color 0.3s;
     height: auto;
     width: 190px;
+    font-weight: 600;
+    font-size: 15px;
+    color: #8e8e8e;
 }
 nav a:hover {
     background: #eee;
@@ -83,16 +90,10 @@ nav a img {
     width: 20px;
     height: 20px;
 }
+/* --------------------------------------------------------- */
 
 
-
-/* familiares */
-
-body.familiares{
-    margin: 0;
-    padding: 0;
-}
-
+/* Estilo de las opciones que estan arribade la tabla */
 
 section.opciones{
     display: flex;
@@ -103,6 +104,7 @@ section.opciones{
 
 section.opciones h1{
     margin: 0px;
+    font-size: 2rem;
 }
 
 
@@ -151,14 +153,15 @@ section.opciones .opciones_bt img{
 section.opciones .ico_agregar {
     filter: brightness(0) invert(1);
 }
+/*--------------------------------------------------------*/
 
 
 
 
 
-
+/* Estilo de la tabla */
 section.tabla {
-    border: 1px solid #828282;
+    border: 1.6px solid #dadada9f;
     width: 100%;
     border-radius: 5px 5px 0 0;
     overflow: hidden; /* que no sobresalga */
@@ -167,37 +170,43 @@ section.tabla {
 section.tabla .titulo,
 section.tabla .contenido {
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 100px; 
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); 
     align-items: center;
-    border-bottom: 1px solid #828282;
+    border-bottom: 1px solid #dadada9f;
 }
 section.tabla .contenido {
-    padding: 15px;
+    padding: 0.8rem;
 }
 
+/*estilo de los iconos*/
 section.tabla .contenido img{
     height: auto;
     width: 18px;
+}
+/*--------------------*/
+
+section.tabla .titulo {
+    background: #F9F8FA;
 }
 
 section.tabla .titulo p{
     flex: 1;
     margin: 0;
     padding: 10px;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
     color: #8e8e8e;
-    font-size: 1rem;
+    font-size: 15px;
 }
 
 section.tabla .contenido p{
     flex: 1;
     margin: 0;
     padding: 10px;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
     color: #545454;
-    font-size: 0.9rem;
+    font-size: 14px;
 }
 
 section.tabla .acciones {
@@ -205,19 +214,22 @@ section.tabla .acciones {
     justify-content: center;
     gap: 20px;
 }
+/*--------------------------------------------------------*/
+
+
 
 /*estilo del estado Activo - Inactivo*/
 .text-green {
     background: #7C3BED;
     color: white;
-    padding: 4px;
+    padding: 5px 8px;
     border-radius: 1rem;
     font-size: 12px;
 }
 .text-red {
      background: #c1c1c1;
     color: #ffffff;
-    padding: 4px;
+    padding: 5px 8px;
     border-radius: 1rem;
     font-size: 12px;
 }
