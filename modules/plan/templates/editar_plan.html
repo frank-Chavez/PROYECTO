@@ -38,9 +38,13 @@
         <textarea name="condiciones_plan" rows="4" cols="40" required>{{ plan['condiciones_plan'] }}</textarea><br><br>
 
 
-        <label for="estado">Estado:</label><br>
-        <input type="text" name="estado_plan" value="{{ plan['estado_plan'] }}"><br><br>
-
+        <label for="estado_plan">Estado</label>
+        <br>
+        <select  name="estado_plan" required>
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+        </select>
+        <br><br>
 
         <button type="submit">Guardar</button>
     </form>
