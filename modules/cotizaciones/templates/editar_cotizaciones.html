@@ -2,38 +2,79 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>{{title}}</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
-    <h2>{{title}}</h2>
+    <h2>{{ title }}</h2>
 
     <form method="POST">
-        <label for="Tipo">Numero de Cotizacion:</label><br>
-        <input type="text" name="numero_cot" value="{{ cot['numero_cot'] }}" required><br><br>
+        <!-- Número de Cotización (readonly) -->
+        <label for="numero_cot">Número de Cotización:</label><br>
+        <input type="text" name="numero_cot" value="{{ cot['numero_cot'] }}" required readonly><br><br>
 
-        <label for="Descripcion">Fecha de Cotizacion:</label><br>
-        <input type="date" rows="4" name="fecha_cot" cols="40" value="{{ cot['fecha_cot'] }}" required><br><br>
+        <!-- Selección de Cliente -->
+        <label for="nombre_cliente">Nombre del Cliente:</label><br>
+        <select name="nombre_cliente" required>
+            <option value="">Elige un familiar</option>
+            {% for f in familiares_disponibles %}
+                <option value="{{ f['id_familiar'] }}"
+                    {% if familiares and f['id_familiar'] == familiares[0]['id_familiar'] %}selected{% endif %}>
+                    {{ f['f_nombre'] }} {{ f['f_apellido'] }}
+                </option>
+            {% endfor %}
+        </select>
+        <br><br>
 
-        <label for="monto_cot">Monto de Cotizacion:</label><br>
-        <input type="number" name="monto_cot" value="{{ cot['monto_cot'] }}"><br><br>
+        <!-- Plan de Cremación -->
+        <label for="plan_cremacion">Plan de Cremación:</label><br>
+        <select name="plan_cremacion">
+            {% for p in planes_disponibles %}
+                <option value="{{ p['id_plan'] }}"
+                    {% if plan and plan['id_plan'] == p['id_plan'] %}selected{% endif %}>
+                    {{ p['tipo_plan'] }}
+                </option>
+            {% endfor %}
+        </select>
+        <br><br>
 
-        <label for="validacion_cot">Validacion de Cotizacion:</label><br>
+        <!-- Servicios Adicionales -->
+        <label>Servicios seleccionados:</label><br>
+        {% for s in servicios_disponibles %}
+            <input type="checkbox" name="servicios_adicionales" value="{{ s['id_servicio'] }}"
+                {% for serv in servicios %}
+                    {% if serv['id_servicio'] == s['id_servicio'] %}checked{% endif %}
+                {% endfor %}>
+            {{ s['tipo_serv'] }}
+            <br>
+        {% endfor %}
+        <br>
+
+        <!-- Fecha de Cotización -->
+        <label for="fecha_cot">Fecha de Cotización:</label><br>
+        <input type="date" name="fecha_cot" value="{{ cot['fecha_cot'] }}" required><br><br>
+
+        <!-- Monto -->
+        <label for="monto_cot">Monto de Cotización:</label><br>
+        <input type="number" name="monto_cot" id="monto_cot" value="{{ cot['monto_cot'] }}" step="0.01" readonly><br><br>
+
+        <!-- Validación -->
+        <label for="validacion_cot">Validación de Cotización:</label><br>
         <input type="text" name="validacion_cot" value="{{ cot['validacion_cot'] }}"><br><br>
 
-
-        <label for="estado_cot">Estado</label>
-        <br>
-        <select  name="estado_cot" required>
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
+        <!-- Estado -->
+        <label for="estado_cot">Estado:</label><br>
+        <select name="estado_cot" required>
+            <option value="1" {% if cot['estado_cot'] == 1 %}selected{% endif %}>Activo</option>
+            <option value="0" {% if cot['estado_cot'] == 0 %}selected{% endif %}>Inactivo</option>
         </select>
-        
         <br><br>
+
         <button type="submit">Guardar</button>
     </form>
+
     {% endblock %}
 </body>
 </html>

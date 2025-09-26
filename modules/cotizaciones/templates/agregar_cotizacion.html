@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Agregar Cotización</title>
 </head>
-<body >
+<body>
   {% extends "dashboar.html" %}
   {% block content %}
   <div>
@@ -17,6 +17,7 @@
 
       <label for="nombre_cliente">Nombre del Cliente</label>
       <select name="nombre_cliente" required>
+        <option value="">Elije un familiar</option>
           {% for familiar in familiares %}
             <option value="{{ familiar['id_familiar'] }}">
               {{ familiar['f_nombre'] }} {{ familiar['f_apellido'] }}
@@ -26,23 +27,27 @@
       <br><br>
 
       <label for="plan_cremacion">Plan de cremación</label>
-      <select name="plan_cremacion" required>
+      <select name="plan_cremacion" id="plan_cremacion" required>
+        <option value="">Elije un plan de cremación</option>
           {% for plan in planes %}
-            <option value="{{ plan['id_plan'] }}">
+            <option value="{{ plan['id_plan'] }}" data-precio="{{ plan['precio_plan'] }}">
               {{ plan['tipo_plan'] }} - S/. {{ plan['precio_plan'] }}
             </option>
           {% endfor %}
       </select>
-
       <br><br>
 
       <label for="servicios_adicionales">Servicios adicionales</label><br>
       {% for servicio in servicios %}
-        <input type="checkbox" name="servicios_adicionales" value="{{ servicio['id_servicio'] }}">
+        <input value="" 
+              type="checkbox"
+              name="servicio_adicional"          
+              class="servicio"
+              value="{{ servicio['id_servicio'] }}"
+              data-precio="{{ servicio['precio_serv'] }}">
         {{ servicio['tipo_serv'] }} - S/. {{ servicio['precio_serv'] }}<br>
       {% endfor %}
-      <br><br>
-
+      <br>
 
       <label for="fecha_cot">Fecha de Cotización</label>
       <input type="date" name="fecha_cot" required>
@@ -55,18 +60,72 @@
       </select>
       <br><br>
 
-
       <label for="estado_cot">Estado</label>
-      <select  name="estado_cot" required>
+      <select name="estado_cot" required>
         <option value="1">Activo</option>
         <option value="0">Inactivo</option>
       </select>
       <br><br>
 
-      <p>Total: S/.</p>
+      <p>Total: S/. <span id="total">0.00</span></p>
+      <input type="hidden" name="monto_cot" id="monto_cot">
+
       <button type="submit">Agregar</button>
     </form>
   </div>
+
+  <!-- SCRIPT: se ejecuta después de que cargue el DOM -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const planSelect = document.getElementById('plan_cremacion');
+      const servicioCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"].servicio'));
+      const totalSpan = document.getElementById('total');
+      const montoHidden = document.getElementById('monto_cot');
+
+      // función segura para convertir a número
+      function toNumber(v) {
+        if (!v && v !== 0) return 0;
+        v = String(v).trim().replace(',', '.');
+        const n = parseFloat(v);
+        return isNaN(n) ? 0 : n;
+      }
+
+      function calcularTotal() {
+        let total = 0;
+
+        // precio del plan (dataset.precio)
+        if (planSelect && planSelect.selectedOptions && planSelect.selectedOptions.length > 0) {
+          total += toNumber(planSelect.selectedOptions[0].dataset.precio);
+        }
+
+        // sumar servicios marcados
+        servicioCheckboxes.forEach(cb => {
+          if (cb.checked) {
+            // dataset.precio es preferible; si no existe, intenta con value (no ideal)
+            total += toNumber(cb.dataset.precio || cb.value);
+          }
+        });
+
+        // mostrar y guardar
+        totalSpan.textContent = total.toFixed(2);
+        if (montoHidden) montoHidden.value = total.toFixed(2);
+
+        // debug en consola (borra si quieres)
+        console.log('calcularTotal -> planPrecio:', planSelect.selectedOptions[0]?.dataset?.precio, 'total:', total);
+      }
+
+      // debug inicial: muestro cuantos checkbox y si el select existe
+      console.log('DEBUG: planSelect encontrado?', !!planSelect, 'check servicios:', servicioCheckboxes.length);
+
+      // ligar eventos
+      if (planSelect) planSelect.addEventListener('change', calcularTotal);
+      servicioCheckboxes.forEach(cb => cb.addEventListener('change', calcularTotal));
+
+      // calcular al cargar la página (por si hay selección por defecto)
+      calcularTotal();
+    });
+  </script>
+
   {% endblock %}
 </body>
 </html>
