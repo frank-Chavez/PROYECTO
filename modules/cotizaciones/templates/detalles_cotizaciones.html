@@ -9,18 +9,34 @@
     {% extends "dashboar.html" %}
     {% block content %}
     <h2>{{title}}</h2>
-
-    <p><strong>ID Cotización:</strong> {{ cotizacion['id_cotizacion'] }}</p>
+    <p><strong>Numero de Cotizacion:</strong> {{ cotizacion['numero_cot'] }}</p>
     <p><strong>Familiares asociados:</strong>
     {% if familiares %}
-        {{ familiares | map(attribute='f_nombre') | join(', ') }}
+        {% for f in familiares %}
+            {{ f.f_nombre }} {{ f.f_apellido }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
     {% else %}
         No hay familiares asociados
     {% endif %}
     </p>
 
-
-    <p><strong>Numero de Cotizacion:</strong> {{ cotizacion['numero_cot'] }}</p>
+    <p><strong>Plan de Cremación:</strong>
+    {% if plan %}
+        {{ plan.tipo_plan }} 
+    {% else %}
+        No hay Plan de Cremación
+    {% endif %}
+    </p>
+    
+    <p><strong>Servicios seleccionados:</strong>
+    {% if servicios %}
+        {% for s in servicios %}
+            {{ s.tipo_serv }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% else %}
+        No hay servicios seleccionados
+    {% endif %}
+    </p>
     <p><strong>Fecha de Cotizacion:</strong> {{ cotizacion['fecha_cot']|replace('-', '/') }}</p>
     <p><strong>Monto de cotizacion:</strong> S/.{{ cotizacion['monto_cot'] }}</p>
     <p><strong>Validacion:</strong> {{ cotizacion['validacion_cot'] }}</p>
