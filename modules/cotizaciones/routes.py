@@ -84,7 +84,7 @@ def editar(id):
 
     # Traemos plan asociado
     plan = conn.execute("""
-        SELECT p.id_plan, p.tipo_plan
+        SELECT p.id_plan, p.tipo_plan, precio_plan
         FROM cotizacion_detalles cd
         JOIN Planes p ON cd.id_plan = p.id_plan
         WHERE cd.id_cotizacion = ?
@@ -92,7 +92,7 @@ def editar(id):
 
     # Traemos servicios asociados
     servicios = conn.execute("""
-        SELECT s.id_servicio, s.tipo_serv
+        SELECT s.id_servicio, s.tipo_serv, precio_serv
         FROM cotizacion_detalles cd
         JOIN Servicios s ON cd.id_servicio = s.id_servicio
         WHERE cd.id_cotizacion = ?
@@ -107,8 +107,8 @@ def editar(id):
     """, (id,)).fetchall()
 
     # Traemos todas las opciones para mostrar en el form
-    planes_disponibles = conn.execute("SELECT id_plan, tipo_plan FROM Planes WHERE estado_plan=1").fetchall()
-    servicios_disponibles = conn.execute("SELECT id_servicio, tipo_serv FROM Servicios WHERE estado_serv=1").fetchall()
+    planes_disponibles = conn.execute("SELECT id_plan, tipo_plan, precio_plan FROM Planes WHERE estado_plan=1").fetchall()
+    servicios_disponibles = conn.execute("SELECT id_servicio, tipo_serv, precio_serv FROM Servicios WHERE estado_serv=1").fetchall()
     familiares_disponibles = conn.execute("SELECT id_familiar, f_nombre, f_apellido FROM Familiares WHERE f_estado=1").fetchall()
 
     conn.close()
@@ -170,6 +170,9 @@ def VerDetalles(id):
 
     conn.close()
     return render_template("detalles_cotizaciones.html", cotizacion=cotizacion, plan=plan, servicios=servicios, familiares=familiares, title="Detalles del cotizacion")
+
+
+
 
 @cotizaciones_bd.route('/agregar', methods=["GET", "POST"])
 def agregar():
