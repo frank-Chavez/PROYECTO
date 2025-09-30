@@ -22,7 +22,7 @@ app.register_blueprint(cotizaciones_bd )
 
 
 
-@app.route('/', methods=["GET", "POST"])
+"""@app.route('/', methods=["GET", "POST"])
 def login():
     error = None
     
@@ -45,10 +45,10 @@ def login():
             # Si no coincide
             error = "❌ Usuario o contraseña incorrectos"
 
-    return render_template("login.html", error=error)
+    return render_template("login.html", error=error)"""
 
 
-@app.route("/dashboard", endpoint="dashboar")
+@app.route("/", endpoint="dashboar")
 def dashboar():
     conn = conection()
 
