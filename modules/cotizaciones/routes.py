@@ -191,6 +191,7 @@ def agregar():
             new_num = 1
         numero_cot = f"COT-{new_num:03d}"
 
+
         # Obtener planes, servicios y familiares activos
         cur.execute("SELECT id_plan, tipo_plan, precio_plan FROM Planes WHERE estado_plan = '1'")
         planes = cur.fetchall()
@@ -231,6 +232,7 @@ def agregar():
                     familiares=familiares,
                     numero_cot=numero_cot
                 )
+            
 
             # Insertar la cotización principal
             cur.execute("""

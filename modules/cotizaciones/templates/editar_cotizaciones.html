@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='editar_cotizaciones.css')}}">
 </head>
 <body>
@@ -64,8 +63,13 @@
                 <input type="number" name="monto_cot" id="monto_cot" value="{{ cot['monto_cot'] }}" step="0.01" class="campo_monto" readonly><br><br>
         
                 <label for="validacion_cot" class="text">Validación de Cotización:</label><br>
-                <input type="text" name="validacion_cot" value="{{ cot['validacion_cot'] }}" class="campo_validacion"><br><br>
-        
+                <select name="validacion_cot" class="campo_validacion" >
+                    <option value="">Elije una validación</option>
+                    <option value="Aprobada" {{ 'selected' if cot['validacion_cot'] == 'Aprobada' else '' }}>Aprobada</option>
+                    <option value="Rechazada" {{ 'selected' if cot['validacion_cot'] == 'Rechazada' else '' }}>Rechazada</option>
+                </select>
+
+
                 <label for="estado_cot" class="text">Estado:</label><br>
                 <select name="estado_cot" class="campo_estado" required>
                     <option value="1" {% if cot['estado_cot'] == 1 %}selected{% endif %}>Activo</option>

@@ -1,0 +1,196 @@
+/*estilo del formulario*/
+.content-for{
+    background-color: #ffffff;
+    display: grid;
+    padding: 20px;
+    border-radius: 10px;
+    border: solid #c0c0c0 1px;
+}
+.content-for h5{
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/*estilo para el texto de tosas las opciones*/
+.text{
+    font-weight: 700;
+}
+
+
+/*contenedor de los campos del id y del nombre del cliente*/
+.content_campos{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: start;
+}
+.content_campos > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.content_campos label {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+
+/*estilo de la opcion de id*/
+.campo_id{
+    background-color: #F4F2EE;
+    border: solid #c0c0c0 1px;
+    border-radius: 5px;
+    width: 500px;
+    height: 40px;
+    padding: 0 0 0 10px;
+    color: #c0c0c0;
+    border: none;
+}
+/*estilo del campo nombre*/
+.campo_nombre{
+    background-color: #F4F2EE;
+    border: solid #c0c0c0 1px;
+    border-radius: 5px;
+    width: 500px;
+    height: 40px;
+    padding: 0 0 0 10px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+/*estilo del campo de plan*/
+.campo_plan{
+    background-color: #F4F2EE;
+    border: solid #c0c0c0 1px;
+    border-radius: 5px;
+    width: 500px;
+    height: 40px;
+    padding: 0 0 0 10px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+/*estilo del campo de servicios*/
+.content_servicios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Tarjeta del servicio */
+.servicio_card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+
+/* Ocultamos el checkbox original */
+.servicio_card input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #a64dff;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    background: #fff;
+}
+
+.checkmark::after {
+    content: "";
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    display: none;
+}
+.servicio_card input[type="checkbox"]:checked ~ .checkmark {
+    background: #a64dff;
+    border-color: #a64dff;
+}
+.servicio_card input[type="checkbox"]:checked ~ .checkmark::after {
+    display: block;
+}
+
+.servicio_text {
+    font-size: 14px;
+    color: #333;
+}
+.servicio_text small {
+    color: #666;
+    font-size: 12px;
+}
+
+/*estilo del campo de fecha*/
+.campo_fecha{
+    background-color: #F4F2EE;
+    border: solid #c0c0c0 1px;
+    border-radius: 5px;
+    width: 500px;
+    height: 40px;
+    padding: 0 0 0 10px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+/*estilo del campo de validacion*/
+.campo_validacion{
+    background-color: #F4F2EE;
+    border: solid #c0c0c0 1px;
+    border-radius: 5px;
+    width: 500px;
+    height: 40px;
+    padding: 0 0 0 10px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+/*estilo del campo de estado*/
+.campo_estado{
+    background-color: #F4F2EE;
+    border: solid #c0c0c0 1px;
+    border-radius: 5px;
+    width: 500px;
+    height: 40px;
+    padding: 0 0 0 10px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+/*estilo de los botones*/
+.content_boton{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.butom_cancelar{
+    text-decoration: none;
+    color: black;
+    padding: 10px 20px;
+    background-color: #c0c0c0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.butom_agregar{
+    color: white;
+    padding: 10px 20px;
+    background-color: #a64dff;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
