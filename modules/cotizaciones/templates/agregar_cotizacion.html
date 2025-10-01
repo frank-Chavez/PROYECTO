@@ -3,75 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <title>Agregar Cotización</title>
+  <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='agregar_cotizaciones.css')}}">
 </head>
 <body>
   {% extends "dashboar.html" %}
   {% block content %}
   <div>
     <h2>Agregar Cotización</h2>
-    <form method="POST">
-      
-      <label for="numero_cot">Número de Cotización</label>
-      <input type="text" name="numero_cot" value="{{ numero_cot }}" readonly>
-      <br><br>
+    <div class="content-for">
+      <form method="POST">
 
-      <label for="nombre_cliente">Nombre del Cliente</label>
-      <select name="nombre_cliente" required>
-        <option value="">Elije un familiar</option>
-          {% for familiar in familiares %}
-            <option value="{{ familiar['id_familiar'] }}">
-              {{ familiar['f_nombre'] }} {{ familiar['f_apellido'] }}
-            </option>
-          {% endfor %}
-      </select>
-      <br><br>
+        <div class="content_campos">
+          <div>
+            <label for="numero_cot" class="text">Número de Cotización</label>
+            <input type="text" name="numero_cot" value="{{ numero_cot }}" class="campo_id" readonly>
+          </div>
 
-      <label for="plan_cremacion">Plan de cremación</label>
-      <select name="plan_cremacion" id="plan_cremacion" required>
-        <option value="">Elije un plan de cremación</option>
-          {% for plan in planes %}
-            <option value="{{ plan['id_plan'] }}" data-precio="{{ plan['precio_plan'] }}">
-              {{ plan['tipo_plan'] }} - S/. {{ plan['precio_plan'] }}
-            </option>
-          {% endfor %}
-      </select>
-      <br><br>
+          <div>
+            <label for="nombre_cliente" class="text">Nombre del Cliente</label>
+            <select name="nombre_cliente" class="campo_nombre" required>
+              <option value="">Elije un familiar</option>
+                {% for familiar in familiares %}
+                  <option value="{{ familiar['id_familiar'] }}">
+                    {{ familiar['f_nombre'] }} {{ familiar['f_apellido'] }}
+                  </option>
+                {% endfor %}
+            </select>
+          </div>
+        </div>
 
-      <label for="servicios_adicionales">Servicios adicionales</label><br>
-      {% for servicio in servicios %}
-        <input value="" 
-              type="checkbox"
-              name="servicio_adicional"          
-              class="servicio"
-              value="{{ servicio['id_servicio'] }}"
-              data-precio="{{ servicio['precio_serv'] }}">
-        {{ servicio['tipo_serv'] }} - S/. {{ servicio['precio_serv'] }}<br>
-      {% endfor %}
-      <br>
+        <br>
 
-      <label for="fecha_cot">Fecha de Cotización</label>
-      <input type="date" name="fecha_cot" required>
-      <br><br>
+        <div class="content_campos">
+          <div>
+            <label for="plan_cremacion" class="text">Plan de cremación</label>
+            <select name="plan_cremacion" id="plan_cremacion" class="campo_plan" required>
+              <option value="">Elije un plan de cremación</option>
+                {% for plan in planes %}
+                  <option value="{{ plan['id_plan'] }}" data-precio="{{ plan['precio_plan'] }}">
+                    {{ plan['tipo_plan'] }} S/. {{ plan['precio_plan'] }}
+                  </option>
+                {% endfor %}
+            </select>
+          </div>
+        <div>
+          <label for="servicios_adicionales" class="text">Servicios adicionales</label>
+          <div class="content_servicios">
+            {% for servicio in servicios %}
+              <label class="servicio_card">
+                <input 
+                  type="checkbox"
+                  name="servicio_adicional"
+                  class="servicio"
+                  value="{{ servicio['id_servicio'] }}"
+                  data-precio="{{ servicio['precio_serv'] }}">
+                <span class="checkmark"></span>
+                <span class="servicio_text">
+                  {{ servicio['tipo_serv'] }} <br>
+                  <small>S/. {{ servicio['precio_serv'] }}</small>
+                </span>
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+  
+        </div>
 
-      <label for="validacion_cot">Validación</label>
-      <select name="validacion_cot" required>
-        <option value="Validada">Validada</option>
-        <option value="No validada">No validada</option>
-      </select>
-      <br><br>
+        <br>
 
-      <label for="estado_cot">Estado</label>
-      <select name="estado_cot" required>
-        <option value="1">Activo</option>
-        <option value="0">Inactivo</option>
-      </select>
-      <br><br>
+        <div class="content_campos">
+          <div>
+            <label for="fecha_cot" class="text">Fecha de Cotización</label>
+            <input type="date" name="fecha_cot" class="campo_fecha" required>
+          </div>
+          <div>
+            <label for="validacion_cot" class="text">Validación</label>
+            <select name="validacion_cot" class="campo_validacion" required>
+              <option value="Aprobada">Aprobada</option>
+              <option value="Rechazada">Rechazada</option>
+            </select>
+          </div>
+        </div>
 
-      <p>Total: S/. <span id="total">0.00</span></p>
-      <input type="hidden" name="monto_cot" id="monto_cot">
+        <div class="content_campos">
+          <div>
+            <label for="estado_cot" class="text">Estado</label>
+            <select name="estado_cot" class="campo_estado" required>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
+          <div>
+            <p class="text">Total:<br> S/. <span id="total">0.00</span></p>
+            <input type="hidden" name="monto_cot" id="monto_cot">
+          </div>
+        </div>
 
-      <button type="submit">Agregar</button>
-    </form>
+        <div class="content_boton">
+          <a href="{{ url_for('cotizacion.listar') }}" class="butom_cancelar">Cancelar</a>
+          <button type="submit" class="butom_agregar">Agregar</button>
+        </div>
+        
+      </form>
+    </div>
   </div>
 
   <!-- SCRIPT: se ejecuta después de que cargue el DOM -->
