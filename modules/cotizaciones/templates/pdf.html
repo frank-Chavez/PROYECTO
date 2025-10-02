@@ -1,0 +1,105 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cotizacion</title>
+    <meta name="description" content="Invoice demo sample">
+    <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='pdf.css')}}">    
+  </head>
+
+  <body>
+    <h1>COTIZACIÓN</h1>
+
+    <aside>
+      <address id="from">
+        Crematorio Virgen de la Natividad
+        RUC: 20450359051
+        Teléfono: +51
+      </address>
+
+      <address id="to">
+          {% if familiares %}
+              {% for f in familiares %}
+                  Cliente: {{ f.f_nombre }} {{ f.f_apellido }}<br> Correo: {{ f.f_correo}}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+          {% else %}
+              No hay familiares asociados
+          {% endif %}
+      </address>
+    </aside>
+    <dl id="informations">
+      <dt>N° DE RESIVO</dt>
+      <dd>{{ cotizacion['numero_cot'] }}</dd>
+      <dt>FECHA</dt>
+      <dd>{{ fecha_actual| replace('-','/')}}</dd>
+    </dl>
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Precio unitario</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            {% if plan %}
+                {{ plan.tipo_plan }} 
+            {% else %}
+                No hay Plan de Cremación
+            {% endif %}
+          </td>
+          <td>
+            {% if plan %}
+                S/.{{ plan.precio_plan }}
+            {% endif %}
+          </td>
+          <td>1</td>
+          <td>
+            {% if plan %}
+              S/.{{ plan.precio_plan }}
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+              {% if servicios %}
+                  {% for s in servicios %}
+                  <tr>
+                      <td>{{ s.tipo_serv }}</td>
+                      <td>S/.{{ s.precio_serv }}</td>
+                      <td>1</td>
+                      <td>S/.{{ s.precio_serv }}</td>
+                  </tr>
+                  {% endfor %}
+            {% else %}
+            <tr>
+                  <td colspan="4">No hay servicios seleccionados</td>
+                </tr>
+            {% endif %}
+          
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <footer>
+      <table id="total">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>TOTAL</td>
+            <td></td>
+            <td> S/.{{ cotizacion['monto_cot'] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </footer>
+  </body>
+</html>

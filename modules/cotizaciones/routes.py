@@ -1,11 +1,13 @@
-from flask import Blueprint,render_template, redirect, url_for, request
+from flask import Response, request, Blueprint,render_template, redirect, url_for, request
 from database import conection
+from weasyprint import HTML
+import io
+from datetime import date
 
 cotizaciones_bd = Blueprint("cotizacion", __name__, url_prefix="/cotizacion", template_folder="templates", static_folder="static")
 
 
-
-@cotizaciones_bd .route('/')
+@cotizaciones_bd.route('/')
 def listar():
     conn=conection()
     cotizacion = conn.execute("SELECT * FROM Cotizacion").fetchall()
@@ -207,7 +209,7 @@ def agregar():
             estado_cot = request.form.get("estado_cot", 1)
             planes_seleccionado = request.form.get("plan_cremacion")
             servicios_seleccionado = request.form.getlist("servicios_adicionales")
-            familiares_seleccionado = request.form.getlist("nombre_cliente")  # <-- getlist desde el inicio
+            familiares_seleccionado = request.form.getlist("nombre_cliente")
 
             # Validación: campos obligatorios
             if not (fecha_cot and monto_cot and validacion_cot):
@@ -274,3 +276,67 @@ def agregar():
             familiares=familiares,
             numero_cot=numero_cot
         )
+
+
+
+
+
+@cotizaciones_bd.route('/pdf/<int:id>', methods=["GET"])
+def descargar_pdf(id):
+    conn = conection()
+    cur = conn.cursor()
+
+    fecha_actual = date.today()
+
+
+    # Cotizacion principal :)
+    cotizacion = cur.execute("""
+        SELECT id_cotizacion, numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot
+        FROM Cotizacion 
+        WHERE id_cotizacion = ?
+    """, (id,)).fetchone()
+    if not cotizacion:
+        conn.close()
+        return "cotizacion no encontrado", 404
+    
+    # Obtener el plan asociado
+    plan = cur.execute("""
+        SELECT p.id_plan, p.tipo_plan, p.precio_plan
+        FROM cotizacion_detalles cd
+        JOIN Planes p ON cd.id_plan = p.id_plan
+        WHERE cd.id_cotizacion = ? AND cd.id_plan IS NOT NULL
+    """, (id,)).fetchone()
+
+    # Obtener los servicios asociados
+    servicios = cur.execute("""
+        SELECT DISTINCT s.id_servicio, s.tipo_serv, s.precio_serv
+        FROM cotizacion_detalles cd
+        JOIN Servicios s ON cd.id_servicio = s.id_servicio
+        WHERE cd.id_cotizacion = ? AND cd.id_servicio IS NOT NULL
+    """, (id,)).fetchall()
+
+
+    # Obtener los familiares asociados
+    familiares = cur.execute("""
+        SELECT DISTINCT f.id_familiar, f.f_nombre, f.f_apellido,f.f_correo
+        FROM cotizacion_detalles cd
+        JOIN Familiares f ON cd.id_familiar = f.id_familiar
+        WHERE cd.id_cotizacion = ? AND cd.id_familiar IS NOT NULL
+    """, (id,)).fetchall()
+    conn.close()
+    
+    try:
+        rendered_html = render_template("pdf.html", cotizacion=cotizacion, plan=plan, servicios=servicios,familiares=familiares, fecha_actual=fecha_actual)
+        pdf_buffer = io.BytesIO()
+
+        HTML(string=rendered_html, base_url=request.host_url).write_pdf(target=pdf_buffer)
+
+        pdf_byte_string = pdf_buffer.getvalue()
+        pdf_buffer.close()
+
+        response = Response(pdf_byte_string, content_type="application/pdf")
+        response.headers["Content-Disposition"] = "inline; filename=pdf.pdf"
+        return response
+    except Exception as e:
+        return f"Error al generar el PDF: {str(e)}", 500
+    

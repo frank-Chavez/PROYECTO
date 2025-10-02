@@ -40,6 +40,7 @@
             <div class="acciones">
                 <a href="{{ url_for('cotizacion.editar', id=c['id_cotizacion']) }}"><img src="/static/icons/editar.svg" alt="editar"></a>
                 <a href="{{ url_for('cotizacion.VerDetalles', id=c['id_cotizacion']) }}"><img src="/static/icons/ver.svg" alt="cambiar estado"></a>
+                <a href="{{ url_for('cotizacion.descargar_pdf', id=c['id_cotizacion']) }}" target="_blank"><img src="/static/icons/pdf.svg" alt="descargar_pdf"></a>
                 <a href="{{ url_for('cotizacion.cambiar_estado', id=c['id_cotizacion']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
             </div>
         </div>
