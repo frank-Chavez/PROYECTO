@@ -1,36 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar {{title}}</title>
+    <title>Agregar {{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{url_for('servicios.static', filename='agregar_servicio.css')}}">
 </head>
 <body>
-    {% extends "dashboar.html" %} 
-    {% block content %}
-    <h2>Agregar {{title}}</h2>
-    <form method="POST">
-        <label for="tipoServ">Tipo de Servico</label>
-        <input type="text" name="tipoServ" required>
-        
-        <label for="descripcionServ">Descripcion</label>
-        <textarea name="descripcionServ" rows="4" cols="40" required></textarea>
+{% extends "dashboar.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="title">Agregar {{ title }}</h2>
+    <p class="subtitle">Crea un nuevo servicio para usar en las cotizaciones</p>
 
-        <label for="categoriaServ">categoria</label>
-        <input type="text" name="categoriaServ" required>
+    <div class="card">
+        <form method="POST" class="service-form">
 
-        <label for="precio_serv">precio</label>
-        <input type="text" name="precio_serv" required>
+            <div class="form-group">
+                <label for="tipoServ">Tipo de Servicio <span>*</span></label>
+                <input type="text" name="tipoServ" placeholder="Ej: Traslado..." required>
+            </div>
 
+            <div class="form-group">
+                <label for="descripcionServ">Descripción <span>*</span></label>
+                <textarea name="descripcionServ" placeholder="Describe los detalles del servicio..." rows="4" required></textarea>
+            </div>
 
-        <label for="estado">Estado</label>
-        <select name="estado">
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-        </select>
+            <div class="form-group">
+                <label for="categoriaServ">Categoría <span>*</span></label>
+                <input type="text" name="categoriaServ" placeholder="Categoria..." required>
+            </div>
 
-        <button type="submit">Agregar</button>
-    </form>
-    {% endblock %}
+            <div class="form-group">
+                <label for="precio_serv">Precio <span>*</span></label>
+                <input type="number" name="precio_serv" step="0.01" placeholder="0.00" required>
+            </div>
+
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <select name="estado">
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                </select>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary">Guardar Servicio</button>
+                <a href="{{ url_for('servicios.listar') }}" class="btn btn-secondary">Cancelar</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
 </body>
 </html>

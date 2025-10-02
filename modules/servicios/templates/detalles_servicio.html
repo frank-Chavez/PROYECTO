@@ -1,32 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{url_for('servicios.static', filename='servicio_detalle.css')}}">
+
+
 </head>
 <body>
-    {% extends "dashboar.html" %}
-    {% block content %}
-    <h2>{{title}}</h2>
+{% extends "dashboar.html" %}
+{% block content %}
+    <h1 class="titulo">Detalles del Servicio</h1>
+    <p class="subtitulo">Información completa del servicio #{{ servicio['id_servicio'] }}</p>
 
-    <p><strong>ID:</strong> {{ servicio['id_servicio'] }}</p>
-    <p><strong>Tipo:</strong> {{ servicio['tipo_serv'] }}</p>
-    <p><strong>Descripción:</strong> {{ servicio['descripcion_serv'] }}</p>
-    <p><strong>Categoría:</strong> {{ servicio['categoria_serv'] }}</p>
-    <p><strong>Precio:</strong> S/. {{ servicio['precio_serv'] }}</p>
-    <p><strong>Proveedor:</strong> {{ servicio['nombre_p'] }}</p>
-    <p><strong>Estado:</strong> 
-    {% if servicio['estado_serv'] == 1 %}
-        Activo
-    {% else %}
-        Inactivo
-    {% endif %}
-    </p>
+    <div class="card">
+        <div class="seccion">
+            <h3>Información del Servicio</h3>
+            <div class="campo">
+                <label>ID del Servicio</label>
+                <div class="valor">#{{ servicio['id_servicio'] }}</div>
+            </div>
+        </div>
 
-    <br>
-    <a href="{{ url_for('servicios.listar') }}" class="btn-regresar">Regresar</a>
+        <div class="seccion">
+            <label>Tipo de Servicio</label>
+            <div class="valor principal">{{ servicio['tipo_serv'] }}</div>
 
-    {% endblock %}
+            <label>Descripción</label>
+            <div class="valor descripcion">{{ servicio['descripcion_serv'] }}</div>
+
+            <label>Categoría</label>
+            <span class="badge">{{ servicio['categoria_serv'] }}</span>
+
+            <label>Precio</label>
+            <div class="precio">S/. {{ servicio['precio_serv'] }}</div>
+
+            <label>Proveedor</label>
+            <div class="valor">{{ servicio['nombre_p'] }}</div>
+
+            <label>Estado</label>
+            {% if servicio['estado_serv'] == 1 %}
+                <span class="estado activo">Activo</span>
+            {% else %}
+                <span class="estado inactivo">Inactivo</span>
+            {% endif %}
+        </div>
+
+        <div class="acciones">
+            <a href="{{ url_for('servicios.listar') }}" class="volver">Volver a la lista</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
 </body>
 </html>

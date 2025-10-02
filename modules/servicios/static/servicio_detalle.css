@@ -1,0 +1,109 @@
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #f9f7f4;
+    color: #2d2d2d;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+
+.titulo {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.subtitulo {
+    color: #8c8c8c;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+.seccion h3 {
+    margin-bottom: 15px;
+    color: #6b4f2d;
+}
+
+.campo label,
+.seccion label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.valor {
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.valor.principal {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.descripcion {
+    font-style: italic;
+    color: #555;
+}
+
+.badge {
+    display: inline-block;
+    background: #f0e4d7;
+    color: #6b4f2d;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.precio {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.estado {
+    padding: 6px 14px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.estado.activo {
+    background: #d4f5d0;
+    color: #2e7d32;
+}
+
+.estado.inactivo {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.acciones {
+    text-align: right;
+    margin-top: 25px;
+}
+
+.volver {
+    background: #6b4f2d;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.volver:hover {
+    background: #5a4124;
+}
