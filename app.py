@@ -19,7 +19,8 @@ app.register_blueprint(proveedor_bd)
 app.register_blueprint(servicios_bd)
 app.register_blueprint(cotizaciones_bd )
 
-
+if __name__== "__main__":
+    cotizaciones_bd.run(debug=True)
 
 
 """@app.route('/', methods=["GET", "POST"])
