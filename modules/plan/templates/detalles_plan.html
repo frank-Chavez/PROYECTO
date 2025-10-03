@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{url_for('planes.static', filename='detalle_plan.css')}}">
 </head>
 <body>
-    {% extends "dashboar.html" %}
-    {% block content %}
-    <h2>{{title}}</h2>
+{% extends "dashboar.html" %}
+{% block content %}
+
+<div class="plan-container">
+    <h2>{{ title }}</h2>
 
     <p><strong>ID:</strong> {{ plan['id_plan'] }}</p>
     <p><strong>Tipo de Plan:</strong> {{ plan['tipo_plan'] }}</p>
     <p><strong>Precio:</strong> S/.{{ plan['precio_plan'] }}</p>
-    <p><strong>Duracion del Plan:</strong> {{ plan['duracion_plan'] }}</p>
-    <p><strong>Categoria:</strong> {{ plan['categoria_plan'] }}</p>
-    <p><strong>Condiciones del Plan:</strong> {{ plan['condiciones_plan']}}</p>
+    <p><strong>Duración del Plan:</strong> {{ plan['duracion_plan'] }}</p>
+    <p><strong>Categoría:</strong> {{ plan['categoria_plan'] }}</p>
+    <p><strong>Condiciones:</strong> {{ plan['condiciones_plan'] }}</p>
     <p><strong>Estado:</strong> 
-    {% if plan['estado_plan'] == 1 %}
-        Activo
-    {% else %}
-        Inactivo
-    {% endif %}
+        {% if plan['estado_plan'] == 1 %}
+            <span class="activo">Activo</span>
+        {% else %}
+            <span class="inactivo">Inactivo</span>
+        {% endif %}
     </p>
 
     <a href="{{ url_for('planes.listar') }}" class="btn-regresar">Regresar</a>
+</div>
 
-    {% endblock %}
+{% endblock %}
 </body>
 </html>

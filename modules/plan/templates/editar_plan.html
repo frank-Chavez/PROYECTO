@@ -2,52 +2,75 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>{{title}}</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{url_for('planes.static', filename='editar_planes.css')}}">
 </head>
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
-    <h2>{{title}}</h2>
 
-    <form method="POST">
-        <label for="tipo_plan">Tipo de Plan:</label><br>
-        <select name="tipo_plan" id="tipo_plan" required>
-            <option value="Basico" {% if plan['tipo_plan'] == 'Basico' %}selected{% endif %}>Básico</option>
-            <option value="Intermedio" {% if plan['tipo_plan'] == 'Intermedio' %}selected{% endif %}>Intermedio</option>
-            <option value="Premium" {% if plan['tipo_plan'] == 'Premium' %}selected{% endif %}>Premium</option>
-            <option value="Empresarial" {% if plan['tipo_plan'] == 'Empresarial' %}selected{% endif %}>Empresarial</option>
-        </select>
-        <br><br>
+    <div class="editar-container">
+        <h2 class="editar-title">{{ title }}</h2>
 
-        <label for="Precio">Precio del Plan:</label><br>
-        <input type="number" step="0.01" min="0" name="precio_plan" value="{{ plan['precio_plan'] }}" required><br><br>
+        <form method="POST">
 
-        <label for="Duracion">Duracion del Plan:</label><br>
-        <input type="text"name="duracion_plan" value="{{ plan['duracion_plan'] }}"><br><br>
+            <!-- Tipo de Plan -->
+            <div class="editar-group">
+                <label for="tipo_plan">Tipo de Plan:</label>
+                <select name="tipo_plan" id="tipo_plan" required>
+                    <option value="Basico" {% if plan['tipo_plan'] == 'Basico' %}selected{% endif %}>Básico</option>
+                    <option value="Intermedio" {% if plan['tipo_plan'] == 'Intermedio' %}selected{% endif %}>Intermedio</option>
+                    <option value="Premium" {% if plan['tipo_plan'] == 'Premium' %}selected{% endif %}>Premium</option>
+                    <option value="Empresarial" {% if plan['tipo_plan'] == 'Empresarial' %}selected{% endif %}>Empresarial</option>
+                </select>
+            </div>
 
-        <label for="Categoria">Categoría del Plan:</label><br>
-        <select name="categoria_plan" id="categoria_plan" required>
-            <option value="Personal" {% if plan['categoria_plan'] == "Personal" %}selected{% endif %}>Personal</option>
-            <option value="Empresarial" {% if plan['categoria_plan'] == "Empresarial" %}selected{% endif %}>Empresarial</option>
-            <option value="Estudiantil" {% if plan['categoria_plan'] == "Estudiantil" %}selected{% endif %}>Estudiantil</option>
-        </select><br><br>
+            <!-- Precio -->
+            <div class="editar-group">
+                <label for="precio_plan">Precio del Plan:</label>
+                <input type="number" step="0.01" min="0" name="precio_plan" id="precio_plan" value="{{ plan['precio_plan'] }}" required>
+            </div>
 
+            <!-- Duración -->
+            <div class="editar-group">
+                <label for="duracion_plan">Duración del Plan:</label>
+                <input type="text" name="duracion_plan" id="duracion_plan" value="{{ plan['duracion_plan'] }}">
+            </div>
 
-        <label for="Condicion">Condicion del Plan:</label><br>
-        <textarea name="condiciones_plan" rows="4" cols="40" required>{{ plan['condiciones_plan'] }}</textarea><br><br>
+            <!-- Categoría -->
+            <div class="editar-group">
+                <label for="categoria_plan">Categoría del Plan:</label>
+                <select name="categoria_plan" id="categoria_plan" required>
+                    <option value="Personal" {% if plan['categoria_plan'] == "Personal" %}selected{% endif %}>Personal</option>
+                    <option value="Empresarial" {% if plan['categoria_plan'] == "Empresarial" %}selected{% endif %}>Empresarial</option>
+                    <option value="Estudiantil" {% if plan['categoria_plan'] == "Estudiantil" %}selected{% endif %}>Estudiantil</option>
+                </select>
+            </div>
 
+            <!-- Condiciones -->
+            <div class="editar-group">
+                <label for="condiciones_plan">Condiciones del Plan:</label>
+                <textarea name="condiciones_plan" id="condiciones_plan" rows="4" required>{{ plan['condiciones_plan'] }}</textarea>
+            </div>
 
-        <label for="estado_plan">Estado</label>
-        <br>
-        <select  name="estado_plan" required>
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-        </select>
-        <br><br>
+            <!-- Estado -->
+            <div class="editar-group">
+                <label for="estado_plan">Estado:</label>
+                <select name="estado_plan" id="estado_plan" required>
+                    <option value="1" {% if plan['estado_plan'] == 1 %}selected{% endif %}>Activo</option>
+                    <option value="0" {% if plan['estado_plan'] == 0 %}selected{% endif %}>Inactivo</option>
+                </select>
+            </div>
 
-        <button type="submit">Guardar</button>
-    </form>
+            <!-- Botones -->
+            <div class="editar-actions">
+                <button type="submit" class="editar-btn editar-btn-primary">Guardar</button>
+                <a href="{{ url_for('planes.listar') }}" class="editar-btn editar-btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
     {% endblock %}
 </body>
 </html>

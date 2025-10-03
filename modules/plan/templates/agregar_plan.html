@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>{{title}}</title>
-  <link rel="stylesheet" href="{{url_for('planes.static', filename='plan.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{url_for('planes.static', filename='agregar_plan.css')}}">
 </head>
 <body class="agregar-plan">
   {% extends "dashboar.html" %}
