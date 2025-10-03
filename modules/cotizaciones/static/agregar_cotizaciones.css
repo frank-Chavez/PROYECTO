@@ -97,7 +97,6 @@
     cursor: pointer;
 }
 
-
 .checkmark {
     width: 18px;
     height: 18px;
@@ -135,6 +134,43 @@
     color: #666;
     font-size: 12px;
 }
+/* contenedor de la tarjeta */
+.servicio_card {
+    position: relative; /* importante para que la cantidad se posicione dentro */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid transparent;
+    transition: border 0.2s ease;
+}
+.servicio_card:hover {
+    border-color: #a64dff;
+}
+
+/* input cantidad posicionado al lado derecho */
+.cantidad-input {
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    height: 28px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #f9f9f9;
+    font-size: 13px;
+    text-align: center;
+    display: none; /* oculto por defecto */
+}
+
+/* mostrar solo cuando el checkbox esté seleccionado */
+.servicio_card input[type="checkbox"]:checked ~ .cantidad-input {
+    display: block !important;
+}
+
 
 /*estilo del campo de fecha*/
 .campo_fecha{

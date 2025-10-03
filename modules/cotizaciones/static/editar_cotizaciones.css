@@ -78,7 +78,7 @@
     color: black;
 }
 
-/*estilo de las opciones de plan*/
+/*estilo de las opciones de servicios*/
 .campo_servicios {
     display: flex;
     align-items: center;
@@ -92,12 +92,27 @@
     user-select: none;
     gap: 10px;
     margin-bottom: 6px;
+    background: #F4F2EE;
+    transition: all 0.3s ease;
 }
-.campo_servicios input {
+
+/* Hover effect */
+.campo_servicios:hover {
+    background: #e8e6e2;
+}
+
+/* Cuando está seleccionado */
+.campo_servicios.checked {
+    background: #f0e8ff;
+    border: 2px solid #7C3BED;
+}
+
+.campo_servicios input[type="checkbox"] {
     position: absolute;
     opacity: 0;
     cursor: pointer;
 }
+
 .checkmark {
     height: 15px;
     width: 15px;
@@ -109,6 +124,7 @@
     justify-content: center;
     transition: all 0.3s;
 }
+
 .checkmark::after {
     content:"";
     width: 5px;
@@ -118,17 +134,21 @@
     transform: rotate(45deg);
     display: none;
 }
+
 .campo_servicios input:checked ~ .checkmark {
     background: #7C3BED;
     border-color: #7C3BED;
 }
+
 .campo_servicios input:checked ~ .checkmark::after {
     display: block;   
 }
+
 .nombre {
-    flex-grow: 1; /* ocupa el espacio disponible */
+    flex-grow: 1;
     margin-left: 6px;
 }
+
 .precio {
     background: #ffffff;
     border: 1px solid #000000;
@@ -138,6 +158,52 @@
     color: #000000;
     font-size: 13px;
 }
+
+/* Wrapper para la cantidad */
+.cantidad-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.cantidad-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+}
+
+/* Input de cantidad */
+.cantidad-input {
+    width: 60px;
+    height: 32px;
+    text-align: center;
+    padding: 4px;
+    border-radius: 6px;
+    border: 2px solid #7C3BED;
+    font-weight: bold;
+    font-size: 14px;
+    background: white;
+    transition: all 0.3s ease;
+    appearance: auto;
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+}
+
+.cantidad-input:focus {
+    outline: none;
+    border-color: #5a1fc7;
+    box-shadow: 0 0 0 3px rgba(124, 59, 237, 0.1);
+}
+
+.cantidad-input:disabled {
+    background: #f0f0f0;
+    border-color: #ddd;
+    color: #999;
+    cursor: not-allowed;
+}
+
+
 
 /*estilo de la opcion de fechas*/
 .campo_fecha{

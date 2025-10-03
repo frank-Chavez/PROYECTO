@@ -41,15 +41,15 @@ def editar(id):
         validacioncot = request.form['validacion_cot']
         estado = request.form['estado_cot']
         plan_seleccionado = request.form.get("plan_cremacion")
-        servicios_seleccionados = request.form.getlist("servicios_adicionales")
+        servicios_seleccionadoss = request.form.getlist("servicios_adicionales")
         familiares_seleccionados = request.form.getlist("nombre_cliente")
 
-        # Actualizar cotizacion principal
+        # Actualizar cotizacion principal (ahora con el orden correcto)
         conn.execute("""
             UPDATE Cotizacion 
-            SET numero_cot = ?, fecha_cot = ?, monto_cot = ?, estado_cot = ?, validacion_cot = ?
+            SET numero_cot = ?, fecha_cot = ?, monto_cot = ?, validacion_cot = ?, estado_cot = ?
             WHERE id_cotizacion = ?
-        """, (numerocot, fechacot, montocot, estado, validacioncot, id))
+        """, (numerocot, fechacot, montocot, validacioncot, estado, id))
 
         # Primero eliminamos los detalles antiguos
         conn.execute("DELETE FROM cotizacion_detalles WHERE id_cotizacion = ?", (id,))
@@ -68,12 +68,13 @@ def editar(id):
                 VALUES (?, ?)
             """, (id, int(f_id)))
 
-        # Insertamos servicios seleccionados
-        for s_id in servicios_seleccionados:
+        # Insertamos servicios seleccionados (ahora con cantidad)
+        for s_id in servicios_seleccionadoss:
+            cantidad = request.form.get(f"cantidad_servicio[{s_id}]", 1)
             conn.execute("""
-                INSERT INTO cotizacion_detalles (id_cotizacion, id_servicio)
-                VALUES (?, ?)
-            """, (id, int(s_id)))
+                INSERT INTO cotizacion_detalles (id_cotizacion, id_servicio, cantidad)
+                VALUES (?, ?, ?)
+            """, (id, int(s_id), int(cantidad)))
 
         conn.commit()
         conn.close()
@@ -94,11 +95,13 @@ def editar(id):
 
     # Traemos servicios asociados
     servicios = conn.execute("""
-        SELECT s.id_servicio, s.tipo_serv, precio_serv
+        SELECT s.id_servicio, s.tipo_serv, precio_serv, cd.cantidad
         FROM cotizacion_detalles cd
         JOIN Servicios s ON cd.id_servicio = s.id_servicio
         WHERE cd.id_cotizacion = ?
     """, (id,)).fetchall()
+
+    servicios_cantidades = {s["id_servicio"]: s["cantidad"] for s in servicios}
 
     # Traemos familiares asociados
     familiares = conn.execute("""
@@ -119,6 +122,7 @@ def editar(id):
         cot=cotizacion,
         plan=plan,
         servicios=servicios,
+        servicios_cantidades=servicios_cantidades,
         familiares=familiares,
         planes_disponibles=planes_disponibles,
         servicios_disponibles=servicios_disponibles,
@@ -154,7 +158,7 @@ def VerDetalles(id):
 
     # Obtener los servicios asociados
     servicios = cur.execute("""
-        SELECT DISTINCT s.id_servicio, s.tipo_serv, s.precio_serv
+        SELECT DISTINCT s.id_servicio, s.tipo_serv, s.precio_serv, cd.cantidad
         FROM cotizacion_detalles cd
         JOIN Servicios s ON cd.id_servicio = s.id_servicio
         WHERE cd.id_cotizacion = ? AND cd.id_servicio IS NOT NULL
@@ -168,6 +172,7 @@ def VerDetalles(id):
         JOIN Familiares f ON cd.id_familiar = f.id_familiar
         WHERE cd.id_cotizacion = ? AND cd.id_familiar IS NOT NULL
     """, (id,)).fetchall()
+
 
 
     conn.close()
@@ -208,7 +213,7 @@ def agregar():
             validacion_cot = request.form.get("validacion_cot")
             estado_cot = request.form.get("estado_cot", 1)
             planes_seleccionado = request.form.get("plan_cremacion")
-            servicios_seleccionado = request.form.getlist("servicios_adicionales")
+            servicios_seleccionados = request.form.getlist("servicio_adicional")
             familiares_seleccionado = request.form.getlist("nombre_cliente")
 
             # Validación: campos obligatorios
@@ -224,7 +229,7 @@ def agregar():
                 )
 
             # Validación: al menos un Plan, Servicio o Familiar
-            if not (planes_seleccionado or servicios_seleccionado or familiares_seleccionado):
+            if not (planes_seleccionado or servicios_seleccionados or familiares_seleccionado):
                 return render_template(
                     "agregar_cotizacion.html",
                     title="Agregar Cotización",
@@ -251,18 +256,19 @@ def agregar():
                 """, (id_cotizacion, int(planes_seleccionado), None, None))
 
             # Insertar detalle de familiares
-            for f_id in set(familiares_seleccionado):  # elimina duplicados
+            for f_id in set(familiares_seleccionado): 
                 cur.execute("""
                     INSERT INTO cotizacion_detalles (id_cotizacion, id_plan, id_servicio, id_familiar)
                     VALUES (?, ?, ?, ?)
                 """, (id_cotizacion, None, None, int(f_id)))
 
             # Insertar detalle de servicios
-            for s_id in set(servicios_seleccionado):  # elimina duplicados
+            for s_id in set(servicios_seleccionados): 
+                cantidad = request.form.get(f"cantidad_{s_id}",1)
                 cur.execute("""
-                    INSERT INTO cotizacion_detalles (id_cotizacion, id_plan, id_servicio, id_familiar)
-                    VALUES (?, ?, ?, ?)
-                """, (id_cotizacion, None, int(s_id), None))
+                    INSERT INTO cotizacion_detalles (id_cotizacion, id_plan, id_servicio, id_familiar, cantidad)
+                    VALUES (?, ?, ?, ?, ?)
+                """, (id_cotizacion, None, int(s_id), None, int(cantidad)))
 
             # Commit único al final
             conn.commit()

@@ -37,7 +37,7 @@
         <div class="content_campos">
           <div>
             <label for="plan_cremacion" class="text">Plan de cremación</label>
-            <select name="plan_cremacion" id="plan_cremacion" class="campo_plan" required>
+            <select name="plan_cremacion" id="plan_cremacion" class="campo_plan" >
               <option value="">Elije un plan de cremación</option>
                 {% for plan in planes %}
                   <option value="{{ plan['id_plan'] }}" data-precio="{{ plan['precio_plan'] }}">
@@ -62,6 +62,7 @@
                   {{ servicio['tipo_serv'] }} <br>
                   <small>S/. {{ servicio['precio_serv'] }}</small>
                 </span>
+                <input type="number" name="cantidad_{{ servicio['id_servicio'] }}" class="cantidad-input" value="1" min="1" style="display:none; width:70px; margin-left:10px;">
               </label>
             {% endfor %}
           </div>
@@ -107,8 +108,6 @@
       </form>
     </div>
   </div>
-
-  <!-- SCRIPT: se ejecuta después de que cargue el DOM -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const planSelect = document.getElementById('plan_cremacion');
@@ -116,7 +115,6 @@
       const totalSpan = document.getElementById('total');
       const montoHidden = document.getElementById('monto_cot');
 
-      // función segura para convertir a número
       function toNumber(v) {
         if (!v && v !== 0) return 0;
         v = String(v).trim().replace(',', '.');
@@ -127,16 +125,24 @@
       function calcularTotal() {
         let total = 0;
 
-        // precio del plan (dataset.precio)
+        // precio del plan
         if (planSelect && planSelect.selectedOptions && planSelect.selectedOptions.length > 0) {
           total += toNumber(planSelect.selectedOptions[0].dataset.precio);
         }
 
-        // sumar servicios marcados
+        // sumar servicios marcados con cantidad
         servicioCheckboxes.forEach(cb => {
+          const cantidadInput = document.querySelector(`input[name="cantidad_${cb.value}"]`);
           if (cb.checked) {
-            // dataset.precio es preferible; si no existe, intenta con value (no ideal)
-            total += toNumber(cb.dataset.precio || cb.value);
+            cantidadInput.style.display = "inline-block"; // mostrar input
+            const precio = toNumber(cb.dataset.precio || cb.value);
+            const cantidad = cantidadInput ? toNumber(cantidadInput.value) : 1;
+            total += precio * cantidad;
+          } else {
+            if (cantidadInput) {
+              cantidadInput.style.display = "none"; // ocultar si se desmarca
+              cantidadInput.value = 1; // reset
+            }
           }
         });
 
@@ -144,21 +150,23 @@
         totalSpan.textContent = total.toFixed(2);
         if (montoHidden) montoHidden.value = total.toFixed(2);
 
-        // debug en consola (borra si quieres)
-        console.log('calcularTotal -> planPrecio:', planSelect.selectedOptions[0]?.dataset?.precio, 'total:', total);
+        console.log('calcularTotal -> total:', total);
       }
-
-      // debug inicial: muestro cuantos checkbox y si el select existe
-      console.log('DEBUG: planSelect encontrado?', !!planSelect, 'check servicios:', servicioCheckboxes.length);
 
       // ligar eventos
       if (planSelect) planSelect.addEventListener('change', calcularTotal);
       servicioCheckboxes.forEach(cb => cb.addEventListener('change', calcularTotal));
 
-      // calcular al cargar la página (por si hay selección por defecto)
+      // también escuchar cambios en inputs de cantidad
+      document.querySelectorAll('.cantidad-input').forEach(input => {
+        input.addEventListener('input', calcularTotal);
+      });
+
+      // calcular al cargar
       calcularTotal();
     });
   </script>
+
 
   {% endblock %}
 </body>

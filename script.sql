@@ -74,7 +74,9 @@ CREATE TABLE cotizacion_detalles (
     id_detalle INTEGER PRIMARY KEY AUTOINCREMENT,
     id_cotizacion INTEGER,
     id_plan INTEGER,
-    id_servicio INTEGER, id_familiar INTEGER,
+    id_servicio INTEGER, 
+    id_familiar INTEGER, 
+    cantidad INTEGER DEFAULT 1,
     FOREIGN KEY (id_cotizacion) REFERENCES Cotizacion(id_cotizacion),
     FOREIGN KEY (id_plan) REFERENCES Planes(id_plan),
     FOREIGN KEY (id_servicio) REFERENCES Servicios(id_servicio)
