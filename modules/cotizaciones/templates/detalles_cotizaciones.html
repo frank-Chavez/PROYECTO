@@ -1,55 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='detalles_cotizaciones.css')}}">
 </head>
+
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
-    <h2>{{title}}</h2>
-    <p><strong>Numero de Cotizacion:</strong> {{ cotizacion['numero_cot'] }}</p>
-    <p><strong>Familiares asociados:</strong>
-    {% if familiares %}
-        {% for f in familiares %}
-            {{ f.f_nombre }} {{ f.f_apellido }}{% if not loop.last %}, {% endif %}
-        {% endfor %}
-    {% else %}
-        No hay familiares asociados
-    {% endif %}
-    </p>
+    <div class="container-cotizacion">
+        <div class="header-bar">
+            <div class="header-left">
+                <h2>Detalle de Cotización</h2>
+                <div class="numero-cot">{{ cotizacion['numero_cot'] }}</div>
+            </div>
+            <div class="header-right">
+                <div class="monto-total">Total</div>
+                <div class="monto-valor">S/. {{ cotizacion['monto_cot'] }}</div>
+            </div>
+        </div>
 
-    <p><strong>Plan de Cremación:</strong>
-    {% if plan %}
-        {{ plan.tipo_plan }} 
-    {% else %}
-        No hay Plan de Cremación
-    {% endif %}
-    </p>
-    
-    <p><strong>Servicios seleccionados:</strong>
-    {% if servicios %}
-        {% for s in servicios %}
-             {{ s.cantidad }} {{ s.tipo_serv }}{% if not loop.last %}, {% endif %}
-        {% endfor %}
-    {% else %}
-        No hay servicios seleccionados
-    {% endif %}
-    </p>
-    <p><strong>Fecha de Cotizacion:</strong> {{ cotizacion['fecha_cot']|replace('-', '/') }}</p>
-    <p><strong>Monto de cotizacion:</strong> S/.{{ cotizacion['monto_cot'] }}</p>
-    <p><strong>Validacion:</strong> {{ cotizacion['validacion_cot'] }}</p>
-    <p><strong>Estado:</strong> 
-        {% if cotizacion['estado_cot'] == 1 %}
-            Activo
-        {% else %}
-            Inactivo
-        {% endif %}
-    </p>
+        <div class="content-grid">
+            <div class="panel">
+                <div class="panel-titulo">Estado y Validación</div>
 
-    
-    <a href="{{ url_for('cotizacion.listar') }}" class="btn-regresar">Regresar</a>
+                <div class="info-item">
+                    <div class="info-label">Estado</div>
+                    <div class="info-value">
+                        {% if cotizacion['estado_cot'] == 1 %}
+                        <span class="badge badge-activo">Activo</span>
+                        {% else %}
+                        <span class="badge badge-inactivo">Inactivo</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Validación</div>
+                    <div class="info-value">
+                        {% if cotizacion['validacion_cot'] == 'Aprobada' %}
+                        <span class="badge badge-aprobada">Aprobada</span>
+                        {% elif cotizacion['validacion_cot'] == 'Rechazada' %}
+                        <span class="badge badge-rechazada">Rechazada</span>
+                        {% else %}
+                        <span class="badge" style="background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb;">{{
+                            cotizacion['validacion_cot'] }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Fecha</div>
+                    <div class="info-value">
+                        <span class="fecha-value">{{ cotizacion['fecha_cot']|replace('-', '/') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-titulo">Clientes</div>
+
+                <div class="info-item">
+                    <div class="info-label">Familiares</div>
+                    <div class="info-value">
+                        {% if familiares %}
+                        <div class="clientes-list">
+                            {% for f in familiares %}
+                            <div class="cliente-item">{{ f.f_nombre }} {{ f.f_apellido }}</div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <span class="sin-datos">Sin familiares</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-plan">
+                <div class="panel-titulo">Plan y Servicios</div>
+
+                <div class="info-item">
+                    <div class="info-label">Plan de Cremación</div>
+                    {% if plan %}
+                    <div class="plan-box">
+                        <div class="plan-nombre">{{ plan.tipo_plan }}</div>
+                    </div>
+                    {% else %}
+                    <span class="sin-datos">Sin plan</span>
+                    {% endif %}
+                </div>
+
+                <div class="info-item" style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
+                    <div class="info-label">Servicios Adicionales</div>
+                    {% if servicios %}
+                    <div class="servicios-container">
+                        {% for s in servicios %}
+                        <div class="servicio-item">
+                            <div class="servicio-cant">{{ s.cantidad }}</div>
+                            <div class="servicio-text">{{ s.tipo_serv }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <span class="sin-datos">Sin servicios</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-actions">
+            <a href="{{ url_for('cotizacion.listar') }}" class="btn-regresar">Volver al listado</a>
+        </div>
+    </div>
     {% endblock %}
 </body>
+
 </html>
