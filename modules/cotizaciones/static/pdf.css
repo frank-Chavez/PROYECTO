@@ -2,11 +2,13 @@
   font-family: Pacifico;
   src: url(pacifico.ttf);
 }
+
 @font-face {
   font-family: Source Sans Pro;
   font-weight: 400;
   src: url(SourceSans3-Regular.ttf);
 }
+
 @font-face {
   font-family: Source Sans Pro;
   font-weight: 700;
@@ -21,6 +23,7 @@ html {
   font-size: 11pt;
   line-height: 1.6;
 }
+
 body {
   margin: 0;
 }
@@ -36,14 +39,17 @@ aside {
   display: flex;
   margin: 2em 0 4em;
 }
+
 aside address {
   font-style: normal;
   white-space: pre-line;
 }
+
 aside address#from {
   color: #a9a;
   flex: 1;
 }
+
 aside address#to {
   text-align: right;
 }
@@ -54,17 +60,22 @@ dl {
   text-align: right;
   top: 0;
 }
-dt, dd {
+
+dt,
+dd {
   display: inline;
   margin: 0;
 }
+
 dt {
   color: #a9a;
 }
+
 dt::before {
   content: '';
   display: block;
 }
+
 dt::after {
   content: ':';
 }
@@ -73,6 +84,7 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+
 th {
   border-bottom: .2mm solid #a9a;
   color: #a9a;
@@ -81,28 +93,38 @@ th {
   padding-bottom: .25cm;
   text-transform: uppercase;
 }
+
 td {
   padding-top: 7mm;
 }
+
 td:last-of-type {
   color: #1ee494;
   font-weight: bold;
   text-align: right;
 }
-th, td {
+
+th,
+td {
   text-align: center;
 }
-th:first-of-type, td:first-of-type {
+
+th:first-of-type,
+td:first-of-type {
   text-align: left;
 }
-th:last-of-type, td:last-of-type {
+
+th:last-of-type,
+td:last-of-type {
   text-align: right;
 }
+
 footer {
   content: '';
   display: block;
   height: 6cm;
 }
+
 table#total {
   background: #f6f6f6;
   border-color: #f6f6f6;

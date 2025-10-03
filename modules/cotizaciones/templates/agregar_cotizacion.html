@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Agregar Cotización</title>
   <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='agregar_cotizaciones.css')}}">
 </head>
+
 <body>
   {% extends "dashboar.html" %}
   {% block content %}
@@ -23,11 +25,11 @@
             <label for="nombre_cliente" class="text">Nombre del Cliente</label>
             <select name="nombre_cliente" class="campo_nombre" required>
               <option value="">Elije un familiar</option>
-                {% for familiar in familiares %}
-                  <option value="{{ familiar['id_familiar'] }}">
-                    {{ familiar['f_nombre'] }} {{ familiar['f_apellido'] }}
-                  </option>
-                {% endfor %}
+              {% for familiar in familiares %}
+              <option value="{{ familiar['id_familiar'] }}">
+                {{ familiar['f_nombre'] }} {{ familiar['f_apellido'] }}
+              </option>
+              {% endfor %}
             </select>
           </div>
         </div>
@@ -37,37 +39,34 @@
         <div class="content_campos">
           <div>
             <label for="plan_cremacion" class="text">Plan de cremación</label>
-            <select name="plan_cremacion" id="plan_cremacion" class="campo_plan" >
+            <select name="plan_cremacion" id="plan_cremacion" class="campo_plan">
               <option value="">Elije un plan de cremación</option>
-                {% for plan in planes %}
-                  <option value="{{ plan['id_plan'] }}" data-precio="{{ plan['precio_plan'] }}">
-                    {{ plan['tipo_plan'] }} S/. {{ plan['precio_plan'] }}
-                  </option>
-                {% endfor %}
+              {% for plan in planes %}
+              <option value="{{ plan['id_plan'] }}" data-precio="{{ plan['precio_plan'] }}">
+                {{ plan['tipo_plan'] }} S/. {{ plan['precio_plan'] }}
+              </option>
+              {% endfor %}
             </select>
           </div>
-        <div>
-          <label for="servicios_adicionales" class="text">Servicios adicionales</label>
-          <div class="content_servicios">
-            {% for servicio in servicios %}
+          <div>
+            <label for="servicios_adicionales" class="text">Servicios adicionales</label>
+            <div class="content_servicios">
+              {% for servicio in servicios %}
               <label class="servicio_card">
-                <input 
-                  type="checkbox"
-                  name="servicio_adicional"
-                  class="servicio"
-                  value="{{ servicio['id_servicio'] }}"
+                <input type="checkbox" name="servicio_adicional" class="servicio" value="{{ servicio['id_servicio'] }}"
                   data-precio="{{ servicio['precio_serv'] }}">
                 <span class="checkmark"></span>
                 <span class="servicio_text">
                   {{ servicio['tipo_serv'] }} <br>
                   <small>S/. {{ servicio['precio_serv'] }}</small>
                 </span>
-                <input type="number" name="cantidad_{{ servicio['id_servicio'] }}" class="cantidad-input" value="1" min="1" style="display:none; width:70px; margin-left:10px;">
+                <input type="number" name="cantidad_{{ servicio['id_servicio'] }}" class="cantidad-input" value="1"
+                  min="1" style="display:none; width:70px; margin-left:10px;">
               </label>
-            {% endfor %}
+              {% endfor %}
+            </div>
           </div>
-        </div>
-  
+
         </div>
 
         <br>
@@ -104,7 +103,7 @@
           <a href="{{ url_for('cotizacion.listar') }}" class="butom_cancelar">Cancelar</a>
           <button type="submit" class="butom_agregar">Agregar</button>
         </div>
-        
+
       </form>
     </div>
   </div>
@@ -170,4 +169,5 @@
 
   {% endblock %}
 </body>
+
 </html>
