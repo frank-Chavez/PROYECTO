@@ -30,31 +30,46 @@
                 <br><br>
         
                 <label for="plan_cremacion" class="text">Plan de Cremación:</label><br>
-                <select name="plan_cremacion" id="plan_cremacion" class="campo_plan" required>
+                <select name="plan_cremacion" id="plan_cremacion" class="campo_plan" >
+                    <option value="">No tiene un planes</option>
                     {% for p in planes_disponibles %}
                         <option value="{{ p['id_plan'] }}" 
                                 data-precio="{{ p['precio_plan'] }}"
                                 {% if plan and plan['id_plan'] == p['id_plan'] %}selected{% endif %}>
-                            {{ p['tipo_plan'] }}
+                            {{ p['tipo_plan'] }} S/.{{p['precio_plan']}}
                         </option>
                     {% endfor %}
                 </select>
                 <br><br>
         
-                <label for="servicios_adicionales" class="text">Servicios seleccionados:</label><br>
+                <label for="servicios_adicionales" class="text">Servicios Adicionales:</label><br>
                 {% for s in servicios_disponibles %}
                 <label class="campo_servicios">
-                    <input type="checkbox" name="servicios_adicionales" value="{{ s['id_servicio'] }}"
-                    data-precio="{{ s['precio_serv'] }}"
-                    {% for serv in servicios %}
-                        {% if serv['id_servicio'] == s['id_servicio'] %}checked{% endif %}
-                    {% endfor %}>
+                    <input type="checkbox" 
+                           name="servicios_adicionales" 
+                           value="{{ s['id_servicio'] }}"
+                           data-precio="{{ s['precio_serv'] }}"
+                           {% if s['id_servicio'] in servicios_cantidades %}checked{% endif %}>
+                    
                     <span class="checkmark"></span>
                     <span class="nombre">{{ s['tipo_serv'] }}</span>
                     <span class="precio">S/.{{ s['precio_serv'] }}</span>
+
+                    <!-- Input de cantidad mejorado -->
+                    <div class="cantidad-wrapper">
+                        <span class="cantidad-label">Cant:</span>
+                        <input type="number"
+                               class="cantidad-input"
+                               name="cantidad_servicio[{{ s['id_servicio'] }}]"
+                               min="1"
+                               max="99"
+                               value="{{ servicios_cantidades.get(s['id_servicio'], 1) }}"
+                               data-servicio="{{ s['id_servicio'] }}"
+                               {% if s['id_servicio'] not in servicios_cantidades %}disabled{% endif %}>
+                    </div>
                 </label>
                 {% endfor %}
-
+                <br>
         
                 <label for="fecha_cot" class="text">Fecha de Cotización:</label><br>
                 <input type="date" name="fecha_cot" value="{{ cot['fecha_cot'] }}" class="campo_fecha" required><br><br>
@@ -68,7 +83,6 @@
                     <option value="Aprobada" {{ 'selected' if cot['validacion_cot'] == 'Aprobada' else '' }}>Aprobada</option>
                     <option value="Rechazada" {{ 'selected' if cot['validacion_cot'] == 'Rechazada' else '' }}>Rechazada</option>
                 </select>
-
 
                 <label for="estado_cot" class="text">Estado:</label><br>
                 <select name="estado_cot" class="campo_estado" required>
@@ -89,7 +103,6 @@
         </section>
     </div>    
 
-
     <script>
     document.addEventListener("DOMContentLoaded", () => {
         const resumenDiv = document.getElementById("resumen");
@@ -97,64 +110,108 @@
         const planSelect = document.querySelector("select[name='plan_cremacion']");
         const serviciosCheckboxes = document.querySelectorAll("input[name='servicios_adicionales']");
         const nombreCliente = document.querySelector("select[name='nombre_cliente']");
+        const cantidadInputs = document.querySelectorAll(".cantidad-input");
+
+        // Función para habilitar/deshabilitar inputs de cantidad
+        function toggleCantidadInputs() {
+            serviciosCheckboxes.forEach(checkbox => {
+                const servicioId = checkbox.value;
+                const cantidadInput = document.querySelector(`.cantidad-input[data-servicio="${servicioId}"]`);
+                const parentLabel = checkbox.closest('.campo_servicios');
+                
+                if (cantidadInput) {
+                    if (checkbox.checked) {
+                        cantidadInput.disabled = false;
+                        parentLabel.classList.add('checked');
+                    } else {
+                        cantidadInput.disabled = true;
+                        parentLabel.classList.remove('checked');
+                    }
+                }
+            });
+        }
 
         function actualizarMontoYResumen() {
             let total = 0;
             let resumenHTML = "";
 
-           // Plan
+            // Plan seleccionado
             if (planSelect.value) {
                 const plan = planSelect.options[planSelect.selectedIndex];
                 const precioPlan = parseFloat(plan.dataset.precio || 0);
 
-                total += precioPlan; // solo sumas una vez
+                total += precioPlan;
 
                 resumenHTML += `
                     <div class="resumen-item">
                         <span class="resumen-label">${plan.text}</span>
-                        <span class="">S/. ${precioPlan.toFixed(2)}</span>
+                        <span>S/. ${precioPlan.toFixed(2)}</span>
                     </div>
                 `;
             }
 
-
-
-            // Servicios
+            // Servicios seleccionados con cantidad
             let servicios = [];
-            serviciosCheckboxes.forEach(chk => {
-                if (chk.checked) {
-                    total += parseFloat(chk.dataset.precio || 0);
-                    const nombre = chk.parentNode.querySelector(".nombre")?.textContent || "";
-                    const precio = chk.dataset.precio || "0";
+            serviciosCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const precioUnit = parseFloat(checkbox.dataset.precio || 0);
+                    const servicioId = checkbox.value;
+                    const cantidadInput = document.querySelector(`.cantidad-input[data-servicio="${servicioId}"]`);
+                    const cantidad = parseInt(cantidadInput?.value || 1, 10);
+
+                    const subtotal = precioUnit * cantidad;
+                    total += subtotal;
+
+                    const nombre = checkbox.parentNode.querySelector(".nombre")?.textContent || "";
                     servicios.push(`
-                    <div class="resumen-item">
-                        <span class="">${nombre}</span>
-                        <span class="">S/. ${precio}</span>
-                    </div>`);
+                        <div class="resumen-item">
+                            <span>${cantidad}x ${nombre}</span>
+                            <span>S/. ${subtotal.toFixed(2)}</span>
+                        </div>
+                    `);
                 }
             });
+
             if (servicios.length > 0) {
-                resumenHTML += `${servicios.join("")}</p>`;
+                resumenHTML += servicios.join("");
             }
 
-            // Total
+            // Total general
             montoInput.value = total.toFixed(2);
             resumenHTML += `
             <div class="total">
-                <span class="">Total:</span>
-                <span class="">S/. ${montoInput.value}</span>
+                <span>Total:</span>
+                <span>S/. ${montoInput.value}</span>
             </div>`;
 
-            // Mostrar en resumen
             resumenDiv.innerHTML = resumenHTML || "<p>No hay selección todavía.</p>";
         }
 
-        // Eventos
-        nombreCliente.addEventListener("change", actualizarMontoYResumen);
-        planSelect.addEventListener("change", actualizarMontoYResumen);
-        serviciosCheckboxes.forEach(chk => chk.addEventListener("change", actualizarMontoYResumen));
+        // Event listeners
+        nombreCliente?.addEventListener("change", actualizarMontoYResumen);
+        planSelect?.addEventListener("change", actualizarMontoYResumen);
+        
+        serviciosCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", () => {
+                toggleCantidadInputs();
+                actualizarMontoYResumen();
+            });
+        });
 
-        // Inicializar
+        cantidadInputs.forEach(input => {
+            input.addEventListener("input", actualizarMontoYResumen);
+            
+            // Validar que no sea menor a 1
+            input.addEventListener("blur", function() {
+                if (parseInt(this.value) < 1 || isNaN(this.value)) {
+                    this.value = 1;
+                    actualizarMontoYResumen();
+                }
+            });
+        });
+
+        // Inicializar estado
+        toggleCantidadInputs();
         actualizarMontoYResumen();
     });
     </script>

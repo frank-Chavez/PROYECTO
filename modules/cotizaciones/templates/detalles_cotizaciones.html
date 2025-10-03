@@ -31,7 +31,7 @@
     <p><strong>Servicios seleccionados:</strong>
     {% if servicios %}
         {% for s in servicios %}
-            {{ s.tipo_serv }}{% if not loop.last %}, {% endif %}
+             {{ s.cantidad }} {{ s.tipo_serv }}{% if not loop.last %}, {% endif %}
         {% endfor %}
     {% else %}
         No hay servicios seleccionados
