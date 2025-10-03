@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='cotizacion.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
@@ -14,7 +16,8 @@
         <h1>{{title}}</h1>
         <div class="opciones_bt">
             <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
-            <a href="{{ url_for('cotizacion.agregar') }}" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
+            <a href="{{ url_for('cotizacion.agregar') }}" class="agregar"><img class="ico_agregar"
+                    src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
         </div>
     </section>
     <section class="tabla">
@@ -29,33 +32,39 @@
         <div class="contenido">
             <p>{{ c['numero_cot'] }}</p>
             <p>{{ c['fecha_cot']|replace('-', '/') }}</p>
-            <p>S/.{{ c['monto_cot'] }}</p>  
+            <p>S/.{{ c['monto_cot'] }}</p>
             <p>
                 <td>
                     <span class="{{ 'text-green' if c['estado_cot'] == 1 else 'text-red' }}">
                         {{ 'Activo' if c['estado_cot'] == 1 else 'Inactivo' }}
                     </span>
                 </td>
-            </p> 
+            </p>
             <div class="acciones">
-                <a href="{{ url_for('cotizacion.editar', id=c['id_cotizacion']) }}"><img src="/static/icons/editar.svg" alt="editar"></a>
-                <a href="{{ url_for('cotizacion.VerDetalles', id=c['id_cotizacion']) }}"><img src="/static/icons/ver.svg" alt="cambiar estado"></a>
-                <a href="{{ url_for('cotizacion.descargar_pdf', id=c['id_cotizacion']) }}" target="_blank"><img src="/static/icons/pdf.svg" alt="descargar_pdf"></a>
-                <a href="{{ url_for('cotizacion.cambiar_estado', id=c['id_cotizacion']) }}" onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img src="/static/icons/borrar.svg" alt="borrar"></a>
+                <a href="{{ url_for('cotizacion.editar', id=c['id_cotizacion']) }}"><img src="/static/icons/editar.svg"
+                        alt="editar"></a>
+                <a href="{{ url_for('cotizacion.VerDetalles', id=c['id_cotizacion']) }}"><img
+                        src="/static/icons/ver.svg" alt="cambiar estado"></a>
+                <a href="{{ url_for('cotizacion.descargar_pdf', id=c['id_cotizacion']) }}" target="_blank"><img
+                        src="/static/icons/pdf.svg" alt="descargar_pdf"></a>
+                <a href="{{ url_for('cotizacion.cambiar_estado', id=c['id_cotizacion']) }}"
+                    onclick="return confirm('¿Seguro que deseas eliminar este registro?')"><img
+                        src="/static/icons/borrar.svg" alt="borrar"></a>
             </div>
         </div>
         {% endfor %}
     </section>
     <!-- Modal oculto al inicio -->
     <div id="detallesModal" class="modal">
-    <div class="modal-content">
-        <span class="cerrar">&times;</span>
-        <div id="contenidoModal">
-            <!-- Aquí se cargará dinámicamente el detalle -->
+        <div class="modal-content">
+            <span class="cerrar">&times;</span>
+            <div id="contenidoModal">
+                <!-- Aquí se cargará dinámicamente el detalle -->
+            </div>
         </div>
-    </div>
     </div>
 
     {% endblock %}
 </body>
+
 </html>

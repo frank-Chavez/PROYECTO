@@ -307,7 +307,7 @@ def descargar_pdf(id):
     
     # Obtener el plan asociado
     plan = cur.execute("""
-        SELECT p.id_plan, p.tipo_plan, p.precio_plan
+        SELECT p.id_plan, p.tipo_plan, p.precio_plan, cd.cantidad
         FROM cotizacion_detalles cd
         JOIN Planes p ON cd.id_plan = p.id_plan
         WHERE cd.id_cotizacion = ? AND cd.id_plan IS NOT NULL
@@ -315,7 +315,7 @@ def descargar_pdf(id):
 
     # Obtener los servicios asociados
     servicios = cur.execute("""
-        SELECT DISTINCT s.id_servicio, s.tipo_serv, s.precio_serv
+        SELECT DISTINCT s.id_servicio, s.tipo_serv, s.precio_serv, cd.cantidad
         FROM cotizacion_detalles cd
         JOIN Servicios s ON cd.id_servicio = s.id_servicio
         WHERE cd.id_cotizacion = ? AND cd.id_servicio IS NOT NULL
