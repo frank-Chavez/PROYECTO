@@ -1,5 +1,7 @@
-from flask import Blueprint,render_template, redirect, url_for, request
+from flask import Blueprint,render_template, redirect, url_for, request, send_file
 from database import conection
+import pandas as pd
+import io
 
 fallecidos_bd = Blueprint("fallecidos", __name__, url_prefix="/fallecidos", template_folder="templates", static_folder="static")
 
@@ -105,6 +107,59 @@ def agregar_fallecido():
         return redirect(url_for("fallecidos.listar"))
 
     return render_template("agregar_fallecido.html", title="Fallecido")
+
+
+
+
+
+
+@fallecidos_bd.route('/exel')
+def exel():
+    try:
+        # coneccion a la bd
+        conn = conection()
+        #consultando la informacion que se va a descargar
+        consulta = """
+        SELECT 
+            f.nombre_f AS 'Nombre del Fallecido',
+            REPLACE(f.fecha_defuncion, '-','/')  AS 'Fecha de Defuncion',
+            f.edad_f AS 'Edad',
+            REPLACE(f.fechaRegistro_f, '-','/')  AS 'Fecha de Registro',
+            REPLACE(f.fechaActualizacion_f, '-','/')  AS 'Fecha de Actualizacion',
+            f.estado_f AS 'Estado',
+
+            CASE 
+                WHEN f.estado_f = 1 THEN 'Activo'
+                ELSE 'Inactivo'
+            END AS 'Estado'
+        FROM Fallecidos f
+        """
+
+
+        df = pd.read_sql_query(consulta, conn)
+        conn.close()
+
+        # se crea el archivo exel
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, index=False, sheet_name='Fallecidos')
+
+        output.seek(0)
+
+        # Envia el archivo como descarga
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            download_name='Fallecidos.xlsx',
+            as_attachment=True
+        )
+
+    except Exception as e:
+        import traceback
+        print("Error al generar Excel:", e)
+        traceback.print_exc()
+        return f"Error al generar el archivo Excel: {e}", 500
+
 
 
 

@@ -1,5 +1,8 @@
-from flask import Blueprint,render_template, redirect, url_for,request
+from flask import Blueprint,render_template, redirect, url_for,request, send_file
 from database import conection
+import pandas as pd
+import io
+
 
 planes_bd = Blueprint("planes", __name__, url_prefix="/planes", template_folder="templates", static_folder="static")
 
@@ -99,3 +102,55 @@ def agregar_plan():
         return redirect(url_for("planes.listar"))
 
     return render_template("agregar_plan.html", title="Agregar Plan")
+
+
+
+
+
+@planes_bd.route('/exel')
+def exel():
+    try:
+        # coneccion a la bd
+        conn = conection()
+        #consultando la informacion que se va a descargar
+        consulta = """
+        SELECT 
+            p.tipo_plan AS 'Tipo del Plan',
+            p.precio_plan AS 'Precio del Plan',
+            p.duracion_plan AS 'Duracion del Plan',
+            p.categoria_plan AS 'Categoria del Plan',
+            p.condiciones_plan AS 'Condiciones del Plan',
+            p.estado_plan AS 'Estado',
+            CASE 
+                WHEN p.estado_plan = 1 THEN 'Activo'
+                ELSE 'Inactivo'
+            END AS 'Estado'
+        FROM Planes p
+        """
+
+
+
+        df = pd.read_sql_query(consulta, conn)
+        conn.close()
+
+        # se crea el archivo exel
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, index=False, sheet_name='Planes')
+
+        output.seek(0)
+
+        # Envia el archivo como descarga
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            download_name='Planes.xlsx',
+            as_attachment=True
+        )
+
+    except Exception as e:
+        import traceback
+        print("Error al generar Excel:", e)
+        traceback.print_exc()
+        return f"Error al generar el archivo Excel: {e}", 500
+

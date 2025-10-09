@@ -1,32 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    <link rel="stylesheet" href="{{url_for('proveedor.static', filename='detalles.css')}}">
+
 </head>
+
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
-    <h2>{{title}}</h2>
 
-    <p><strong>ID:</strong> {{ proveedor['id_proveedor'] }}</p>
-    <p><strong>Nombre:</strong> {{ proveedor['nombre_p'] }}</p>
-    <p><strong>Telefono:</strong> {{ proveedor['telefono_p'] }}</p>
-    <p><strong>Correo:</strong> {{ proveedor['correo_p'] }}</p>
-    <p><strong>Servicio:</strong> {{ proveedor['servicio_p'] }}</p>
-    <p><strong>Fecha de Registro:</strong> {{ proveedor['fechaRegistro_p']|replace('-', '/')  }}</p>
-    <p><strong>Estado:</strong> 
-    {% if proveedor['estado_p'] == 1 %}
-        Activo
-    {% else %}
-        Inactivo
-    {% endif %}
-    </p>
+    <div class="container-detalle">
+        <div class="header-detalle">
+            <h2>{{ title }}</h2>
+            <div class="badge-id">ID: {{ proveedor['id_proveedor'] }}</div>
+        </div>
 
-    <br>
-    <a href="{{ url_for('proveedor.listar') }}" class="btn-regresar">Regresar</a>
+        <div class="content-grid">
+            <!-- Panel 1: Información de Contacto -->
+            <div class="panel">
+                <div class="panel-titulo">Información de Contacto</div>
 
+                <div class="info-item">
+                    <div class="info-label">Nombre del Proveedor</div>
+                    <div class="info-valor destacado">{{ proveedor['nombre_p'] }}</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Teléfono</div>
+                    <div class="info-valor">{{ proveedor['telefono_p'] }}</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Correo Electrónico</div>
+                    <div class="info-valor">{{ proveedor['correo_p'] }}</div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Información Adicional -->
+            <div class="panel panel-estado">
+                <div class="estado-content">
+                    <div class="panel-titulo">Información Adicional</div>
+
+                    <div class="info-item">
+                        <div class="info-label">Servicio que Ofrece</div>
+                        <div class="info-valor">{{ proveedor['servicio_p'] }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Fecha de Registro</div>
+                        <div class="info-valor">{{ proveedor['fechaRegistro_p']|replace('-', '/') }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Estado</div>
+                        <div class="info-valor">
+                            {% if proveedor['estado_p'] == 1 %}
+                            <span class="status-badge badge-activo">Activo</span>
+                            {% else %}
+                            <span class="status-badge badge-inactivo">Inactivo</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-actions">
+            <a href="{{ url_for('proveedor.listar') }}" class="btn-regresar">Volver al Listado</a>
+        </div>
+    </div>
     {% endblock %}
 </body>
+
 </html>

@@ -1,60 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="{{url_for('servicios.static', filename='editar_servicio.css')}}">
 </head>
+
 <body>
-{% extends "dashboar.html" %}
-{% block content %}
+    {% extends "dashboar.html" %}
+    {% block content %}
 
-<div class="modern-form-container">
-    <h2 class="modern-form-title">{{ title }}</h2>
+    <div class="modern-form-container">
+        <h2 class="modern-form-title">{{ title }}</h2>
 
-    <form method="POST" class="modern-service-form">
-        <div class="modern-form-group">
-            <label for="tipo_serv">Tipo de Servicio *</label>
-            <input type="text" name="tipo_serv" value="{{ servicioss['tipo_serv'] }}" required>
-        </div>
+        <form method="POST" class="modern-service-form">
+            <div class="modern-form-group">
+                <label for="tipo_serv">Tipo de Servicio *</label>
+                <input type="text" name="tipo_serv" value="{{ servicioss['tipo_serv'] }}" required>
+            </div>
 
-        <div class="modern-form-group">
-            <label for="descripcion_serv">Descripción *</label>
-            <textarea name="descripcion_serv" rows="4" required>{{ servicioss['descripcion_serv'] }}</textarea>
-        </div>
+            <div class="modern-form-group">
+                <label for="descripcion_serv">Descripción *</label>
+                <textarea name="descripcion_serv" rows="4" required>{{ servicioss['descripcion_serv'] }}</textarea>
+            </div>
 
-        <div class="modern-form-group">
-            <label for="categoria_serv">Categoría *</label>
-            <input type="text" name="categoria_serv" value="{{ servicioss['categoria_serv'] }}">
-        </div>
+            <div class="modern-form-group">
+                <label for="categoria_serv">Categoría *</label>
+                <input type="text" name="categoria_serv" value="{{ servicioss['categoria_serv'] }}">
+            </div>
 
-        <div class="modern-form-group">
-            <label for="precio_serv">Precio *</label>
-            <input type="number" step="0.01" min="0" name="precio_serv" value="{{ servicioss['precio_serv'] }}">
-        </div>
+            <div class="modern-form-group">
+                <label for="precio_serv">Precio *</label>
+                <input type="number" step="0.01" min="0" name="precio_serv" value="{{ servicioss['precio_serv'] }}">
+            </div>
 
-        <div class="modern-form-group">
-            <label for="nombre_p">Proveedor *</label>
-            <input type="text" name="nombre_p" value="{{ servicioss['nombre_p'] }}" required>
-        </div>
+            <div class="modern-form-group">
+                <label for="nombre_p">Proveedor *</label>
+                <input type="text" name="nombre_p" value="{{ servicioss['nombre_p'] }}" required>
+            </div>
 
-        <div class="modern-form-group">
-            <label for="estado_serv">Estado *</label>
-            <select name="estado_serv" required>
-                <option value="1" {% if servicioss['estado_serv'] == 1 %}selected{% endif %}>Activo</option>
-                <option value="0" {% if servicioss['estado_serv'] == 0 %}selected{% endif %}>Inactivo</option>
-            </select>
-        </div>
+            <div class="modern-form-group">
+                <label for="estado_serv">Estado *</label>
+                <select name="estado_serv" required>
+                    <option value="1" {% if servicioss['estado_serv']==1 %}selected{% endif %}>Activo</option>
+                    <option value="0" {% if servicioss['estado_serv']==0 %}selected{% endif %}>Inactivo</option>
+                </select>
+            </div>
 
-        <div class="modern-form-actions">
-            <button type="submit" class="modern-btn modern-btn-primary">Guardar Cambios</button>
-            <a href="{{ url_for('servicios.listar') }}" class="modern-btn modern-btn-secondary">Cancelar</a>
-        </div>
-    </form>
-</div>
+            <div class="modern-form-actions">
+                <button type="submit" class="modern-btn modern-btn-primary">Guardar Cambios</button>
+                <a href="{{ url_for('servicios.listar') }}" class="modern-btn modern-btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
 
 
-{% endblock %}
+    {% endblock %}
 </body>
+
 </html>

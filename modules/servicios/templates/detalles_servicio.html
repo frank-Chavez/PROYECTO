@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +10,10 @@
 
 
 </head>
+
 <body>
-{% extends "dashboar.html" %}
-{% block content %}
+    {% extends "dashboar.html" %}
+    {% block content %}
     <h1 class="titulo">Detalles del Servicio</h1>
     <p class="subtitulo">Información completa del servicio #{{ servicio['id_servicio'] }}</p>
 
@@ -42,9 +44,9 @@
 
             <label>Estado</label>
             {% if servicio['estado_serv'] == 1 %}
-                <span class="estado activo">Activo</span>
+            <span class="estado activo">Activo</span>
             {% else %}
-                <span class="estado inactivo">Inactivo</span>
+            <span class="estado inactivo">Inactivo</span>
             {% endif %}
         </div>
 
@@ -52,8 +54,9 @@
             <a href="{{ url_for('servicios.listar') }}" class="volver">Volver a la lista</a>
         </div>
     </div>
-</div>
+    </div>
 
-{% endblock %}
+    {% endblock %}
 </body>
+
 </html>

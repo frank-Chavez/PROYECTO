@@ -124,16 +124,47 @@ section.opciones .opciones_bt a{
     border-radius: 10px;
 }
 
+.content-buscar {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
 
-section.opciones .opciones_bt .buscar{
-    border: 1px solid black;
-    width: 14rem;
-    outline: none;
+.content-buscar img {
+  position: absolute;
+  left: 10px; /* distancia desde el borde izquierdo */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+  pointer-events: none; /* no bloquea el clic en el input */
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
-section.opciones .opciones_bt .buscar:focus{
-    outline: 3px solid #7C3BED;
-    
+
+.content-buscar input {
+  width: 100%;
+  padding: 10px 12px 10px 40px; /* deja espacio a la izquierda para el ícono */
+  border-radius: 10px;
+  border: 1.5px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
 }
+
+.content-buscar input:focus {
+  border-color: #7C3BED;
+  box-shadow: 0 0 4px rgba(124, 59, 237, 0.3);
+}
+
+.content-buscar input:focus ~ img {
+  opacity: 0.9;
+  transform: translateY(-50%) scale(1.1);
+}
+
 
 section.opciones .opciones_bt .agregar {
     background: #7C3BED;

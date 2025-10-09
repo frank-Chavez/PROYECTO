@@ -27,7 +27,7 @@ CREATE TABLE Fallecidos (
     id_fallecido INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre_f TEXT NOT NULL,
     fecha_defuncion DATE NOT NULL,
-    estado_f INTEGER, -- booleano
+    estado_f INTEGER, 
     edad_f INTEGER,
     familiar_id INTEGER,
     fechaRegistro_f DATE,

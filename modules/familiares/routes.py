@@ -1,5 +1,7 @@
-from flask import Blueprint,render_template, redirect, url_for,request
+from flask import Blueprint,render_template, redirect, url_for,request, send_file
 from database import conection
+import pandas as pd
+import io
 
 
 familiares_bd = Blueprint("familiares", __name__, url_prefix="/familiares", template_folder="templates", static_folder="static")
@@ -108,3 +110,52 @@ def agregar_familiar():
     
 
     return render_template("agregar_familiar.html", title="Familiar")
+
+
+
+
+
+@familiares_bd.route('/exel')
+def exel():
+    try:
+        # coneccion a la bd
+        conn = conection()
+        #consultando la informacion que se va a descargar
+        consulta = """
+        SELECT 
+            f.f_nombre || ' ' || f.f_apellido AS 'Nombre del Familiar',
+            f.f_parentesco AS 'Parentesco',
+            f.f_telefono AS 'Teléfono',
+            f.f_correo AS 'Correo',
+            REPLACE(f.fechaRegistro, '-','/')  AS 'Fecha de registro',
+            CASE 
+                WHEN f.f_estado = 1 THEN 'Activo'
+                ELSE 'Inactivo'
+            END AS 'Estado'
+        FROM Familiares f
+        """
+
+
+        df = pd.read_sql_query(consulta, conn)
+        conn.close()
+
+        # se crea el archivo exel
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, index=False, sheet_name='Familiares')
+
+        output.seek(0)
+
+        # Envia el archivo como descarga
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            download_name='Familiares.xlsx',
+            as_attachment=True
+        )
+
+    except Exception as e:
+        import traceback
+        print("Error al generar Excel:", e)
+        traceback.print_exc()
+        return f"Error al generar el archivo Excel: {e}", 500

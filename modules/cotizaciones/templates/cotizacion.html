@@ -15,7 +15,10 @@
     <section class="opciones">
         <h1>{{title}}</h1>
         <div class="opciones_bt">
-            <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
+            <div class="content-buscar">
+                <img src="/static/icons/buscar.svg" alt="Buscar">
+                <input type="text" class="buscar" placeholder="Buscar {{title}}...">
+            </div>
             <a href="{{ url_for('cotizacion.agregar') }}" class="agregar"><img class="ico_agregar"
                     src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
         </div>

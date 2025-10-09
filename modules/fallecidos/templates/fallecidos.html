@@ -14,9 +14,12 @@
     <section class="opciones">
         <h1>{{title}}</h1>
         <div class="opciones_bt">
-            <a href="#" class="buscar"><img src="/static/icons/buscar.svg" alt="search"> Buscar {{title}}....</a>
+            <div class="content-buscar">
+                <img src="/static/icons/buscar.svg" alt="Buscar">
+                <input type="text" class="buscar" placeholder="Buscar {{title}}...">
+            </div>
             <a href="{{ url_for('fallecidos.agregar') }}" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
-            <a href="#" class="descargar"><img src="/static/icons/descargar.svg" alt="descargar">PDF</a>
+            <a href="{{ url_for('fallecidos.exel')}}" class="descargar"><img src="/static/icons/descargar.svg" alt="descargar">EXEL</a>
         </div>
     </section>
     <section class="tabla">
