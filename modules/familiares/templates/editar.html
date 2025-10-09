@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Familiar</title>
+    <title>Registrar {{title}}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
-    <h2>Registrar Familiar</h2>
+    <h2>Registrar {{title}}</h2>
 
     <form method="POST">
         <label for="nombre">Nombre:</label><br>
