@@ -26,15 +26,10 @@
         <div class="content-grid">
             <div class="panel">
                 <div class="panel-titulo">Estado y Validación</div>
-
                 <div class="info-item">
-                    <div class="info-label">Estado</div>
-                    <div class="info-value">
-                        {% if cotizacion['estado_cot'] == 1 %}
-                        <span class="badge badge-activo">Activo</span>
-                        {% else %}
-                        <span class="badge badge-inactivo">Inactivo</span>
-                        {% endif %}
+                    <div class="info-label">Fecha</div>
+                    <div class="fecha-item">
+                        <span >{{ cotizacion['fecha_cot']|replace('-', '/') }}</span>
                     </div>
                 </div>
 
@@ -52,10 +47,15 @@
                     </div>
                 </div>
 
+
                 <div class="info-item">
-                    <div class="info-label">Fecha</div>
+                    <div class="info-label">Estado</div>
                     <div class="info-value">
-                        <span class="fecha-value">{{ cotizacion['fecha_cot']|replace('-', '/') }}</span>
+                        {% if cotizacion['estado_cot'] == 1 %}
+                        <span class="badge badge-activo">Activo</span>
+                        {% else %}
+                        <span class="badge badge-inactivo">Inactivo</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>

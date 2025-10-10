@@ -26,7 +26,7 @@
 
 /*estilo de la opcion de id*/
 .campo_id{
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     border: solid #c0c0c0 1px;
     border-radius: 5px;
     width: 600px;
@@ -38,7 +38,7 @@
 
 /*estilo de la opcion de clientes*/
 .campo_name{
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     border: solid #c0c0c0 1px;
     border-radius: 5px;
     width: 600px;
@@ -59,7 +59,7 @@
 
 /*estilo de la opcion de planes*/
 .campo_plan{
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     border: solid #c0c0c0 1px;
     border-radius: 5px;
     width: 600px;
@@ -92,7 +92,7 @@
     user-select: none;
     gap: 10px;
     margin-bottom: 6px;
-    background: #F4F2EE;
+    background: #f4f4f5;
     transition: all 0.3s ease;
 }
 
@@ -207,7 +207,7 @@
 
 /*estilo de la opcion de fechas*/
 .campo_fecha{
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     border: solid #c0c0c0 1px;
     border-radius: 5px;
     padding: 5px 450px 5px 15px;
@@ -217,7 +217,7 @@
 
 /*estilo de la opcion de monto*/
 .campo_monto{
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     border: solid #c0c0c0 1px;
     border-radius: 5px;
     width: 600px;
@@ -229,7 +229,7 @@
 
 /*estilo de la opcion de validacion*/
 .campo_validacion{
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     border: solid #c0c0c0 1px;
     border-radius: 5px;
     width: 600px;
@@ -241,7 +241,7 @@
 
 /*estilo de la opcion de estado*/
 .campo_estado{
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     border: solid #c0c0c0 1px;
     border-radius: 5px;
     width: 600px;
@@ -290,7 +290,7 @@
     padding: 12px;
     margin: 5px 0;
     border-radius: 8px;
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     font-weight: 500;
 }
 .total {
@@ -316,7 +316,7 @@
     padding: 10px;
     border-radius: 8px;
     border: none;
-    background-color: #F4F2EE;
+    background-color: #f4f4f5;
     color: #000000;
     text-decoration: none;
     font-weight: 700;
