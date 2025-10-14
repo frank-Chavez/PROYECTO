@@ -1,6 +1,6 @@
 CREATE TABLE Rol (
     rol_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    estado_rol INTEGER NOT NULL, -- 0 o 1
+    estado_rol INTEGER NOT NULL, 
     tipo_rol TEXT NOT NULL
 );
 CREATE TABLE sqlite_sequence(name,seq);
