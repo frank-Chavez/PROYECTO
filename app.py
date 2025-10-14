@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from database import conection
+from dotenv import load_dotenv
+import os
 from modules.familiares.routes import familiares_bd
 from modules.fallecidos.routes import fallecidos_bd
 from modules.plan.routes import planes_bd
@@ -9,8 +11,10 @@ from modules.cotizaciones.routes import cotizaciones_bd
 
 
 
-
+load_dotenv()
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
+
 
 app.register_blueprint(familiares_bd)
 app.register_blueprint(fallecidos_bd)
@@ -22,34 +26,44 @@ app.register_blueprint(cotizaciones_bd )
 if __name__== "__main__":
     cotizaciones_bd.run(debug=True)
 
-
-"""@app.route('/', methods=["GET", "POST"])
+@app.route('/', methods=["GET", "POST"])
 def login():
-    error = None
-    
-    if request.method == "POST":
+    if request.method == "POST" and 'username' in request.form and 'password' in request.form:
+        
         username = request.form["username"]
         password = request.form["password"]
 
-        conn = conection() # 👈 cambia al nombre de tu BD
+        conn = conection()
         cursor = conn.cursor()
 
-        # Verificar usuario y contraseña
-        cursor.execute("SELECT id_usuario, nombre_u, rol_id FROM Usuario WHERE LOWER(nombre_u) = LOWER(?) AND contraseña_u = ?", (username, password))
-        user = cursor.fetchone()
-        conn.close()
+        cursor.execute("SELECT * FROM Usuario WHERE nombre_u=? AND contraseña_u=?", (username, password))
+        account = cursor.fetchone()
 
-        if user:
-            # Si encuentra coincidencia
-            return redirect(url_for("dashboar"))
+        if account:
+            session['logueado'] = True
+            session['id_usuario'] = account['id_usuario']
+            session['rol_id'] = account['rol_id']
+
+            if session['rol_id'] == 1:
+                return redirect(url_for("dashboar"))
+            elif session['rol_id'] == 2:
+                return redirect(url_for("dashboar"))
+            else:
+                return render_template("login.html", mensaje="Rol desconocido.")
         else:
-            # Si no coincide
-            error = "❌ Usuario o contraseña incorrectos"
+            return render_template("login.html", mensaje="Usuario o Contraseña incorrecta")
 
-    return render_template("login.html", error=error)"""
+    # 🔹 Si llega aquí por GET
+    return render_template("login.html")
 
 
-@app.route("/", endpoint="dashboar")
+
+
+
+
+
+
+@app.route("/dashboar", endpoint="dashboar")
 def dashboar():
     conn = conection()
 
