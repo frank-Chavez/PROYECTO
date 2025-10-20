@@ -1,149 +1,150 @@
 /* ======== ESTILO GLOBAL ======== */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f8f7f5;
-    margin: 0;
-    padding: 0;
-    color: #3a2e2e;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f7f5;
+  margin: 0;
+  padding: 0;
+  color: #3a2e2e;
 }
 
 /* ======== CONTENEDOR PRINCIPAL ======== */
 .editar-container {
-    max-width: 900px;
-    width: 90%;
-    margin: 50px auto;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.08);
-    padding: 40px 50px;
-    border: 1px solid #e8e5e2;
+  max-width: 900px;
+  width: 90%;
+  margin: 50px auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.08);
+  padding: 40px 50px;
+  border: 1px solid #e8e5e2;
 }
 
 .editar-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #3a2e2e;
-    margin-bottom: 35px;
-    border-bottom: 1px solid #e8e5e2;
-    padding-bottom: 10px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #3a2e2e;
+  margin-bottom: 35px;
+  border-bottom: 1px solid #e8e5e2;
+  padding-bottom: 10px;
 }
 
 /* ======== CAMPOS DEL FORMULARIO ======== */
 .editar-group {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 .editar-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #4b3f3f;
-    font-size: 15px;
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #4b3f3f;
+  font-size: 15px;
 }
 
 .editar-group input,
 .editar-group textarea,
 .editar-group select {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #d2c7c7;
-    border-radius: 10px;
-    font-size: 16px;
-    transition: all 0.2s ease-in-out;
-    background-color: #fafafa;
-    color: #3a2e2e;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d2c7c7;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+  background-color: #fafafa;
+  color: #3a2e2e;
 }
 
 .editar-group textarea {
-    resize: vertical;
-    min-height: 100px;
+  resize: vertical;
+  min-height: 100px;
 }
 
 .editar-group input:focus,
 .editar-group textarea:focus,
 .editar-group select:focus {
-    outline: none;
-    border-color: #8c6b4f;
-    background-color: #ffffff;
-    box-shadow: 0 0 6px rgba(140, 107, 79, 0.4);
+  outline: none;
+  border-color: #8c6b4f;
+  background-color: #ffffff;
+  box-shadow: 0 0 6px rgba(140, 107, 79, 0.4);
 }
 
 /* ======== BOTONES ======== */
 .editar-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-    margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 40px;
 }
 
 .editar-btn {
-    padding: 14px 32px;
-    font-size: 16px;
-    border: none;
-    border-radius: 10px;
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 14px 32px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .editar-btn:focus {
-    outline: none;
+  outline: none;
 }
 
 .editar-btn-primary {
-    background-color: #8c6b4f;
-    color: #ffffff;
+  background-color: #8c6b4f;
+  color: #ffffff;
 }
 
 .editar-btn-primary:hover {
-    background-color: #6f523d;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(140, 107, 79, 0.4);
+  background-color: #6f523d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(140, 107, 79, 0.4);
 }
 
 .editar-btn-secondary {
-    background-color: #e5e3e1;
-    color: #3e3e3e;
+  background-color: #e5e3e1;
+  color: #3e3e3e;
 }
 
 .editar-btn-secondary:hover {
-    background-color: #d0cdca;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #d0cdca;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* ======== ESTADOS ESPECIALES ======== */
 input:invalid,
 textarea:invalid,
 select:invalid {
-    border-color: #d17a7a;
+  border-color: #d17a7a;
 }
 
 input::placeholder,
 textarea::placeholder {
-    color: #a19999;
-    font-style: italic;
+  color: #a19999;
+  font-style: italic;
 }
 
 /* ======== RESPONSIVE ======== */
 @media (max-width: 768px) {
-    .editar-container {
-        padding: 25px;
-    }
+  .editar-container {
+    padding: 25px;
+  }
 
-    .editar-title {
-        font-size: 24px;
-        text-align: center;
-    }
+  .editar-title {
+    font-size: 24px;
+    text-align: center;
+  }
 
-    .editar-actions {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .editar-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
 
-    .editar-btn {
-        width: 100%;
-        text-align: center;
-    }
+  .editar-btn {
+    width: 100%;
+    text-align: center;
+  }
 }

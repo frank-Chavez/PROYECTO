@@ -1,323 +1,317 @@
-.content{
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: flex-start; 
-    gap: 20px;
+.content {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 /*estilo del formulario*/
-.content-for{
-    background-color: #ffffff;
-    display: grid;
-    padding: 20px;
-    border-radius: 10px;
-    border: solid #c0c0c0 1px;
+.content-for {
+  background-color: #ffffff;
+  display: grid;
+  padding: 20px;
+  border-radius: 10px;
+  border: solid #c0c0c0 1px;
 }
-.content-for h5{
-    font-weight: 700;
-    margin-bottom: 20px;
+.content-for h5 {
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
 /*estilo para el texto de tosas las opciones*/
-.text{
-    font-weight: 700;
+.text {
+  font-weight: 700;
 }
 
 /*estilo de la opcion de id*/
-.campo_id{
-    background-color: #f4f4f5;
-    border: solid #c0c0c0 1px;
-    border-radius: 5px;
-    width: 600px;
-    height: 40px;
-    padding: 0 0 0 10px;
-    color: #c0c0c0;
-    border: none;
+.campo_id {
+  background-color: #f4f4f5;
+  border: solid #c0c0c0 1px;
+  border-radius: 5px;
+  width: 600px;
+  height: 40px;
+  padding: 0 0 0 10px;
+  color: #c0c0c0;
+  border: none;
 }
 
 /*estilo de la opcion de clientes*/
-.campo_name{
-    background-color: #f4f4f5;
-    border: solid #c0c0c0 1px;
-    border-radius: 5px;
-    width: 600px;
-    height: 40px;
-    padding: 0 0 0 10px;
-    transition: all 0.3s ease;
-    border: none;
+.campo_name {
+  background-color: #f4f4f5;
+  border: solid #c0c0c0 1px;
+  border-radius: 5px;
+  width: 600px;
+  height: 40px;
+  padding: 0 0 0 10px;
+  transition: all 0.3s ease;
+  border: none;
 }
 .campo_name:focus {
-    background-color: #F4F2EE; /* Azul clarito */
-    outline: none;
+  background-color: #f4f2ee; /* Azul clarito */
+  outline: none;
 }
 
 .campo_name option {
-    background-color: #F4F2EE; /* Fondo blanco */
-    color: black;
+  background-color: #f4f2ee; /* Fondo blanco */
+  color: black;
 }
 
 /*estilo de la opcion de planes*/
-.campo_plan{
-    background-color: #f4f4f5;
-    border: solid #c0c0c0 1px;
-    border-radius: 5px;
-    width: 600px;
-    height: 40px;
-    padding: 0 0 0 10px;
-    transition: all 0.3s ease;
-    border: none;
+.campo_plan {
+  background-color: #f4f4f5;
+  border: solid #c0c0c0 1px;
+  border-radius: 5px;
+  width: 600px;
+  height: 40px;
+  padding: 0 0 0 10px;
+  transition: all 0.3s ease;
+  border: none;
 }
 .campo_plan:focus {
-    background-color: #F4F2EE; 
-    outline: none;
+  background-color: #f4f2ee;
+  outline: none;
 }
 
 .campo_plan option {
-    background-color: #F4F2EE; 
-    color: black;
+  background-color: #f4f2ee;
+  color: black;
 }
 
 /*estilo de las opciones de servicios*/
 .campo_servicios {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 600px; 
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    position: relative;
-    user-select: none;
-    gap: 10px;
-    margin-bottom: 6px;
-    background: #f4f4f5;
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 600px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  position: relative;
+  user-select: none;
+  gap: 10px;
+  margin-bottom: 6px;
+  background: #f4f4f5;
+  transition: all 0.3s ease;
 }
 
 /* Hover effect */
 .campo_servicios:hover {
-    background: #e8e6e2;
+  background: #e8e6e2;
 }
 
 /* Cuando está seleccionado */
 .campo_servicios.checked {
-    background: #f0e8ff;
-    border: 2px solid #7C3BED;
+  background: #f0e8ff;
+  border: 2px solid #7c3bed;
 }
 
-.campo_servicios input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
+.campo_servicios input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .checkmark {
-    height: 15px;
-    width: 15px;
-    border-radius: 4px;
-    border: 1px solid #999;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
+  height: 15px;
+  width: 15px;
+  border-radius: 4px;
+  border: 1px solid #999;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
 }
 
 .checkmark::after {
-    content:"";
-    width: 5px;
-    height: 9px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    display: none;
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  display: none;
 }
 
 .campo_servicios input:checked ~ .checkmark {
-    background: #7C3BED;
-    border-color: #7C3BED;
+  background: #7c3bed;
+  border-color: #7c3bed;
 }
 
 .campo_servicios input:checked ~ .checkmark::after {
-    display: block;   
+  display: block;
 }
 
 .nombre {
-    flex-grow: 1;
-    margin-left: 6px;
+  flex-grow: 1;
+  margin-left: 6px;
 }
 
 .precio {
-    background: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 20px;
-    padding: 2px 10px;
-    font-weight: bold;
-    color: #000000;
-    font-size: 13px;
+  background: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-weight: bold;
+  color: #000000;
+  font-size: 13px;
 }
 
 /* Wrapper para la cantidad */
 .cantidad-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 
 .cantidad-label {
-    font-size: 12px;
-    color: #666;
-    font-weight: 600;
+  font-size: 12px;
+  color: #666;
+  font-weight: 600;
 }
 
 /* Input de cantidad */
 .cantidad-input {
-    width: 60px;
-    height: 32px;
-    text-align: center;
-    padding: 4px;
-    border-radius: 6px;
-    border: 2px solid #7C3BED;
-    font-weight: bold;
-    font-size: 14px;
-    background: white;
-    transition: all 0.3s ease;
-    appearance: auto;
-    -webkit-appearance: auto;
-    -moz-appearance: auto;
+  width: 60px;
+  height: 32px;
+  text-align: center;
+  padding: 4px;
+  border-radius: 6px;
+  border: 2px solid #7c3bed;
+  font-weight: bold;
+  font-size: 14px;
+  background: white;
+  transition: all 0.3s ease;
+  appearance: auto;
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
 }
 
 .cantidad-input:focus {
-    outline: none;
-    border-color: #5a1fc7;
-    box-shadow: 0 0 0 3px rgba(124, 59, 237, 0.1);
+  outline: none;
+  border-color: #5a1fc7;
+  box-shadow: 0 0 0 3px rgba(124, 59, 237, 0.1);
 }
 
 .cantidad-input:disabled {
-    background: #f0f0f0;
-    border-color: #ddd;
-    color: #999;
-    cursor: not-allowed;
+  background: #f0f0f0;
+  border-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
 }
 
-
-
 /*estilo de la opcion de fechas*/
-.campo_fecha{
-    background-color: #f4f4f5;
-    border: solid #c0c0c0 1px;
-    border-radius: 5px;
-    padding: 5px 450px 5px 15px;
-    color: #000000;
-    border: none;
+.campo_fecha {
+  background-color: #f4f4f5;
+  border: solid #c0c0c0 1px;
+  border-radius: 5px;
+  padding: 5px 450px 5px 15px;
+  color: #000000;
+  border: none;
 }
 
 /*estilo de la opcion de monto*/
-.campo_monto{
-    background-color: #f4f4f5;
-    border: solid #c0c0c0 1px;
-    border-radius: 5px;
-    width: 600px;
-    height: 40px;
-    padding: 0 0 0 10px;
-    color: #c0c0c0;
-    border: none;
+.campo_monto {
+  background-color: #f4f4f5;
+  border: solid #c0c0c0 1px;
+  border-radius: 5px;
+  width: 600px;
+  height: 40px;
+  padding: 0 0 0 10px;
+  color: #c0c0c0;
+  border: none;
 }
 
 /*estilo de la opcion de validacion*/
-.campo_validacion{
-    background-color: #f4f4f5;
-    border: solid #c0c0c0 1px;
-    border-radius: 5px;
-    width: 600px;
-    height: 40px;
-    padding: 0 0 0 10px;
-    color: #000000;
-    border: none;
+.campo_validacion {
+  background-color: #f4f4f5;
+  border: solid #c0c0c0 1px;
+  border-radius: 5px;
+  width: 600px;
+  height: 40px;
+  padding: 0 0 0 10px;
+  color: #000000;
+  border: none;
 }
 
 /*estilo de la opcion de estado*/
-.campo_estado{
-    background-color: #f4f4f5;
-    border: solid #c0c0c0 1px;
-    border-radius: 5px;
-    width: 600px;
-    height: 40px;
-    padding: 0 0 0 10px;
-    transition: all 0.3s ease;
-    border: none;
+.campo_estado {
+  background-color: #f4f4f5;
+  border: solid #c0c0c0 1px;
+  border-radius: 5px;
+  width: 600px;
+  height: 40px;
+  padding: 0 0 0 10px;
+  transition: all 0.3s ease;
+  border: none;
 }
-
-
 
 /*--------------------------------------------------------------*/
 
-
 /*estilo del resumen de la cotizacion*/
-.content_resumen{
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    width: 480px;
-    border-radius: 10px;
-    border: solid #c0c0c0 1px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 20px;
-    height: fit-content;
+.content_resumen {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 480px;
+  border-radius: 10px;
+  border: solid #c0c0c0 1px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
 }
-.content_resumen h5{
-    font-weight: 700;
-    margin-bottom: 15px;
+.content_resumen h5 {
+  font-weight: 700;
+  margin-bottom: 15px;
 }
-.content_resumen h6{
-    margin-top: 20px;
-    font-size: 16px;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #ddddddb1;
+.content_resumen h6 {
+  margin-top: 20px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddddddb1;
 }
 
-
-.resumen-item{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    padding: 12px;
-    margin: 5px 0;
-    border-radius: 8px;
-    background-color: #f4f4f5;
-    font-weight: 500;
+.resumen-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 12px;
+  margin: 5px 0;
+  border-radius: 8px;
+  background-color: #f4f4f5;
+  font-weight: 500;
 }
 .total {
-    display: flex;
-    justify-content: space-between;
-       padding: 8px 0;
-    border-top: 2px solid #ddddddb1;   
-    border-bottom: 2px solid #ddddddb1;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-top: 2px solid #ddddddb1;
+  border-bottom: 2px solid #ddddddb1;
 }
-.butom_guardar{
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background-color: #7C3BED;
-    color: white;
-    font-weight: 700;
+.butom_guardar {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #7c3bed;
+  color: white;
+  font-weight: 700;
 }
-.butom_cancelar{
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background-color: #f4f4f5;
-    color: #000000;
-    text-decoration: none;
-    font-weight: 700;
+.butom_cancelar {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #f4f4f5;
+  color: #000000;
+  text-decoration: none;
+  font-weight: 700;
 }

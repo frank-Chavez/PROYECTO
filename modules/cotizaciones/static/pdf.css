@@ -15,8 +15,6 @@
   src: url(SourceSans3-Bold.ttf);
 }
 
-
-
 html {
   color: #14213d;
   font-family: Source Sans Pro;
@@ -86,11 +84,11 @@ table {
 }
 
 th {
-  border-bottom: .2mm solid #a9a;
+  border-bottom: 0.2mm solid #a9a;
   color: #a9a;
   font-size: 10pt;
   font-weight: 400;
-  padding-bottom: .25cm;
+  padding-bottom: 0.25cm;
   text-transform: uppercase;
 }
 

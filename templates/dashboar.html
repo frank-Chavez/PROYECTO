@@ -1,158 +1,287 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{title }}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title }}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    {% block head %}{% endblock %}
+  </head>
 
-<body class="dashboar" style="display:flex; min-height:100vh;">
-
-  <!-- Sidebar -->
-  <aside class="sidebar" style="flex:0 0 260px;">
-    <div class="logo">
-      <div class="logo-text">
-        <h2>Sistema Empresa</h2>
+  <body class="dashboar" style="display: flex; min-height: 100vh">
+    <!-- Sidebar -->
+    <aside class="sidebar" style="flex: 0 0 260px">
+      <div class="logo">
+        <div class="logo-text">
+          <h2>Sistema Empresa</h2>
+        </div>
       </div>
-    </div>
 
-    <nav>
-      <a href="{{ url_for('dashboar') }}" class="{% if request.endpoint == 'dashboar' %}active{% endif %}">
-        <img class="{% if request.endpoint == 'dashboar' %}active{% endif %}" src="{{ url_for('static', filename='icons/home.svg') }}" alt=""/> Dashboard
-      </a>
-      <a href="{{ url_for('familiares.listar') }}" class="{% if request.endpoint.startswith('familiares') %}active{% endif %}">
-        <img class="{% if request.endpoint == 'familiares' %}active{% endif %}" src="{{ url_for('static', filename='icons/familiares.svg') }}" alt=""/> Familiares
-      </a>
-      <a href="{{ url_for('fallecidos.listar') }}" class="{% if request.endpoint.startswith('fallecidos') %}active{% endif %}">
-        <img class="{% if request.endpoint == 'fallecidos' %}active{% endif %}" src="{{ url_for('static', filename='icons/fallecidos.svg') }}" alt=""/> Fallecidos
-      </a>
-      <a href="{{ url_for('proveedor.listar') }}" class="{% if request.endpoint.startswith('proveedor') %}active{% endif %}">
-        <img class="{% if request.endpoint == 'proveedor' %}active{% endif %}" src="{{ url_for('static', filename='icons/proveedor.svg') }}" alt=""/> Proveedores
-      </a>
-      <a href="{{ url_for('planes.listar') }}" class="{% if request.endpoint.startswith('planes') %}active{% endif %}">
-        <img class="{% if request.endpoint == 'planes' %}active{% endif %}" src="{{ url_for('static', filename='icons/planes.svg') }}" alt=""/> Planes
-      </a>
-      <a href="{{ url_for('servicios.listar') }}" class="{% if request.endpoint.startswith('servicios') %}active{% endif %}">
-        <img class="{% if request.endpoint == 'servicios' %}active{% endif %}" src="{{ url_for('static', filename='icons/servicios.svg') }}" alt=""/> Servicios
-      </a>
-      <a href="{{ url_for('cotizacion.listar') }}" class="{% if request.endpoint.startswith('cotizacion') %}active{% endif %}">
-        <img class="{% if request.endpoint == 'cotizacion' %}active{% endif %}" src="{{ url_for('static', filename='icons/cotizaciones.svg') }}" alt=""/> Cotizaciones
-      </a>
-    </nav>
-  </aside>
+      <nav>
+        <a
+          href="{{ url_for('dashboar') }}"
+          class="{% if request.endpoint == 'dashboar' %}active{% endif %}"
+        >
+          <img
+            class="{% if request.endpoint == 'dashboar' %}active{% endif %}"
+            src="{{ url_for('static', filename='icons/home.svg') }}"
+            alt=""
+          />
+          Dashboard
+        </a>
+        <a
+          href="{{ url_for('familiares.listar') }}"
+          class="{% if request.endpoint.startswith('familiares') %}active{% endif %}"
+        >
+          <img
+            class="{% if request.endpoint == 'familiares' %}active{% endif %}"
+            src="{{ url_for('static', filename='icons/familiares.svg') }}"
+            alt=""
+          />
+          Familiares
+        </a>
+        <a
+          href="{{ url_for('fallecidos.listar') }}"
+          class="{% if request.endpoint.startswith('fallecidos') %}active{% endif %}"
+        >
+          <img
+            class="{% if request.endpoint == 'fallecidos' %}active{% endif %}"
+            src="{{ url_for('static', filename='icons/fallecidos.svg') }}"
+            alt=""
+          />
+          Fallecidos
+        </a>
+        <a
+          href="{{ url_for('proveedor.listar') }}"
+          class="{% if request.endpoint.startswith('proveedor') %}active{% endif %}"
+        >
+          <img
+            class="{% if request.endpoint == 'proveedor' %}active{% endif %}"
+            src="{{ url_for('static', filename='icons/proveedor.svg') }}"
+            alt=""
+          />
+          Proveedores
+        </a>
+        <a
+          href="{{ url_for('planes.listar') }}"
+          class="{% if request.endpoint.startswith('planes') %}active{% endif %}"
+        >
+          <img
+            class="{% if request.endpoint == 'planes' %}active{% endif %}"
+            src="{{ url_for('static', filename='icons/planes.svg') }}"
+            alt=""
+          />
+          Planes
+        </a>
+        <a
+          href="{{ url_for('servicios.listar') }}"
+          class="{% if request.endpoint.startswith('servicios') %}active{% endif %}"
+        >
+          <img
+            class="{% if request.endpoint == 'servicios' %}active{% endif %}"
+            src="{{ url_for('static', filename='icons/servicios.svg') }}"
+            alt=""
+          />
+          Servicios
+        </a>
+        <a
+          href="{{ url_for('cotizacion.listar') }}"
+          class="{% if request.endpoint.startswith('cotizacion') %}active{% endif %}"
+        >
+          <img
+            class="{% if request.endpoint == 'cotizacion' %}active{% endif %}"
+            src="{{ url_for('static', filename='icons/cotizaciones.svg') }}"
+            alt=""
+          />
+          Cotizaciones
+        </a>
 
-  <!-- Main -->
-  <main style="padding:2rem; flex:1 1 auto;">
-    {% block content %}
+        <a
+          href="{{ url_for('configuracion.index') }}"
+          class="{% if request.endpoint.startswith('configuracion') %}active{% endif %}"
+        >
+          <img
+            class="{% if request.endpoint == 'configuracion' %}active{% endif %}"
+            src="{{ url_for('static', filename='icons/seting.svg') }}"
+            alt=""
+          />
+          configuracion
+        </a>
 
-    <h1 class="mb-1">Dashboard</h1>
-    <p class="text-muted mb-4">Bienvenido al sistema de gestión crematorio</p>
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+          <img
+            src="{{ url_for('static', filename='icons/exit.svg') }}"
+            alt=""
+          />
+          salir
+        </a>
+      </nav>
+    </aside>
 
-    <!-- Tarjetas resumen (totales REALES) -->
-    <div class="row g-3 mb-4 text-center">
-      <div class="col-md-3">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="mb-1">Familiares Registrados</h5>
-            <div class="display-5 fw-bold">{{ familiares_count }}</div>
+    <!-- Main -->
+    <main style="padding: 2rem; flex: 1 1 auto">
+      {% block content %}
+
+      <h1 class="mb-1">Dashboard</h1>
+      <p class="text-muted mb-4">Bienvenido al sistema de gestión crematorio</p>
+
+      <!-- Tarjetas resumen (totales REALES) -->
+      <div class="row g-3 mb-4 text-center">
+        <div class="col-md-3">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="mb-1">Familiares Registrados</h5>
+              <div class="display-5 fw-bold">{{ familiares_count }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="mb-1">Servicios Activos</h5>
+              <div class="display-5 fw-bold">{{ servicios_count }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="mb-1">Cotizaciones del Mes</h5>
+              <div class="display-5 fw-bold">{{ cotizaciones_count }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="mb-1">Proveedores Activos</h5>
+              <div class="display-5 fw-bold">{{ proveedores_count }}</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="mb-1">Servicios Activos</h5>
-            <div class="display-5 fw-bold">{{ servicios_count }}</div>
+      <!-- Actividad Reciente + Acciones Rápidas (MISMA FILA) -->
+      <div class="row g-3">
+        <!-- Actividad Reciente -->
+        <div class="col-lg-7">
+          <h4 class="mb-3">Actividad Reciente</h4>
+          <ul class="list-group">
+            <!-- Familiar más reciente -->
+            <li class="list-group-item">
+              <img
+                src="{{ url_for('static', filename='icons/familiares.svg') }}"
+                alt=""
+              />
+              Nuevo familiar: {% if reciente_familiar %} {{ reciente_familiar[0]
+              }} ({{ reciente_familiar[1] }}) {% else %}(sin registros){% endif
+              %}
+            </li>
+
+            <!-- Cotización más reciente -->
+            <li class="list-group-item">
+              <img
+                src="{{ url_for('static', filename='icons/cotizaciones.svg') }}"
+                alt=""
+              />
+              Cotización: {% if reciente_cotizacion %} #{{
+              reciente_cotizacion[0] }} ({{ reciente_cotizacion[1] }}) {% else
+              %}(sin registros){% endif %}
+            </li>
+
+            <!-- Servicio más reciente (no tienes fecha en tabla Servicios) -->
+            <li class="list-group-item">
+              <img
+                src="{{ url_for('static', filename='icons/servicios.svg') }}"
+                alt=""
+              />
+              Servicio: {% if reciente_servicio %} {{ reciente_servicio[0] }} {%
+              if reciente_servicio[1] %}({{ reciente_servicio[1] }}){% endif %}
+              {% else %}(sin registros){% endif %}
+            </li>
+
+            <!-- Proveedor más reciente -->
+            <li class="list-group-item">
+              <img
+                src="{{ url_for('static', filename='icons/proveedor.svg') }}"
+                alt=""
+              />
+              Proveedor: {% if reciente_proveedor %} {{ reciente_proveedor[0] }}
+              ({{ reciente_proveedor[1] }}) {% else %}(sin registros){% endif %}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="col-lg-5">
+          <h4 class="mb-3">Acciones Rápidas</h4>
+          <div class="card shadow-sm">
+            <div class="card-body d-grid gap-2">
+              <a
+                href="{{ url_for('familiares.agregar') }}"
+                class="btn btn-outline-primary w-100"
+              >
+                <img
+                  src="{{ url_for('static', filename='icons/familiares.svg') }}"
+                  alt=""
+                />
+                Agregar Familiar
+              </a>
+              <a
+                href="{{ url_for('cotizacion.agregar') }}"
+                class="btn btn-outline-success w-100"
+              >
+                <img
+                  src="{{ url_for('static', filename='icons/cotizaciones.svg') }}"
+                  alt=""
+                />
+                Agregar Cotización
+              </a>
+              <a
+                href="{{ url_for('planes.agregar') }}"
+                class="btn btn-outline-warning w-100"
+              >
+                <img
+                  src="{{ url_for('static', filename='icons/planes.svg') }}"
+                  alt=""
+                />
+                Agregar Plan
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="mb-1">Cotizaciones del Mes</h5>
-            <div class="display-5 fw-bold">{{ cotizaciones_count }}</div>
-          </div>
-        </div>
-      </div>
+      {% endblock %}
+    </main>
 
-      <div class="col-md-3">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="mb-1">Proveedores Activos</h5>
-            <div class="display-5 fw-bold">{{ proveedores_count }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Actividad Reciente + Acciones Rápidas (MISMA FILA) -->
-    <div class="row g-3">
-      <!-- Actividad Reciente -->
-      <div class="col-lg-7">
-        <h4 class="mb-3">Actividad Reciente</h4>
-        <ul class="list-group">
-          <!-- Familiar más reciente -->
-          <li class="list-group-item">
-            <img src="{{ url_for('static', filename='icons/familiares.svg') }}" alt=""> Nuevo familiar:
-            {% if reciente_familiar %}
-              {{ reciente_familiar[0] }} ({{ reciente_familiar[1] }})
-            {% else %}(sin registros){% endif %}
-          </li>
-
-          <!-- Cotización más reciente -->
-          <li class="list-group-item">
-            <img src="{{ url_for('static', filename='icons/cotizaciones.svg') }}" alt=""> Cotización:
-            {% if reciente_cotizacion %}
-              #{{ reciente_cotizacion[0] }} ({{ reciente_cotizacion[1] }})
-            {% else %}(sin registros){% endif %}
-          </li>
-
-          <!-- Servicio más reciente (no tienes fecha en tabla Servicios) -->
-          <li class="list-group-item">
-            <img src="{{ url_for('static', filename='icons/servicios.svg') }}" alt=""> Servicio:
-            {% if reciente_servicio %}
-              {{ reciente_servicio[0] }} {% if reciente_servicio[1] %}({{ reciente_servicio[1] }}){% endif %}
-            {% else %}(sin registros){% endif %}
-          </li>
-
-          <!-- Proveedor más reciente -->
-          <li class="list-group-item">
-            <img src="{{ url_for('static', filename='icons/proveedor.svg') }}" alt=""> Proveedor:
-            {% if reciente_proveedor %}
-              {{ reciente_proveedor[0] }} ({{ reciente_proveedor[1] }})
-            {% else %}(sin registros){% endif %}
-          </li>
-        </ul>
-      </div>
-
-      <!-- Acciones Rápidas -->
-      <div class="col-lg-5">
-        <h4 class="mb-3">Acciones Rápidas</h4>
-        <div class="card shadow-sm">
-          <div class="card-body d-grid gap-2">
-            <a href="{{ url_for('familiares.agregar') }}" class="btn btn-outline-primary w-100">
-              <img src="{{ url_for('static', filename='icons/familiares.svg') }}" alt="">  Agregar Familiar
-            </a>
-            <a href="{{ url_for('cotizacion.agregar') }}" class="btn btn-outline-success w-100">
-              <img src="{{ url_for('static', filename='icons/cotizaciones.svg') }}" alt=""> Agregar Cotización
-            </a>
-            <a href="{{ url_for('planes.agregar') }}" class="btn btn-outline-warning w-100">
-              <img src="{{ url_for('static', filename='icons/planes.svg') }}" alt=""/> Agregar Plan
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {% endblock %}
-  </main>
-
-  <!-- Bootstrap JS (opcional si no usas componentes JS) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- Bootstrap JS (opcional si no usas componentes JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      function sinPermiso() {
+        Swal.fire({
+          icon: 'error',
+          title: 'Acceso denegado',
+          text: 'No tienes permisos para realizar esta acción.',
+          confirmButtonText: 'Entendido',
+          confirmButtonColor: '#3085d6',
+        });
+      }
+    </script>
+  </body>
 </html>

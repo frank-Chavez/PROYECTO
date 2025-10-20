@@ -2,39 +2,99 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{url_for('proveedor.static', filename='editar_proveedores.css')}}">
 </head>
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
-    <h2>{{title}}</h2>
 
     <form method="POST">
-        <label for="nombre">Nombre:</label><br>
-        <input type="text" name="nombre_p" value="{{ Proveedor['nombre_p'] }}" required><br><br>
+        <div class="container-servicio">
+            <div class="header-bar">
+                <div class="header-left">
+                    <h2>{{title}}</h2>
+                </div>
+            </div>
 
-        <label for="telefono">Telefono:</label><br>
-        <input type="text" name="telefono_p" value="{{ Proveedor['telefono_p'] }}" required><br><br>
+            <div class="content-grid">
+                <div class="panel">
+                    <div class="panel-titulo">Información del Proveedor</div>
 
-        <label for="correo">Correo:</label><br>
-        <input type="email" name="correo_p" value="{{ Proveedor['correo_p'] }}"><br><br>
+                    <div class="form-group">
+                        <label for="nombre_p" class="form-label">Nombre</label>
+                        <input type="text" 
+                               id="nombre_p" 
+                               name="nombre_p" 
+                               class="form-control" 
+                               value="{{ Proveedor['nombre_p'] }}" 
+                               required>
+                    </div>
 
-        <label for="Servicio">Servicio:</label><br>
-        <input type="text" name="servicio_p" value="{{ Proveedor['servicio_p'] }}"><br><br>
+                    <div class="form-group">
+                        <label for="telefono_p" class="form-label">Teléfono</label>
+                        <input type="text" 
+                               id="telefono_p" 
+                               name="telefono_p" 
+                               class="form-control" 
+                               value="{{ Proveedor['telefono_p'] }}" 
+                               required>
+                    </div>
 
-        <label for="fechaRegistro">Fecha Registro:</label><br>
-        <input type="date" name="fechaRegistro_p" value="{{ Proveedor['fechaRegistro_p'] }}" required><br><br>
+                    <div class="form-group">
+                        <label for="correo_p" class="form-label">Correo Electrónico</label>
+                        <input type="email" 
+                               id="correo_p" 
+                               name="correo_p" 
+                               class="form-control" 
+                               value="{{ Proveedor['correo_p'] }}">
+                    </div>
+                </div>
 
-        <label for="estado">Estado:</label><br>
-        <select  name="estado_p" required>
-            <option value="1" {% if Proveedor[estado_p] == 1 %}selected{% endif %}>Activo</option>
-            <option value="0" {% if Proveedor[estado_p] == 0 %}selected{% endif %}>Inactivo</option>
-        </select><br><br>
+                <div class="panel">
+                    <div class="panel-titulo">Detalles del Servicio</div>
 
+                    <div class="form-group">
+                        <label for="servicio_p" class="form-label">Tipo de Servicio</label>
+                        <input type="text" 
+                               id="servicio_p" 
+                               name="servicio_p" 
+                               class="form-control" 
+                               value="{{ Proveedor['servicio_p'] }}">
+                    </div>
 
-        <button type="submit">Guardar</button>
+                    <div class="form-group">
+                        <label for="fechaRegistro_p" class="form-label">Fecha de Registro</label>
+                        <input type="date" 
+                               id="fechaRegistro_p" 
+                               name="fechaRegistro_p" 
+                               class="form-control" 
+                               value="{{ Proveedor['fechaRegistro_p'] }}" 
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estado_p" class="form-label">Estado</label>
+                        <select id="estado_p" 
+                                name="estado_p" 
+                                class="form-control" 
+                                required>
+                            <option value="1" {% if Proveedor['estado_p'] == 1 %}selected{% endif %}>Activo</option>
+                            <option value="0" {% if Proveedor['estado_p'] == 0 %}selected{% endif %}>Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+                <div class="footer-actions">
+                    <a href="{{ url_for('proveedor.listar') }}" class="btn btn-cancelar">Cancelar</a>
+                    <button type="submit" class="btn btn-guardar">Guardar Cambios</button>
+                </div>
+        </div>
     </form>
+
     {% endblock %}
 </body>
 </html>

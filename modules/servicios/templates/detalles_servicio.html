@@ -1,90 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="{{url_for('servicios.static', filename='servicio_detalle.css')}}">
-</head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('servicios.static', filename='servicio_detalle.css')}}"
+    />
+  </head>
 
-<body>
-    {% extends "dashboar.html" %}
-    {% block content %}
+  <body>
+    {% extends "dashboar.html" %} {% block content %}
     <div class="container-servicio">
-        <div class="header-bar">
-            <div class="header-left">
-                <h2>Detalle de Servicio</h2>
-                <div class="numero-serv">ID:{{ servicio['id_servicio'] }}</div>
+      <div class="header-bar">
+        <div class="header-left">
+          <h2>Detalle de Servicio</h2>
+          <div class="numero-serv">ID:{{ servicio['id_servicio'] }}</div>
+        </div>
+        <div class="header-right">
+          <div class="monto-total">Precio</div>
+          <div class="monto-valor">S/. {{ servicio['precio_serv'] }}</div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="panel">
+          <div class="panel-titulo">Información General</div>
+
+          <div class="info-item">
+            <div class="info-label">Categoría</div>
+            <div class="info-value">
+              <span class="badge badge-categoria"
+                >{{ servicio['categoria_serv'] }}</span
+              >
             </div>
-            <div class="header-right">
-                <div class="monto-total">Precio</div>
-                <div class="monto-valor">S/. {{ servicio['precio_serv'] }}</div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">Estado</div>
+            <div class="info-value">
+              {% if servicio['estado_serv'] == 1 %}
+              <span class="badge badge-activo">Activo</span>
+              {% else %}
+              <span class="badge badge-inactivo">Inactivo</span>
+              {% endif %}
             </div>
+          </div>
         </div>
 
-        <div class="content-grid">
-            <div class="panel">
-                <div class="panel-titulo">Información General</div>
+        <div class="panel">
+          <div class="panel-titulo">Proveedor</div>
 
-
-                <div class="info-item">
-                    <div class="info-label">Categoría</div>
-                    <div class="info-value">
-                        <span class="badge badge-categoria">{{ servicio['categoria_serv'] }}</span>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-label">Estado</div>
-                    <div class="info-value">
-                        {% if servicio['estado_serv'] == 1 %}
-                        <span class="badge badge-activo">Activo</span>
-                        {% else %}
-                        <span class="badge badge-inactivo">Inactivo</span>
-                        {% endif %}
-                    </div>
-                </div>
+          <div class="info-item">
+            <div class="info-label">Nombre del Proveedor</div>
+            <div class="info-value">
+              <div class="proveedor-item">{{ servicio['nombre_p'] }}</div>
             </div>
-
-            <div class="panel">
-                <div class="panel-titulo">Proveedor</div>
-
-                <div class="info-item">
-                    <div class="info-label">Nombre del Proveedor</div>
-                    <div class="info-value">
-                        <div class="proveedor-item">{{ servicio['nombre_p'] }}</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel panel-servicio">
-                <div class="panel-titulo">Tipo y Descripción</div>
-
-                <div class="info-item">
-                    <div class="info-label">Tipo de Servicio</div>
-                    <div class="servicio-box">
-                        <div class="servicio-nombre">{{ servicio['tipo_serv'] }}</div>
-                    </div>
-                </div>
-
-                <div class="info-item" style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
-                    <div class="info-label">Descripción</div>
-                    <div class="descripcion-container">
-                        <div class="descripcion-item">
-                            <p>{{ servicio['descripcion_serv'] }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
 
-        <div class="footer-actions">
-            <a href="{{ url_for('servicios.listar') }}" class="btn-regresar">Volver a la lista</a>
+        <div class="panel panel-servicio">
+          <div class="panel-titulo">Tipo y Descripción</div>
+
+          <div class="info-item">
+            <div class="info-label">Tipo de Servicio</div>
+            <div class="servicio-box">
+              <div class="servicio-nombre">{{ servicio['tipo_serv'] }}</div>
+            </div>
+          </div>
+
+          <div
+            class="info-item"
+            style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              min-height: 0;
+            "
+          >
+            <div class="info-label">Descripción</div>
+            <div class="descripcion-container">
+              <div class="descripcion-item">
+                <p>{{ servicio['descripcion_serv'] }}</p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="footer-actions">
+        <a href="{{ url_for('servicios.listar') }}" class="btn-regresar"
+          >Volver a la lista</a
+        >
+      </div>
     </div>
     {% endblock %}
-</body>
-
+  </body>
 </html>

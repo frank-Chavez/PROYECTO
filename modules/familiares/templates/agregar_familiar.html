@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Agregar {{title}}</title>
-  <link rel="stylesheet" href="{{url_for('familiares.static', filename='familiares.css')}}">
-</head>
-<body class="agregar-familiar">
-  {% extends "dashboar.html" %}
-  {% block content %}
-  <div class="form-card">
-    <h2>Agregar {{title}}</h2>
-    <form method="POST">
-      <label for="nombre" class="form-label">Nombre</label>
-      <input type="text" class="form-control" name="nombre" required>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Agregar {{title}}</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('familiares.static', filename='familiares.css')}}"
+    />
+  </head>
+  <body class="agregar-familiar">
+    {% extends "dashboar.html" %} {% block content %}
+    <div class="form-card">
+      <h2>Agregar {{title}}</h2>
+      <form method="POST">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" name="nombre" required />
 
-      <label for="apellido" class="form-label">Apellido</label>
-      <input type="text" class="form-control" name="apellido" required>
+        <label for="apellido" class="form-label">Apellido</label>
+        <input type="text" class="form-control" name="apellido" required />
 
-      <label for="parentesco" class="form-label">Parentesco</label>
-      <input type="text" class="form-control" name="parentesco" required>
+        <label for="parentesco" class="form-label">Parentesco</label>
+        <input type="text" class="form-control" name="parentesco" required />
 
-      <label for="telefono" class="form-label">Teléfono</label>
-      <input type="text" class="form-control" name="telefono">
+        <label for="telefono" class="form-label">Teléfono</label>
+        <input type="text" class="form-control" name="telefono" />
 
-      <label for="correo" class="form-label">Correo</label>
-      <input type="email" class="form-control" name="correo">
+        <label for="correo" class="form-label">Correo</label>
+        <input type="email" class="form-control" name="correo" />
 
-      <label for="estado" class="form-label">Estado</label>
-      <select class="form-control" name="estado" required>
-        <option value="1">Activo</option>
-        <option value="0">Inactivo</option>
-      </select>
+        <label for="estado" class="form-label">Estado</label>
+        <select class="form-control" name="estado" required>
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+        </select>
 
-      <label for="fechaRegistro" class="form-label">Fecha de Registro</label>
-      <input type="date" class="form-control" name="fechaRegistro" required>
+        <label for="fechaRegistro" class="form-label">Fecha de Registro</label>
+        <input type="date" class="form-control" name="fechaRegistro" required />
 
-      <button type="submit" class="btn-guardar">Agregar</button>
-    </form>
-  </div>
-  {% endblock %}
-</body>
-
-
+        <button type="submit" class="btn-guardar">Agregar</button>
+      </form>
+    </div>
+    {% endblock %}
+  </body>
 </html>
