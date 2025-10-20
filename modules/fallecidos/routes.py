@@ -1,78 +1,96 @@
-from flask import Blueprint,render_template, redirect, url_for, request, send_file
+from flask import Blueprint, render_template, redirect, url_for, request, send_file, session
 from database import conection
 import pandas as pd
 import io
 
-fallecidos_bd = Blueprint("fallecidos", __name__, url_prefix="/fallecidos", template_folder="templates", static_folder="static")
+fallecidos_bd = Blueprint(
+    "fallecidos", __name__, url_prefix="/fallecidos", template_folder="templates", static_folder="static"
+)
 
 
-@fallecidos_bd.route('/')
+@fallecidos_bd.route("/")
 def listar():
-    conn=conection()
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    conn = conection()
     fallecidos = conn.execute("SELECT * FROM Fallecidos").fetchall()
     conn.close()
     return render_template("fallecidos.html", Fallecidos=fallecidos, title="Fallecidos")
 
 
-
-@fallecidos_bd.route('/cambiar_estado/<int:id>', methods=['GET'])
+@fallecidos_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
 def cambiar_estado(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     conn = conection()
     fallecido = conn.execute("SELECT estado_f FROM Fallecidos WHERE id_fallecido = ?", (id,)).fetchone()
-    
+
     if fallecido:
         nuevo_estado = 0 if fallecido["estado_f"] == 1 else 1
         conn.execute("UPDATE Fallecidos SET estado_f = ? WHERE id_fallecido = ?", (nuevo_estado, id))
         conn.commit()
-    
+
     conn.close()
-    return redirect(url_for('fallecidos.listar'))
+    return redirect(url_for("fallecidos.listar"))
 
 
-
-@fallecidos_bd.route('/editar/<int:id>', methods=['GET','POST'])
+@fallecidos_bd.route("/editar/<int:id>", methods=["GET", "POST"])
 def editar(id):
-    conn= conection()
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    conn = conection()
 
     if request.method == "POST":
-        nombre = request.form['nombre_f']
-        edad = request.form['edad_f']
-        fechaDefuncion = request.form['fecha_defuncion']
-        fechaRegistro = request.form['fechaRegistro_f']
-        fechaActualizacion = request.form['fechaActualizacion_f']
-        estado = request.form['estado_f']
+        nombre = request.form["nombre_f"]
+        edad = request.form["edad_f"]
+        fechaDefuncion = request.form["fecha_defuncion"]
+        fechaRegistro = request.form["fechaRegistro_f"]
+        fechaActualizacion = request.form["fechaActualizacion_f"]
+        estado = request.form["estado_f"]
 
-        conn.execute("""
+        conn.execute(
+            """
                 UPDATE Fallecidos 
                 SET nombre_f = ?, edad_f = ?, fecha_defuncion = ?, fechaRegistro_f = ?, fechaActualizacion_f = ?, estado_f = ?
                 WHERE id_fallecido = ?
-            """, (nombre, edad, fechaDefuncion,  fechaRegistro, fechaActualizacion, estado, id))
-        conn.commit()  
+            """,
+            (nombre, edad, fechaDefuncion, fechaRegistro, fechaActualizacion, estado, id),
+        )
+        conn.commit()
         conn.close()
 
-        return redirect(url_for('fallecidos.listar'))
-    
-    editar = conn.execute("""
+        return redirect(url_for("fallecidos.listar"))
+
+    editar = conn.execute(
+        """
         SELECT id_fallecido, nombre_f, edad_f, fecha_defuncion, fechaRegistro_f, fechaActualizacion_f, estado_f
         FROM Fallecidos 
         WHERE id_fallecido = ?
-    """, (id,)).fetchone()
+    """,
+        (id,),
+    ).fetchone()
     conn.close()
 
     return render_template("editar_fallecido.html", fallecidos=editar, title="Registrar Fallecido")
 
 
-
-
-
-@fallecidos_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+@fallecidos_bd.route("/VerDetalles/<int:id>", methods=["GET"])
 def VerDetalles(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     conn = conection()
-    fallecidos = conn.execute("""
+    fallecidos = conn.execute(
+        """
         SELECT id_fallecido, nombre_f, edad_f, fecha_defuncion, fechaRegistro_f, fechaActualizacion_f, estado_f
         FROM Fallecidos 
         WHERE id_fallecido = ?
-    """, (id,)).fetchone()
+    """,
+        (id,),
+    ).fetchone()
     conn.close()
 
     if not fallecidos:
@@ -81,10 +99,11 @@ def VerDetalles(id):
     return render_template("detalles_fallecidos.html", fallecidos=fallecidos, title="Detalles del fallecido")
 
 
-
-
-@fallecidos_bd.route('/agregar', methods=["GET", "POST"] , endpoint='agregar')
+@fallecidos_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
 def agregar_fallecido():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     if request.method == "POST":
         nombre = request.form["nombre"]
         fechaDefuncion = request.form["fechaDefuncion"]
@@ -93,14 +112,16 @@ def agregar_fallecido():
         estado = request.form["estado"]
         fechaRegistro = request.form["fechaRegistro"]
 
-
         conn = conection()
         cursor = conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO Fallecidos (
                 nombre_f, fecha_defuncion, estado_f, edad_f, fechaRegistro_f
             ) VALUES (?, ?, ?, ?, ?)
-        """, (nombre, fechaDefuncion, estado, edad,  fechaRegistro))
+        """,
+            (nombre, fechaDefuncion, estado, edad, fechaRegistro),
+        )
         conn.commit()
         conn.close()
 
@@ -109,16 +130,15 @@ def agregar_fallecido():
     return render_template("agregar_fallecido.html", title="Fallecido")
 
 
-
-
-
-
-@fallecidos_bd.route('/exel')
+@fallecidos_bd.route("/exel")
 def exel():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     try:
         # coneccion a la bd
         conn = conection()
-        #consultando la informacion que se va a descargar
+        # consultando la informacion que se va a descargar
         consulta = """
         SELECT 
             f.nombre_f AS 'Nombre del Fallecido',
@@ -135,37 +155,33 @@ def exel():
         FROM Fallecidos f
         """
 
-
         df = pd.read_sql_query(consulta, conn)
         conn.close()
 
         # se crea el archivo exel
         output = io.BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, index=False, sheet_name='Fallecidos')
+        with pd.ExcelWriter(output, engine="openpyxl") as writer:
+            df.to_excel(writer, index=False, sheet_name="Fallecidos")
 
         output.seek(0)
 
         # Envia el archivo como descarga
         return send_file(
             output,
-            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            download_name='Fallecidos.xlsx',
-            as_attachment=True
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            download_name="Fallecidos.xlsx",
+            as_attachment=True,
         )
 
     except Exception as e:
         import traceback
+
         print("Error al generar Excel:", e)
         traceback.print_exc()
         return f"Error al generar el archivo Excel: {e}", 500
 
 
-
-
-
-
-#eliminar
+# eliminar
 """@fallecidos_bd.route('/eliminar/<int:id>', methods=['POST'])
 def eliminar(id):
     conn = conection()

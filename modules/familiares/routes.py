@@ -1,78 +1,98 @@
-from flask import Blueprint,render_template, redirect, url_for,request, send_file
+from flask import Blueprint, render_template, redirect, url_for, request, send_file, session
 from database import conection
 import pandas as pd
 import io
 
 
-familiares_bd = Blueprint("familiares", __name__, url_prefix="/familiares", template_folder="templates", static_folder="static")
+familiares_bd = Blueprint(
+    "familiares", __name__, url_prefix="/familiares", template_folder="templates", static_folder="static"
+)
+
 
 @familiares_bd.route("/")
 def listar():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     conn = conection()
     familiares = conn.execute("SELECT * FROM Familiares").fetchall()
     conn.close()
-    return render_template("familiares.html",  familiares=familiares,  title="Familiares")
+    return render_template("familiares.html", familiares=familiares, title="Familiares")
 
 
-
-@familiares_bd.route('/cambiar_estado/<int:id>', methods=['GET'])
+@familiares_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
 def cambiar_estado(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     conn = conection()
     familiares = conn.execute("SELECT f_estado FROM Familiares WHERE id_familiar = ?", (id,)).fetchone()
-    
+
     if familiares:
         nuevo_estado = 0 if familiares["f_estado"] == 1 else 1
         conn.execute("UPDATE Familiares SET f_estado = ? WHERE id_familiar = ?", (nuevo_estado, id))
         conn.commit()
-    
+
     conn.close()
-    return redirect(url_for('familiares.listar'))
+    return redirect(url_for("familiares.listar"))
 
 
-
-@familiares_bd.route('/editar/<int:id>', methods=['GET','POST'])
+@familiares_bd.route("/editar/<int:id>", methods=["GET", "POST"])
 def editar(id):
-    conn= conection()
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    conn = conection()
 
     if request.method == "POST":
-        nombre = request.form['f_nombre']
-        apellido = request.form['f_apellido']
-        parentesco = request.form['f_parentesco']
-        telefono = request.form['f_telefono']
-        correo = request.form['f_correo']
-        estado = request.form['f_estado']
-        fechaRegistro = request.form['fechaRegistro']
+        nombre = request.form["f_nombre"]
+        apellido = request.form["f_apellido"]
+        parentesco = request.form["f_parentesco"]
+        telefono = request.form["f_telefono"]
+        correo = request.form["f_correo"]
+        estado = request.form["f_estado"]
+        fechaRegistro = request.form["fechaRegistro"]
 
-        conn.execute("""
+        conn.execute(
+            """
                 UPDATE Familiares 
                 SET f_nombre = ?, f_apellido = ?, f_parentesco = ?, f_telefono = ?, f_correo = ?, f_estado = ?, fechaRegistro = ?
                 WHERE id_familiar = ?
-            """, (nombre, apellido, parentesco, telefono, correo, estado, fechaRegistro, id))
-        conn.commit()  
+            """,
+            (nombre, apellido, parentesco, telefono, correo, estado, fechaRegistro, id),
+        )
+        conn.commit()
         conn.close()
 
-        return redirect(url_for('familiares.listar'))
-    
-    editar = conn.execute("""
+        return redirect(url_for("familiares.listar"))
+
+    editar = conn.execute(
+        """
         SELECT id_familiar, f_nombre, f_apellido, f_parentesco, f_telefono, f_correo, f_estado, fechaRegistro 
         FROM Familiares 
         WHERE id_familiar = ?
-    """, (id,)).fetchone()
+    """,
+        (id,),
+    ).fetchone()
     conn.close()
 
     return render_template("editar.html", familiar=editar)
 
 
-
-
-@familiares_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+@familiares_bd.route("/VerDetalles/<int:id>", methods=["GET"])
 def VerDetalles(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     conn = conection()
-    familiar = conn.execute("""
+    familiar = conn.execute(
+        """
         SELECT id_familiar, f_nombre, f_apellido, f_parentesco, f_telefono, f_correo, fechaRegistro, f_estado
         FROM Familiares 
         WHERE id_familiar = ?
-    """, (id,)).fetchone()
+    """,
+        (id,),
+    ).fetchone()
     conn.close()
 
     if not familiar:
@@ -81,9 +101,11 @@ def VerDetalles(id):
     return render_template("detalles_familiares.html", familiar=familiar, title="Detalles del Familiar")
 
 
-
-@familiares_bd.route('/agregar', methods=["GET", "POST"] ,endpoint='agregar')
+@familiares_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
 def agregar_familiar():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     if request.method == "POST":
         nombre = request.form["nombre"]
         apellido = request.form["apellido"]
@@ -97,30 +119,31 @@ def agregar_familiar():
 
         conn = conection()
         cursor = conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO Familiares (
                 f_nombre, f_apellido, f_parentesco, f_telefono, f_correo, f_estado, fechaRegistro, usuario_id
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (nombre, apellido, parentesco, telefono, correo, estado, fechaRegistro, usuario_id))
+        """,
+            (nombre, apellido, parentesco, telefono, correo, estado, fechaRegistro, usuario_id),
+        )
         conn.commit()
         conn.close()
 
         # 👇 Aquí el cambio: redirige a la lista de familiares
         return redirect(url_for("familiares.listar"))
-    
 
     return render_template("agregar_familiar.html", title="Familiar")
 
 
-
-
-
-@familiares_bd.route('/exel')
+@familiares_bd.route("/exel")
 def exel():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
     try:
         # coneccion a la bd
         conn = conection()
-        #consultando la informacion que se va a descargar
+        # consultando la informacion que se va a descargar
         consulta = """
         SELECT 
             f.f_nombre || ' ' || f.f_apellido AS 'Nombre del Familiar',
@@ -135,27 +158,27 @@ def exel():
         FROM Familiares f
         """
 
-
         df = pd.read_sql_query(consulta, conn)
         conn.close()
 
         # se crea el archivo exel
         output = io.BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, index=False, sheet_name='Familiares')
+        with pd.ExcelWriter(output, engine="openpyxl") as writer:
+            df.to_excel(writer, index=False, sheet_name="Familiares")
 
         output.seek(0)
 
         # Envia el archivo como descarga
         return send_file(
             output,
-            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            download_name='Familiares.xlsx',
-            as_attachment=True
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            download_name="Familiares.xlsx",
+            as_attachment=True,
         )
 
     except Exception as e:
         import traceback
+
         print("Error al generar Excel:", e)
         traceback.print_exc()
         return f"Error al generar el archivo Excel: {e}", 500

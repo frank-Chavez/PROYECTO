@@ -2,39 +2,99 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{url_for('fallecidos.static', filename='editar_fallecido.css')}}">
 </head>
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
-    <h2>{{title}}</h2>
 
     <form method="POST">
-        <label for="nombre">Nombre:</label><br>
-        <input type="text" name="nombre_f" value="{{ fallecidos['nombre_f'] }}" required><br><br>
+        <div class="container-servicio">
+            <div class="header-bar">
+                <div class="header-left">
+                    <h2>{{title}}</h2>
+                </div>
+            </div>
 
-        <label for="edad">Edad:</label><br>
-        <input type="text" name="edad_f" value="{{ fallecidos['edad_f'] }}" required><br><br>
+            <div class="content-grid">
+                <div class="panel">
+                    <div class="panel-titulo">Información del Fallecido</div>
 
-        <label for="fecha_defuncion">Fecha Defunción:</label><br>
-        <input type="date" name="fecha_defuncion" value="{{ fallecidos['fecha_defuncion'] }}"><br><br>
+                    <div class="form-group">
+                        <label for="nombre_f" class="form-label">Nombre Completo</label>
+                        <input type="text" 
+                               id="nombre_f" 
+                               name="nombre_f" 
+                               class="form-control" 
+                               value="{{ fallecidos['nombre_f'] }}" 
+                               required>
+                    </div>
 
-        <label for="fechaRegistro">Fecha Registro:</label><br>
-        <input type="date" name="fechaRegistro_f" value="{{ fallecidos['fechaRegistro_f'] }}"><br><br>
+                    <div class="form-group">
+                        <label for="edad_f" class="form-label">Edad</label>
+                        <input type="text" 
+                               id="edad_f" 
+                               name="edad_f" 
+                               class="form-control" 
+                               value="{{ fallecidos['edad_f'] }}" 
+                               required>
+                    </div>
 
-        <label for="fechaActualizacion">Fecha Actualización:</label><br>
-        <input type="date" name="fechaActualizacion_f" value="{{ fallecidos['fechaActualizacion_f'] }}" required><br><br>
+                    <div class="form-group">
+                        <label for="fecha_defuncion" class="form-label">Fecha de Defunción</label>
+                        <input type="date" 
+                               id="fecha_defuncion" 
+                               name="fecha_defuncion" 
+                               class="form-control" 
+                               value="{{ fallecidos['fecha_defuncion'] }}">
+                    </div>
 
-        <label for="estado">Estado:</label><br>
-        <select  name="estado_f" required>
-            <option value="1" {% if fallecidos[estado_f] == 1 %}selected{% endif %}>Activo</option>
-            <option value="0" {% if fallecidos[estado_f] == 0 %}selected{% endif %}>Inactivo</option>
-        </select><br><br>
+                    <div class="form-group">
+                        <label for="estado_f" class="form-label">Estado</label>
+                        <select id="estado_f" 
+                                name="estado_f" 
+                                class="form-control" 
+                                required>
+                            <option value="1" {% if fallecidos['estado_f'] == 1 %}selected{% endif %}>Activo</option>
+                            <option value="0" {% if fallecidos['estado_f'] == 0 %}selected{% endif %}>Inactivo</option>
+                        </select>
+                    </div>
+                </div>
 
+                <div class="panel">
+                    <div class="panel-titulo">Fechas del Sistema</div>
 
-        <button type="submit">Guardar</button>
+                    <div class="form-group">
+                        <label for="fechaRegistro_f" class="form-label">Fecha de Registro</label>
+                        <input type="date" 
+                               id="fechaRegistro_f" 
+                               name="fechaRegistro_f" 
+                               class="form-control" 
+                               value="{{ fallecidos['fechaRegistro_f'] }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fechaActualizacion_f" class="form-label">Fecha de Actualización</label>
+                        <input type="date" 
+                               id="fechaActualizacion_f" 
+                               name="fechaActualizacion_f" 
+                               class="form-control" 
+                               value="{{ fallecidos['fechaActualizacion_f'] }}" 
+                               required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <a href="{{ url_for('fallecidos.listar') }}" class="btn btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn btn-guardar">Guardar Cambios</button>
+            </div>
+        </div>
     </form>
+
     {% endblock %}
 </body>
 </html>

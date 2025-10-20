@@ -2,42 +2,108 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar {{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar {{title}}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{url_for('familiares.static', filename='editar_familiares.css')}}">
 </head>
 <body>
     {% extends "dashboar.html" %}
     {% block content %}
-    <h2>Registrar {{title}}</h2>
 
     <form method="POST">
-        <label for="nombre">Nombre:</label><br>
-        <input type="text" name="f_nombre" value="{{ familiar[1] }}" required><br><br>
+        <div class="container-servicio">
+            <div class="header-bar">
+                <div class="header-left">
+                    <h2>Editar {{title}}</h2>
+                </div>
+            </div>
 
-        <label for="apellido">Apellido:</label><br>
-        <input type="text" name="f_apellido" value="{{ familiar[2] }}" required><br><br>
+            <div class="content-grid">
+                <div class="panel">
+                    <div class="panel-titulo">Información Personal</div>
 
-        <label for="parentesco">Parentesco:</label><br>
-        <input type="text" name="f_parentesco" value="{{ familiar[3] }}" placeholder="Ej: madre, hermano" ><br><br>
+                    <div class="form-group">
+                        <label for="f_nombre" class="form-label">Nombre</label>
+                        <input type="text" 
+                               id="f_nombre" 
+                               name="f_nombre" 
+                               class="form-control" 
+                               value="{{ familiar[1] }}" 
+                               required>
+                    </div>
 
-        <label for="telefono">Teléfono:</label><br>
-        <input type="text" name="f_telefono" value="{{ familiar[4] }}"><br><br>
+                    <div class="form-group">
+                        <label for="f_apellido" class="form-label">Apellido</label>
+                        <input type="text" 
+                               id="f_apellido" 
+                               name="f_apellido" 
+                               class="form-control" 
+                               value="{{ familiar[2] }}" 
+                               required>
+                    </div>
 
-        <label for="direccion">Correo:</label><br>
-        <input type="email" name="f_correo" value="{{ familiar[5] }}"><br><br>
+                    <div class="form-group">
+                        <label for="f_parentesco" class="form-label">Parentesco</label>
+                        <input type="text" 
+                               id="f_parentesco" 
+                               name="f_parentesco" 
+                               class="form-control" 
+                               value="{{ familiar[3] }}" 
+                               placeholder="Ej: madre, hermano">
+                    </div>
 
-        <label for="estado">Estado:</label><br>
-        <select  name="f_estado" required>
-            <option value="1" {% if familiar[6] == 1 %}selected{% endif %}>Activo</option>
-            <option value="0" {% if familiar[6] == 0 %}selected{% endif %}>Inactivo</option>
-        </select><br><br>
+                    <div class="form-group">
+                        <label for="f_estado" class="form-label">Estado</label>
+                        <select id="f_estado" 
+                                name="f_estado" 
+                                class="form-control" 
+                                required>
+                            <option value="1" {% if familiar[6] == 1 %}selected{% endif %}>Activo</option>
+                            <option value="0" {% if familiar[6] == 0 %}selected{% endif %}>Inactivo</option>
+                        </select>
+                    </div>
+                </div>
 
+                <div class="panel">
+                    <div class="panel-titulo">Información de Contacto</div>
 
-        <label for="Fecha">Fecha Registro:</label><br>
-        <input type="date" name="fechaRegistro" value="{{ familiar[7] }}"><br><br>
+                    <div class="form-group">
+                        <label for="f_telefono" class="form-label">Teléfono</label>
+                        <input type="text" 
+                               id="f_telefono" 
+                               name="f_telefono" 
+                               class="form-control" 
+                               value="{{ familiar[4] }}">
+                    </div>
 
-        <button type="submit">Guardar</button>
+                    <div class="form-group">
+                        <label for="f_correo" class="form-label">Correo Electrónico</label>
+                        <input type="email" 
+                               id="f_correo" 
+                               name="f_correo" 
+                               class="form-control" 
+                               value="{{ familiar[5] }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fechaRegistro" class="form-label">Fecha de Registro</label>
+                        <input type="date" 
+                               id="fechaRegistro" 
+                               name="fechaRegistro" 
+                               class="form-control" 
+                               value="{{ familiar[7] }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <a href="{{ url_for('familiares.listar') }}" class="btn btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn btn-guardar">Guardar Cambios</button>
+            </div>
+        </div>
     </form>
+
     {% endblock %}
 </body>
 </html>

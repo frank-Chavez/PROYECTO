@@ -1,62 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agregar {{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="{{url_for('servicios.static', filename='agregar_servicio.css')}}">
-</head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('servicios.static', filename='agregar_servicio.css')}}"
+    />
+  </head>
 
-<body>
-    {% extends "dashboar.html" %}
-    {% block content %}
+  <body>
+    {% extends "dashboar.html" %} {% block content %}
     <div class="container">
-        <h2 class="title">Agregar {{ title }}</h2>
-        <p class="subtitle">Crea un nuevo servicio para usar en las cotizaciones</p>
+      <h2 class="title">Agregar {{ title }}</h2>
+      <p class="subtitle">
+        Crea un nuevo servicio para usar en las cotizaciones
+      </p>
 
-        <div class="card">
-            <form method="POST" class="service-form">
+      <div class="card">
+        <form method="POST" class="service-form">
+          <div class="form-group">
+            <label for="tipoServ">Tipo de Servicio <span>*</span></label>
+            <input
+              type="text"
+              name="tipoServ"
+              placeholder="Ej: Traslado..."
+              required
+            />
+          </div>
 
-                <div class="form-group">
-                    <label for="tipoServ">Tipo de Servicio <span>*</span></label>
-                    <input type="text" name="tipoServ" placeholder="Ej: Traslado..." required>
-                </div>
+          <div class="form-group">
+            <label for="descripcionServ">Descripción <span>*</span></label>
+            <textarea
+              name="descripcionServ"
+              placeholder="Describe los detalles del servicio..."
+              rows="4"
+              required
+            ></textarea>
+          </div>
 
-                <div class="form-group">
-                    <label for="descripcionServ">Descripción <span>*</span></label>
-                    <textarea name="descripcionServ" placeholder="Describe los detalles del servicio..." rows="4"
-                        required></textarea>
-                </div>
+          <div class="form-group">
+            <label for="categoriaServ">Categoría <span>*</span></label>
+            <input
+              type="text"
+              name="categoriaServ"
+              placeholder="Categoria..."
+              required
+            />
+          </div>
 
-                <div class="form-group">
-                    <label for="categoriaServ">Categoría <span>*</span></label>
-                    <input type="text" name="categoriaServ" placeholder="Categoria..." required>
-                </div>
+          <div class="form-group">
+            <label for="precio_serv">Precio <span>*</span></label>
+            <input
+              type="number"
+              name="precio_serv"
+              step="0.01"
+              placeholder="0.00"
+              required
+            />
+          </div>
 
-                <div class="form-group">
-                    <label for="precio_serv">Precio <span>*</span></label>
-                    <input type="number" name="precio_serv" step="0.01" placeholder="0.00" required>
-                </div>
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <select name="estado">
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
 
-                <div class="form-group">
-                    <label for="estado">Estado</label>
-                    <select name="estado">
-                        <option value="1">Activo</option>
-                        <option value="0">Inactivo</option>
-                    </select>
-                </div>
-
-                <div class="buttons">
-                    <button type="submit" class="btn btn-primary">Guardar Servicio</button>
-                    <a href="{{ url_for('servicios.listar') }}" class="btn btn-secondary">Cancelar</a>
-                </div>
-
-            </form>
-        </div>
+          <div class="buttons">
+            <button type="submit" class="btn btn-primary">
+              Guardar Servicio
+            </button>
+            <a
+              href="{{ url_for('servicios.listar') }}"
+              class="btn btn-secondary"
+              >Cancelar</a
+            >
+          </div>
+        </form>
+      </div>
     </div>
     {% endblock %}
-</body>
-
+  </body>
 </html>

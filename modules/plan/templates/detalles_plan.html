@@ -1,88 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="{{url_for('planes.static', filename='detalle_plan.css')}}">
-</head>
-<body>
-{% extends "dashboar.html" %}
-{% block content %}
-<div class="container-plan">
-    <div class="header-bar">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('planes.static', filename='detalle_plan.css')}}"
+    />
+  </head>
+  <body>
+    {% extends "dashboar.html" %} {% block content %}
+    <div class="container-plan">
+      <div class="header-bar">
         <div class="header-left">
-            <h2>Detalle de Plan</h2>
-            <div class="numero-serv">ID:{{ plan['id_plan'] }}</div>
+          <h2>Detalle de Plan</h2>
+          <div class="numero-serv">ID:{{ plan['id_plan'] }}</div>
         </div>
         <div class="header-right">
-            <div class="monto-total">Precio</div>
-            <div class="monto-valor">S/. {{ plan['precio_plan'] }}</div>
+          <div class="monto-total">Precio</div>
+          <div class="monto-valor">S/. {{ plan['precio_plan'] }}</div>
         </div>
-    </div>
+      </div>
 
-    <div class="content-grid">
+      <div class="content-grid">
         <div class="panel">
-            <div class="panel-titulo">Información General</div>
+          <div class="panel-titulo">Información General</div>
 
-            <div class="info-item">
-                <div class="info-label">Categoría</div>
-                <div class="info-value">
-                    <span class="badge-categoria">{{ plan['categoria_plan'] }}</span>
-                </div>
+          <div class="info-item">
+            <div class="info-label">Categoría</div>
+            <div class="info-value">
+              <span class="badge-categoria">{{ plan['categoria_plan'] }}</span>
             </div>
+          </div>
 
-            <div class="info-item">
-                <div class="info-label">Duración</div>
-                <div class="">
-                    <span class="badge badge-duracion">{{ plan['duracion_plan'] }}</span>
-                </div>
+          <div class="info-item">
+            <div class="info-label">Duración</div>
+            <div class="">
+              <span class="badge badge-duracion"
+                >{{ plan['duracion_plan'] }}</span
+              >
             </div>
+          </div>
 
-            <div class="info-item">
-                <div class="info-label">Estado</div>
-                <div class="">
-                    {% if plan['estado_plan'] == 1 %}
-                    <span class="badge badge-activo">Activo</span>
-                    {% else %}
-                    <span class="badge badge-inactivo">Inactivo</span>
-                    {% endif %}
-                </div>
+          <div class="info-item">
+            <div class="info-label">Estado</div>
+            <div class="">
+              {% if plan['estado_plan'] == 1 %}
+              <span class="badge badge-activo">Activo</span>
+              {% else %}
+              <span class="badge badge-inactivo">Inactivo</span>
+              {% endif %}
             </div>
-
-            
+          </div>
         </div>
 
         <div class="panel">
-            <div class="panel-titulo">Tipo de Plan</div>
+          <div class="panel-titulo">Tipo de Plan</div>
 
-            <div class="info-item">
-                <div class="info-label">Plan Seleccionado</div>
-                <div class="">
-                    <div class="tipo-plan-box">{{ plan['tipo_plan'] }}</div>
-                </div>
+          <div class="info-item">
+            <div class="info-label">Plan Seleccionado</div>
+            <div class="">
+              <div class="tipo-plan-box">{{ plan['tipo_plan'] }}</div>
             </div>
+          </div>
         </div>
 
         <div class="panel panel-servicio">
-            <div class="panel-titulo">Condiciones del Plan</div>
+          <div class="panel-titulo">Condiciones del Plan</div>
 
-            <div class="info-item" style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
-                <div class="info-label">Descripción de Condiciones</div>
-                <div class="descripcion-container">
-                    <div class="descripcion-item">
-                        <p>{{ plan['condiciones_plan'] }}</p>
-                    </div>
-                </div>
+          <div
+            class="info-item"
+            style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              min-height: 0;
+            "
+          >
+            <div class="info-label">Descripción de Condiciones</div>
+            <div class="descripcion-container">
+              <div class="descripcion-item">
+                <p>{{ plan['condiciones_plan'] }}</p>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <div class="footer-actions">
-        <a href="{{ url_for('planes.listar') }}" class="btn-regresar">Volver a la lista</a>
+      <div class="footer-actions">
+        <a href="{{ url_for('planes.listar') }}" class="btn-regresar"
+          >Volver a la lista</a
+        >
+      </div>
     </div>
-</div>
-{% endblock %}
-</body>
+    {% endblock %}
+  </body>
 </html>

@@ -1,128 +1,128 @@
 /* --- Estilos generales --- */
 body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
 }
 
 .title {
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .subtitle {
-    color: #666;
-    margin-bottom: 2rem;
+  color: #666;
+  margin-bottom: 2rem;
 }
 
 /* --- Card --- */
 .card {
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 /* --- Formulario --- */
 .service-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group label {
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #333;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
 }
 
 .form-group span {
-    color: #e63946;
-    font-weight: bold;
+  color: #e63946;
+  font-weight: bold;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-    padding: 10px 14px;
-    border: 1px solid #d1d1d1;
-    border-radius: 6px;
-    font-size: 1rem;
-    background-color: #fefefe;
-    transition: border-color 0.3s, box-shadow 0.3s;
+  padding: 10px 14px;
+  border: 1px solid #d1d1d1;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fefefe;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-    outline: none;
-    border-color: #8c6f56;
-    box-shadow: 0 0 0 2px rgba(140, 111, 86, 0.2);
+  outline: none;
+  border-color: #8c6f56;
+  box-shadow: 0 0 0 2px rgba(140, 111, 86, 0.2);
 }
 
 /* --- Botones --- */
 .buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
 }
 
 .btn {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s, transform 0.2s;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .btn-primary {
-    background-color: #8c6f56;
-    color: #fff;
+  background-color: #8c6f56;
+  color: #fff;
 }
 
 .btn-primary:hover {
-    background-color: #725940;
-    transform: translateY(-1px);
+  background-color: #725940;
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
-    background-color: #e0e0e0;
-    color: #333;
+  background-color: #e0e0e0;
+  color: #333;
 }
 
 .btn-secondary:hover {
-    background-color: #ccc;
-    transform: translateY(-1px);
+  background-color: #ccc;
+  transform: translateY(-1px);
 }
 
 /* --- Responsive --- */
 @media (max-width: 600px) {
-    .container {
-        padding: 15px;
-    }
+  .container {
+    padding: 15px;
+  }
 
-    .buttons {
-        flex-direction: column;
-    }
+  .buttons {
+    flex-direction: column;
+  }
 
-    .btn {
-        width: 100%;
-    }
+  .btn {
+    width: 100%;
+  }
 }

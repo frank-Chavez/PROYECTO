@@ -1,77 +1,97 @@
-from flask import Blueprint,render_template, redirect, url_for, request, send_file
+from flask import Blueprint, render_template, redirect, url_for, request, send_file, session
 from database import conection
 import pandas as pd
 import io
 
 
-proveedor_bd = Blueprint("proveedor", __name__, url_prefix="/proveedor", template_folder="templates", static_folder="static")
+proveedor_bd = Blueprint(
+    "proveedor", __name__, url_prefix="/proveedor", template_folder="templates", static_folder="static"
+)
 
 
-
-@proveedor_bd.route('/')
+@proveedor_bd.route("/")
 def listar():
-    conn=conection()
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    conn = conection()
     proveedor = conn.execute("SELECT * FROM Proveedores").fetchall()
     conn.close()
     return render_template("proveedor.html", proveedor=proveedor, title="Proveedor")
 
 
-
-@proveedor_bd.route('/cambiar_estado/<int:id>', methods=['GET'])
+@proveedor_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
 def cambiar_estado(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     conn = conection()
     proveedor = conn.execute("SELECT estado_p FROM Proveedores WHERE id_proveedor = ?", (id,)).fetchone()
-    
+
     if proveedor:
         nuevo_estado = 0 if proveedor["estado_p"] == 1 else 1
         conn.execute("UPDATE Proveedores SET estado_p = ? WHERE id_proveedor = ?", (nuevo_estado, id))
         conn.commit()
-    
+
     conn.close()
-    return redirect(url_for('proveedor.listar'))
+    return redirect(url_for("proveedor.listar"))
 
 
-@proveedor_bd.route('/editar/<int:id>', methods=['GET','POST'])
+@proveedor_bd.route("/editar/<int:id>", methods=["GET", "POST"])
 def editar(id):
-    conn= conection()
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    conn = conection()
 
     if request.method == "POST":
-        nombreProveedor = request.form['nombre_p']
-        telefono = request.form['telefono_p']
-        correo = request.form['correo_p']
-        servicio = request.form['servicio_p']
-        fechaRegistro = request.form['fechaRegistro_p']
-        estado = request.form['estado_p']
+        nombreProveedor = request.form["nombre_p"]
+        telefono = request.form["telefono_p"]
+        correo = request.form["correo_p"]
+        servicio = request.form["servicio_p"]
+        fechaRegistro = request.form["fechaRegistro_p"]
+        estado = request.form["estado_p"]
 
-        conn.execute("""
+        conn.execute(
+            """
                 UPDATE Proveedores 
                 SET nombre_p = ?, telefono_p = ?, correo_p = ?, servicio_p = ?, fechaRegistro_p = ?, estado_p    = ?
                 WHERE id_proveedor = ?
-            """, (nombreProveedor, telefono, correo,  servicio, fechaRegistro, estado, id))
-        conn.commit()  
+            """,
+            (nombreProveedor, telefono, correo, servicio, fechaRegistro, estado, id),
+        )
+        conn.commit()
         conn.close()
 
-        return redirect(url_for('proveedor.listar'))
-    
-    editar = conn.execute("""
+        return redirect(url_for("proveedor.listar"))
+
+    editar = conn.execute(
+        """
         SELECT id_proveedor, nombre_p, telefono_p, correo_p, servicio_p, fechaRegistro_p, estado_p  
         FROM Proveedores 
         WHERE id_proveedor = ?
-    """, (id,)).fetchone()
+    """,
+        (id,),
+    ).fetchone()
     conn.close()
 
     return render_template("editar_proveedor.html", Proveedor=editar, title="Registrar proveedor")
 
 
-
-@proveedor_bd.route('/VerDetalles/<int:id>', methods=['GET'])
+@proveedor_bd.route("/VerDetalles/<int:id>", methods=["GET"])
 def VerDetalles(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     conn = conection()
-    proveedor = conn.execute("""
+    proveedor = conn.execute(
+        """
         SELECT id_proveedor, nombre_p, telefono_p, correo_p, servicio_p, fechaRegistro_p, estado_p  
         FROM Proveedores 
         WHERE id_proveedor = ?
-    """, (id,)).fetchone()
+    """,
+        (id,),
+    ).fetchone()
     conn.close()
 
     if not proveedor:
@@ -80,9 +100,11 @@ def VerDetalles(id):
     return render_template("detalles_proveedores.html", proveedor=proveedor, title="Detalles del proveedor")
 
 
-
-@proveedor_bd.route('/agregar', methods=["GET", "POST"] , endpoint='agregar')
+@proveedor_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
 def agregar_fallecido():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     if request.method == "POST":
         nombre = request.form["nombre"]
         telefono = request.form["Telefono"]
@@ -91,14 +113,16 @@ def agregar_fallecido():
         fechaRegistro = request.form["fechaRegistro"]
         estado = request.form["estado"]
 
-
         conn = conection()
         cursor = conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO Proveedores (
                 nombre_p, telefono_p, correo_p, servicio_p, fechaRegistro_p, estado_p
             ) VALUES (?, ?, ?, ?, ?, ?)
-        """, (nombre, telefono, correo, servicio,  fechaRegistro, estado))
+        """,
+            (nombre, telefono, correo, servicio, fechaRegistro, estado),
+        )
         conn.commit()
         conn.close()
 
@@ -107,14 +131,15 @@ def agregar_fallecido():
     return render_template("agregar_proveedor.html", title="Proveedor")
 
 
-
-
-@proveedor_bd.route('/exel')
+@proveedor_bd.route("/exel")
 def exel():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
     try:
         # coneccion a la bd
         conn = conection()
-        #consultando la informacion que se va a descargar
+        # consultando la informacion que se va a descargar
         consulta = """
         SELECT 
             p.nombre_p AS 'Nombre del Proveedor',
@@ -129,29 +154,27 @@ def exel():
         FROM Proveedores p
         """
 
-
-
         df = pd.read_sql_query(consulta, conn)
         conn.close()
 
         # se crea el archivo exel
         output = io.BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, index=False, sheet_name='Proveedores')
+        with pd.ExcelWriter(output, engine="openpyxl") as writer:
+            df.to_excel(writer, index=False, sheet_name="Proveedores")
 
         output.seek(0)
 
         # Envia el archivo como descarga
         return send_file(
             output,
-            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            download_name='Proveedores.xlsx',
-            as_attachment=True
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            download_name="Proveedores.xlsx",
+            as_attachment=True,
         )
 
     except Exception as e:
         import traceback
+
         print("Error al generar Excel:", e)
         traceback.print_exc()
         return f"Error al generar el archivo Excel: {e}", 500
-

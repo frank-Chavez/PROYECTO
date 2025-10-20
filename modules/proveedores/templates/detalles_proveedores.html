@@ -1,77 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}}</title>
-    <link rel="stylesheet" href="{{url_for('proveedor.static', filename='detalles.css')}}">
-</head>
+    <link
+      rel="stylesheet"
+      href="{{url_for('proveedor.static', filename='detalles.css')}}"
+    />
+  </head>
 
-<body>
-    {% extends "dashboar.html" %}
-    {% block content %}
+  <body>
+    {% extends "dashboar.html" %} {% block content %}
 
     <div class="container-servicio">
-        <div class="header-bar">
-            <div class="header-left">
-                <h2>{{ title }}</h2>
-                <div class="numero-serv">ID: {{ proveedor['id_proveedor'] }}</div>
-            </div>
+      <div class="header-bar">
+        <div class="header-left">
+          <h2>{{ title }}</h2>
+          <div class="numero-serv">ID: {{ proveedor['id_proveedor'] }}</div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="panel">
+          <div class="panel-titulo">Información de Contacto</div>
+
+          <div class="info-item">
+            <div class="info-label">Nombre del Proveedor</div>
+            <div class="nombre-destacado">{{ proveedor['nombre_p'] }}</div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">Teléfono</div>
+            <div class="info-value">{{ proveedor['telefono_p'] }}</div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">Correo Electrónico</div>
+            <div class="info-value">{{ proveedor['correo_p'] }}</div>
+          </div>
         </div>
 
-        <div class="content-grid">
-            <div class="panel">
-                <div class="panel-titulo">Información de Contacto</div>
+        <div class="panel">
+          <div class="panel-titulo">Información Adicional</div>
 
-                <div class="info-item">
-                    <div class="info-label">Nombre del Proveedor</div>
-                    <div class="nombre-destacado">{{ proveedor['nombre_p'] }}</div>
-                </div>
+          <div class="info-item">
+            <div class="info-label">Servicio que Ofrece</div>
+            <div class="info-value">{{ proveedor['servicio_p'] }}</div>
+          </div>
 
-                <div class="info-item">
-                    <div class="info-label">Teléfono</div>
-                    <div class="info-value">{{ proveedor['telefono_p'] }}</div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-label">Correo Electrónico</div>
-                    <div class="info-value">{{ proveedor['correo_p'] }}</div>
-                </div>
+          <div class="info-item">
+            <div class="info-label">Fecha de Registro</div>
+            <div class="info-value">
+              {{ proveedor['fechaRegistro_p']|replace('-', '/') }}
             </div>
+          </div>
 
-            <div class="panel">
-                <div class="panel-titulo">Información Adicional</div>
-
-                <div class="info-item">
-                    <div class="info-label">Servicio que Ofrece</div>
-                    <div class="info-value">{{ proveedor['servicio_p'] }}</div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-label">Fecha de Registro</div>
-                    <div class="info-value">{{ proveedor['fechaRegistro_p']|replace('-', '/') }}</div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-label">Estado</div>
-                    <div class="">
-                        {% if proveedor['estado_p'] == 1 %}
-                        <span class="badge badge-activo">Activo</span>
-                        {% else %}
-                        <span class="badge badge-inactivo">Inactivo</span>
-                        {% endif %}
-                    </div>
-                </div>
+          <div class="info-item">
+            <div class="info-label">Estado</div>
+            <div class="">
+              {% if proveedor['estado_p'] == 1 %}
+              <span class="badge badge-activo">Activo</span>
+              {% else %}
+              <span class="badge badge-inactivo">Inactivo</span>
+              {% endif %}
             </div>
+          </div>
         </div>
+      </div>
 
-        <div class="footer-actions">
-            <a href="{{ url_for('proveedor.listar') }}" class="btn-regresar">Volver al Listado</a>
-        </div>
+      <div class="footer-actions">
+        <a href="{{ url_for('proveedor.listar') }}" class="btn-regresar"
+          >Volver al Listado</a
+        >
+      </div>
     </div>
 
     {% endblock %}
-</body>
-
+  </body>
 </html>

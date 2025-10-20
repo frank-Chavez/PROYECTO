@@ -1,56 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}}</title>
-    <link rel="stylesheet" href="{{url_for('fallecidos.static', filename='fallecidos.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
-</head>
-<body class="Fallecidos">
-    {% extends "dashboar.html" %}
-    {% block content %}
+    <link
+      rel="stylesheet"
+      href="{{url_for('fallecidos.static', filename='fallecidos.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body class="Fallecidos">
+    {% extends "dashboar.html" %} {% block content %}
     <section class="opciones">
-        <h1>{{title}}</h1>
-        <div class="opciones_bt">
-            <div class="content-buscar">
-                <img src="/static/icons/buscar.svg" alt="Buscar">
-                <input type="text" class="buscar" placeholder="Buscar {{title}}...">
-            </div>
-            <a href="{{ url_for('fallecidos.agregar') }}" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
-            <a href="{{ url_for('fallecidos.exel')}}" class="descargar"><img src="/static/icons/descargar.svg" alt="descargar">EXCEL</a>
+      <h1>{{title}}</h1>
+      <div class="opciones_bt">
+        <div class="content-buscar">
+          <img src="/static/icons/buscar.svg" alt="Buscar" />
+          <input type="text" class="buscar" placeholder="Buscar {{title}}..." />
         </div>
+        {% if session['rol_id'] == 1 %}
+        <a href="{{ url_for('fallecidos.agregar') }}" class="agregar">
+          <img
+            class="ico_agregar"
+            src="/static/icons/servicios.svg"
+            alt="Agregar"
+          />Agregar</a
+        >
+        {% else %}
+        <a href="javascript:void(0);" onclick="sinPermiso()" class="agregar">
+          <img
+            class="ico_agregar"
+            src="/static/icons/servicios.svg"
+            alt="Agregar"
+            style="opacity: 0.5; cursor: not-allowed"
+          />Agregar</a
+        >
+        {% endif %}
+
+        <a href="{{ url_for('fallecidos.exel')}}" class="descargar"
+          ><img src="/static/icons/descargar.svg" alt="descargar" />EXCEL</a
+        >
+      </div>
     </section>
     <section class="tabla">
-        <div class="titulo">
-            <p>Nombre</p>
-            <p>Edad</p>
-            <p>Fecha Defuncion</p>
-            <p>Estado</p>
-            <p>Acciones</p>
+      <div class="titulo">
+        <p>Nombre</p>
+        <p>Edad</p>
+        <p>Fecha Defuncion</p>
+        <p>Estado</p>
+        <p>Acciones</p>
+      </div>
+      {% for f in Fallecidos %}
+      <div class="contenido">
+        <p>{{ f['nombre_f'] }}</p>
+        <p>{{ f['edad_f'] }}</p>
+        <p>{{ f['fecha_defuncion']|replace('-', '/') }}</p>
+        <p>
+          <td>
+            <span
+              class="{{ 'text-green' if f['estado_f'] == 1 else 'text-red' }}"
+            >
+              {{ 'Activo' if f['estado_f'] == 1 else 'Inactivo' }}
+            </span>
+          </td>
+        </p>
+        <div class="acciones">
+          {%if session['rol_id']==1 %}
+          <a href="{{ url_for('fallecidos.editar', id=f['id_fallecido']) }}"
+            ><img src="/static/icons/editar.svg" alt=""
+          /></a>
+          {% else %}
+          <a href="javascript:void(0);" onclick="sinPermiso()" alt="editar">
+            <img
+              src="/static/icons/editar.svg"
+              alt="editar"
+              style="opacity: 0.5; cursor: not-allowed"
+            />
+          </a>
+          {% endif %}
+          <a
+            href="{{ url_for('fallecidos.VerDetalles', id=f['id_fallecido']) }}"
+            ><img src="/static/icons/ver.svg" alt="cambiar estado"
+          /></a>
+          <a
+            href="{{ url_for('fallecidos.cambiar_estado', id=f['id_fallecido']) }}"
+            onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"
+            ><img src="/static/icons/borrar.svg" alt="cambiar estado"
+          /></a>
         </div>
-        {% for f in Fallecidos %}
-        <div class="contenido">
-            <p>{{ f['nombre_f'] }}</p>
-            <p>{{ f['edad_f'] }}</p> 
-            <p>{{ f['fecha_defuncion']|replace('-', '/') }}</p>
-            <p>
-                <td>
-                    <span class="{{ 'text-green' if f['estado_f'] == 1 else 'text-red' }}">
-                        {{ 'Activo' if f['estado_f'] == 1 else 'Inactivo' }}
-                    </span>
-                </td>
-            </p>
-            <div class="acciones">
-                <a href="{{ url_for('fallecidos.editar', id=f['id_fallecido']) }}"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('fallecidos.VerDetalles', id=f['id_fallecido']) }}"><img src="/static/icons/ver.svg" alt="cambiar estado"></a>
-                <a href="{{ url_for('fallecidos.cambiar_estado', id=f['id_fallecido']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
-            </div>
-        </div>
-        {% endfor %}
+      </div>
+      {% endfor %}
     </section>
     {% endblock %}
-
-</body>
+  </body>
 </html>

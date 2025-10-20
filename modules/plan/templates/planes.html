@@ -1,54 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}}</title>
-    <link rel="stylesheet" href="{{url_for('planes.static', filename='plan.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-    {% extends "dashboar.html" %}
-    {% block content %}
+    <link
+      rel="stylesheet"
+      href="{{url_for('planes.static', filename='plan.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    {% extends "dashboar.html" %} {% block content %}
     <section class="opciones">
-        <h1>{{title}}</h1>
-        <div class="opciones_bt">
-            <div class="content-buscar">
-                <img src="/static/icons/buscar.svg" alt="Buscar">
-                <input type="text" class="buscar" placeholder="Buscar {{title}}...">
-            </div>
-            <a href="{{ url_for('planes.agregar') }}" class="agregar"><img class="ico_agregar" src="/static/icons/servicios.svg" alt="Agregar">Agregar</a>
-            <a href="{{url_for('planes.exel')}}" class="descargar"><img src="/static/icons/descargar.svg" alt="descargar">EXCEL</a>
+      <h1>{{title}}</h1>
+      <div class="opciones_bt">
+        <div class="content-buscar">
+          <img src="/static/icons/buscar.svg" alt="Buscar" />
+          <input type="text" class="buscar" placeholder="Buscar {{title}}..." />
         </div>
+        {% if session['rol_id'] == 1 %}
+        <a href="{{ url_for('planes.agregar') }}" class="agregar"
+          ><img
+            class="ico_agregar"
+            src="/static/icons/servicios.svg"
+            alt="Agregar"
+          />Agregar</a
+        >
+        {% else %}
+        <a href="javascript:void(0);" onclick="sinPermiso()" class="agregar">
+          <img
+            class="ico_agregar"
+            src="/static/icons/servicios.svg"
+            alt="Agregar"
+            style="opacity: 0.5; cursor: not-allowed"
+          />Agregar
+        </a>
+        {% endif %}
+        <a href="{{url_for('planes.exel')}}" class="descargar"
+          ><img src="/static/icons/descargar.svg" alt="descargar" />EXCEL</a
+        >
+      </div>
     </section>
     <section class="tabla">
-        <div class="titulo">
-            <p>Tipo De Plan</p>
-            <p>Precio</p>
-            <p>Duracion</p>
-            <p>Estado</p>
-            <p>Acciones</p>
+      <div class="titulo">
+        <p>Tipo De Plan</p>
+        <p>Precio</p>
+        <p>Duracion</p>
+        <p>Estado</p>
+        <p>Acciones</p>
+      </div>
+      {% for p in planes %}
+      <div class="contenido">
+        <p>{{ p['tipo_plan'] }}</p>
+        <p>S/.{{ p['precio_plan'] }}</p>
+        <p>{{ p['duracion_plan'] }}</p>
+        <p>
+          <td>
+            <span
+              class="{{ 'text-green' if p['estado_plan'] == 1 else 'text-red' }}"
+            >
+              {{ 'Activo' if p['estado_plan'] == 1 else 'Inactivo' }}
+            </span>
+          </td>
+        </p>
+        <div class="acciones">
+          {% if session['rol_id'] == 1 %}
+          <a href="{{ url_for('planes.editar', id=p['id_plan']) }}"
+            ><img src="/static/icons/editar.svg" alt="editar"
+          /></a>
+          {% else %}
+          <a href="javascript:void(0);" onclick="sinPermiso()">
+            <img
+              src="/static/icons/editar.svg"
+              alt="editar"
+              style="opacity: 0.5; cursor: not-allowed"
+            />
+          </a>
+          {% endif %}
+          <a href="{{ url_for('planes.VerDetalles', id=p['id_plan']) }}"
+            ><img src="/static/icons/ver.svg" alt="cambiar estado"
+          /></a>
+          <a
+            href="{{ url_for('planes.cambiar_estado', id=p['id_plan']) }}"
+            onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"
+            ><img src="/static/icons/borrar.svg" alt="cambiar estado"
+          /></a>
         </div>
-        {% for p in planes %}
-        <div class="contenido">
-            <p>{{ p['tipo_plan'] }}</p>
-            <p>S/.{{ p['precio_plan'] }}</p>
-            <p>{{ p['duracion_plan'] }}</p>  
-            <p>
-                <td>
-                    <span class="{{ 'text-green' if p['estado_plan'] == 1 else 'text-red' }}">
-                        {{ 'Activo' if p['estado_plan'] == 1 else 'Inactivo' }}
-                    </span>
-                </td>
-            </p>     
-            <div class="acciones">
-                <a href="{{ url_for('planes.editar', id=p['id_plan']) }}"><img src="/static/icons/editar.svg" alt=""></a>
-                <a href="{{ url_for('planes.VerDetalles', id=p['id_plan']) }}"><img src="/static/icons/ver.svg" alt="cambiar estado"></a>
-                <a href="{{ url_for('planes.cambiar_estado', id=p['id_plan']) }}" onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"><img src="/static/icons/borrar.svg" alt="cambiar estado"></a>
-            </div>
-        </div>
-        {% endfor %}
+      </div>
+      {% endfor %}
     </section>
     {% endblock %}
-</body>
+  </body>
 </html>

@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agregar {{title}}</title>
-</head>
-<body>
-    {% extends "dashboar.html" %} 
-    {% block content %}
+  </head>
+  <body>
+    {% extends "dashboar.html" %} {% block content %}
     <h2>Agregar {{title}}</h2>
     <form method="POST">
-        <label for="nombre">Nombre</label>
-        <input type="text" name="nombre" required>
-        
-        <label for="edad">Edad</label>
-        <input type="text" name="edad" required>
+      <label for="nombre">Nombre</label>
+      <input type="text" name="nombre" required />
 
-        <label for="fechaDefuncion">Fecha Defuncion</label>
-        <input type="date" name="fechaDefuncion" required>
+      <label for="edad">Edad</label>
+      <input type="text" name="edad" required />
 
-        <label for="fechaRegistro">Fecha Registro</label>
-        <input type="date" name="fechaRegistro" required>
+      <label for="fechaDefuncion">Fecha Defuncion</label>
+      <input type="date" name="fechaDefuncion" required />
 
-        <label for="estado">Estado</label>
-        <select name="estado" required>
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-        </select>
+      <label for="fechaRegistro">Fecha Registro</label>
+      <input type="date" name="fechaRegistro" required />
 
-        <button type="submit">Agregar</button>
+      <label for="estado">Estado</label>
+      <select name="estado" required>
+        <option value="1">Activo</option>
+        <option value="0">Inactivo</option>
+      </select>
+
+      <button type="submit">Agregar</button>
     </form>
     {% endblock %}
-</body>
+  </body>
 </html>
