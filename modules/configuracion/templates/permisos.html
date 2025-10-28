@@ -14,6 +14,7 @@
     %}
     <div class="cont">
       <div class="cont-permisos">
+        <!--nombre del usuario y su rol-->
         <div class="cont-titulo">
           <div class="nombre-u">
             <h3 class="nombre-usuario">{{p['nombre_u']}}</h3>
@@ -22,6 +23,8 @@
             {{ 'Admin' if p['rol_id'] == 1 else 'Usuario' }}
           </span>
         </div>
+        <!---------------------------------------------------------------->
+        <!--#bloqe de permisos -->
         <div class="cont-per">
           <label class="cont-permisos-opciones">
             <div class="opciones">
@@ -60,6 +63,7 @@
             </div>
           </label>
         </div>
+        <!---------------------------------------------------------------->
       </div>
     </div>
     {% endfor %} {% endblock %}

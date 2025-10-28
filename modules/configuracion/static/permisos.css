@@ -43,8 +43,8 @@
 .cont-permisos-opciones {
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 2px solid #9333ea;
-  background-color: #faf5ff;
+  border: 2px solid #e5e7eb;
+  background-color: #ffffff;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
@@ -53,13 +53,23 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  align-items: center;
 }
 .opciones h5 {
   font-weight: 600;
-  color: #7e22ce;
+  color: #374151;
 }
 .check {
   width: 1.25rem;
   height: 1.25rem;
+}
+
+label.cont-permisos-opciones:has(.check:checked) {
+  border-color: #9333ea;
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+label.cont-permisos-opciones:has(.check:checked) h5 {
+  color: #7e22ce;
 }

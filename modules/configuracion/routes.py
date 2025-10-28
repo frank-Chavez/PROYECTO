@@ -6,26 +6,16 @@ configuracion_bd = Blueprint(
 )
 
 
-@configuracion_bd.route("/")
+@configuracion_bd.route("/usuarios")
 def index():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
 
-    return render_template(
-        "configuracion.html",
-    )
-
-
-@configuracion_bd.route("/usuarios")
-def usuarios():
-    if "id_usuario" not in session:
-        return redirect(url_for("login"))
-
     conn = conection()
-    usuario = conn.execute("SELECT * FROM Usuario").fetchall()
+    index = conn.execute("SELECT * FROM Usuario").fetchall()
     conn.close()
 
-    return render_template("usuarios.html", usuario=usuario, title="usuarios")
+    return render_template("configuracion.html", index=index)
 
 
 @configuracion_bd.route("/permisos")

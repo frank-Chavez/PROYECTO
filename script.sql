@@ -1,6 +1,6 @@
 CREATE TABLE Rol (
     rol_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    estado_rol INTEGER NOT NULL, 
+    estado_rol INTEGER NOT NULL, -- 0 o 1
     tipo_rol TEXT NOT NULL
 );
 CREATE TABLE sqlite_sequence(name,seq);
@@ -27,7 +27,7 @@ CREATE TABLE Fallecidos (
     id_fallecido INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre_f TEXT NOT NULL,
     fecha_defuncion DATE NOT NULL,
-    estado_f INTEGER, 
+    estado_f INTEGER, -- booleano
     edad_f INTEGER,
     familiar_id INTEGER,
     fechaRegistro_f DATE,
@@ -74,9 +74,7 @@ CREATE TABLE cotizacion_detalles (
     id_detalle INTEGER PRIMARY KEY AUTOINCREMENT,
     id_cotizacion INTEGER,
     id_plan INTEGER,
-    id_servicio INTEGER, 
-    id_familiar INTEGER, 
-    cantidad INTEGER DEFAULT 1,
+    id_servicio INTEGER, id_familiar INTEGER, cantidad INTEGER DEFAULT 1,
     FOREIGN KEY (id_cotizacion) REFERENCES Cotizacion(id_cotizacion),
     FOREIGN KEY (id_plan) REFERENCES Planes(id_plan),
     FOREIGN KEY (id_servicio) REFERENCES Servicios(id_servicio)
@@ -94,4 +92,15 @@ CREATE TABLE proveedor_servicio (
     PRIMARY KEY (id_proveedores, id_servicios),
     FOREIGN KEY (id_proveedores) REFERENCES Proveedores(id_proveedor),
     FOREIGN KEY (id_servicios) REFERENCES Servicios(id_servicio)
+);
+CREATE TABLE PermisosUsuario (
+    id_permiso INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario_id INTEGER NOT NULL,
+    ver_registros INTEGER DEFAULT 0,
+    crear_registros INTEGER DEFAULT 0,
+    editar_registros INTEGER DEFAULT 0,
+    eliminar_registros INTEGER DEFAULT 0,
+    exportar_datos INTEGER DEFAULT 0,
+    administrar_sistema INTEGER DEFAULT 0,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
 );
