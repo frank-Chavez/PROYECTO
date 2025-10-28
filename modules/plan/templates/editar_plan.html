@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="{{url_for('planes.static', filename='editar_planes.css')}}">
@@ -10,66 +11,96 @@
     {% extends "dashboar.html" %}
     {% block content %}
 
-    <div class="editar-container">
-        <h2 class="editar-title">{{ title }}</h2>
-
-        <form method="POST">
-
-            <!-- Tipo de Plan -->
-            <div class="editar-group">
-                <label for="tipo_plan">Tipo de Plan:</label>
-                <select name="tipo_plan" id="tipo_plan" required>
-                    <option value="Basico" {% if plan['tipo_plan'] == 'Basico' %}selected{% endif %}>Básico</option>
-                    <option value="Intermedio" {% if plan['tipo_plan'] == 'Intermedio' %}selected{% endif %}>Intermedio</option>
-                    <option value="Premium" {% if plan['tipo_plan'] == 'Premium' %}selected{% endif %}>Premium</option>
-                    <option value="Empresarial" {% if plan['tipo_plan'] == 'Empresarial' %}selected{% endif %}>Empresarial</option>
-                </select>
+    <form method="POST">
+        <div class="container-plan">
+            <div class="header-bar-plan">
+                <div class="header-left-plan">
+                    <h2>{{ title }}</h2>
+                </div>
             </div>
 
-            <!-- Precio -->
-            <div class="editar-group">
-                <label for="precio_plan">Precio del Plan:</label>
-                <input type="number" step="0.01" min="0" name="precio_plan" id="precio_plan" value="{{ plan['precio_plan'] }}" required>
+            <div class="content-grid-plan">
+                <div class="panel-plan">
+                    <div class="panel-titulo-plan">Información Básica del Plan</div>
+
+                    <div class="form-group-plan">
+                        <label for="tipo_plan" class="form-label-plan">Tipo de Plan</label>
+                        <select name="tipo_plan" 
+                                id="tipo_plan" 
+                                class="form-control-plan" 
+                                required>
+                            <option value="Basico" {% if plan['tipo_plan'] == 'Basico' %}selected{% endif %}>Básico</option>
+                            <option value="Intermedio" {% if plan['tipo_plan'] == 'Intermedio' %}selected{% endif %}>Intermedio</option>
+                            <option value="Premium" {% if plan['tipo_plan'] == 'Premium' %}selected{% endif %}>Premium</option>
+                            <option value="Empresarial" {% if plan['tipo_plan'] == 'Empresarial' %}selected{% endif %}>Empresarial</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-plan">
+                        <label for="precio_plan" class="form-label-plan">Precio del Plan</label>
+                        <input type="number" 
+                               step="0.01" 
+                               min="0" 
+                               name="precio_plan" 
+                               id="precio_plan" 
+                               class="form-control-plan" 
+                               value="{{ plan['precio_plan'] }}" 
+                               required>
+                    </div>
+
+                    <div class="form-group-plan">
+                        <label for="duracion_plan" class="form-label-plan">Duración del Plan</label>
+                        <input type="text" 
+                               name="duracion_plan" 
+                               id="duracion_plan" 
+                               class="form-control-plan" 
+                               value="{{ plan['duracion_plan'] }}">
+                    </div>
+                </div>
+
+                <div class="panel-plan">
+                    <div class="panel-titulo-plan">Detalles y Configuración</div>
+
+                    <div class="form-group-plan">
+                        <label for="categoria_plan" class="form-label-plan">Categoría del Plan</label>
+                        <select name="categoria_plan" 
+                                id="categoria_plan" 
+                                class="form-control-plan" 
+                                required>
+                            <option value="Personal" {% if plan['categoria_plan'] == "Personal" %}selected{% endif %}>Personal</option>
+                            <option value="Empresarial" {% if plan['categoria_plan'] == "Empresarial" %}selected{% endif %}>Empresarial</option>
+                            <option value="Estudiantil" {% if plan['categoria_plan'] == "Estudiantil" %}selected{% endif %}>Estudiantil</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-plan">
+                        <label for="condiciones_plan" class="form-label-plan">Condiciones del Plan</label>
+                        <textarea name="condiciones_plan" 
+                                  id="condiciones_plan" 
+                                  class="form-control-plan" 
+                                  rows="4" 
+                                  required>{{ plan['condiciones_plan'] }}</textarea>
+                    </div>
+
+                    <div class="form-group-plan">
+                        <label for="estado_plan" class="form-label-plan">Estado</label>
+                        <select name="estado_plan" 
+                                id="estado_plan" 
+                                class="form-control-plan" 
+                                required>
+                            <option value="1" {% if plan['estado_plan'] == 1 %}selected{% endif %}>Activo</option>
+                            <option value="0" {% if plan['estado_plan'] == 0 %}selected{% endif %}>Inactivo</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-            <!-- Duración -->
-            <div class="editar-group">
-                <label for="duracion_plan">Duración del Plan:</label>
-                <input type="text" name="duracion_plan" id="duracion_plan" value="{{ plan['duracion_plan'] }}">
+            <div class="footer-actions-plan">
+                <a href="{{ url_for('planes.listar') }}" class="btn-cancelar-plan">Cancelar</a>
+                <button type="submit" class="btn-guardar-plan">Guardar Cambios</button>
             </div>
-
-            <!-- Categoría -->
-            <div class="editar-group">
-                <label for="categoria_plan">Categoría del Plan:</label>
-                <select name="categoria_plan" id="categoria_plan" required>
-                    <option value="Personal" {% if plan['categoria_plan'] == "Personal" %}selected{% endif %}>Personal</option>
-                    <option value="Empresarial" {% if plan['categoria_plan'] == "Empresarial" %}selected{% endif %}>Empresarial</option>
-                    <option value="Estudiantil" {% if plan['categoria_plan'] == "Estudiantil" %}selected{% endif %}>Estudiantil</option>
-                </select>
-            </div>
-
-            <!-- Condiciones -->
-            <div class="editar-group">
-                <label for="condiciones_plan">Condiciones del Plan:</label>
-                <textarea name="condiciones_plan" id="condiciones_plan" rows="4" required>{{ plan['condiciones_plan'] }}</textarea>
-            </div>
-
-            <!-- Estado -->
-            <div class="editar-group">
-                <label for="estado_plan">Estado:</label>
-                <select name="estado_plan" id="estado_plan" required>
-                    <option value="1" {% if plan['estado_plan'] == 1 %}selected{% endif %}>Activo</option>
-                    <option value="0" {% if plan['estado_plan'] == 0 %}selected{% endif %}>Inactivo</option>
-                </select>
-            </div>
-
-            <!-- Botones -->
-            <div class="editar-actions">
-                <button type="submit" class="editar-btn editar-btn-primary">Guardar</button>
-                <a href="{{ url_for('planes.listar') }}" class="editar-btn editar-btn-secondary">Cancelar</a>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
     {% endblock %}
 </body>

@@ -22,10 +22,10 @@ def listar():
            s.descripcion_serv,
            s.categoria_serv,
            s.precio_serv,
-           p.nombre_p ,
+           p.nombre_p AS proveedor,
            s.estado_serv
     FROM Servicios s
-    JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
+    LEFT JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
 """
     ).fetchall()
     conn.close()
@@ -81,9 +81,18 @@ def editar(id):
 
     editar = conn.execute(
         """
-        SELECT id_servicio, tipo_serv, descripcion_serv, categoria_serv, precio_serv, proveedor_id, estado_serv  
-        FROM Servicios 
-        WHERE id_servicio = ?
+        SELECT 
+            s.id_servicio,
+            s.tipo_serv,
+            s.descripcion_serv,
+            s.categoria_serv,
+            s.precio_serv,
+            s.proveedor_id,
+            s.estado_serv,
+            p.nombre_p
+        FROM Servicios s
+        LEFT JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
+        WHERE s.id_servicio = ?
     """,
         (id,),
     ).fetchone()
@@ -123,7 +132,7 @@ def VerDetalles(id):
 
 
 @servicios_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
-def agregar_fallecido():
+def agregar_servicio():
 
     if "id_usuario" not in session:
         return redirect(url_for("login"))
