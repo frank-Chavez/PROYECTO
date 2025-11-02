@@ -23,7 +23,7 @@
           <img src="/static/icons/buscar.svg" alt="Buscar" />
           <input type="text" class="buscar" placeholder="Buscar {{title}}..." />
         </div>
-        {% if session['rol_id']==1%}
+        {% if session.get("permisos", {}).get("crear_registros") %}
         <a href="{{ url_for('servicios.agregar') }}" class="agregar">
           <img
             class="ico_agregar"
@@ -40,10 +40,19 @@
             style="opacity: 0.5; cursor: not-allowed"
           />Agregar
         </a>
-        {% endif %}
+        {% endif %} {% if session.get("permisos", {}).get("exportar_datos") %}
         <a href="{{ url_for('servicios.exel') }}" class="descargar"
           ><img src="/static/icons/descargar.svg" alt="descargar" />EXCEL</a
         >
+        {% else %}
+        <a href="javascript:void(0);" onclick="sinPermiso()" class="descargar"
+          ><img
+            src="/static/icons/descargar.svg"
+            alt="descargar"
+            style="opacity: 0.5; cursor: not-allowed"
+          />EXCEL</a
+        >
+        {% endif %}
       </div>
     </section>
     <section class="tabla">
@@ -69,7 +78,7 @@
           </td>
         </p>
         <div class="acciones">
-          {% if session['rol_id']==1%}
+          {% if session.get("permisos", {}).get("editar_registros") %}
           <a href="{{ url_for('servicios.editar', id=s['id_servicio']) }}">
             <img src="/static/icons/editar.svg" alt="editar"
           /></a>
@@ -80,15 +89,32 @@
               alt="editar"
               style="opacity: 0.5; cursor: not-allowed"
           /></a>
-          {% endif %}
+          {% endif %} {% if session.get("permisos", {}).get("ver_registros") %}
           <a href="{{ url_for('servicios.VerDetalles', id=s['id_servicio']) }}"
             ><img src="/static/icons/ver.svg" alt="cambiar estado"
           /></a>
+          {% else %}
+          <a href="javascript:void(0);" onclick="sinPermiso()">
+            <img
+              src="/static/icons/ver.svg"
+              alt="ver"
+              style="opacity: 0.5; cursor: not-allowed"
+          /></a>
+          {% endif %} {% if session.get("permisos",
+          {}).get("eliminar_registros") %}
           <a
             href="{{ url_for('servicios.cambiar_estado', id=s['id_servicio']) }}"
             onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"
             ><img src="/static/icons/borrar.svg" alt="cambiar estado"
           /></a>
+          {% else %}
+          <a href="javascript:void(0);" onclick="sinPermiso()">
+            <img
+              src="/static/icons/borrar.svg"
+              alt="cambiar estado"
+              style="opacity: 0.5; cursor: not-allowed"
+          /></a>
+          {% endif %}
         </div>
       </div>
       {% endfor %}

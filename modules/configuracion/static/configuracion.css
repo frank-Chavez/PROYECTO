@@ -12,26 +12,36 @@
   margin-bottom: 2rem;
 }
 
-.option-usuario {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  background-color: #ffffff;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
+nav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
   text-decoration: none;
+  color: inherit;
+  transition: background 1s ease, color 0.3s ease;
 }
 
-.option-permiso {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  background-color: #ffffff;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
-  text-decoration: none;
+nav a img {
+  width: 20px;
+  height: 20px;
+  transition: filter 1s ease;
+}
+
+nav a:hover {
+  background: #eee;
+}
+nav a.active {
+  background: #7c3bed;
+  color: white;
+}
+nav a.active img {
+  filter: brightness(0) invert(1); /* blanco */
+}
+nav a img {
+  width: 20px;
+  height: 20px;
 }
 
 /*estilo de la tabla de usuarios*/

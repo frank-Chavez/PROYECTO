@@ -17,28 +17,33 @@
     </section>
 
     <section class="opcionaes-con">
-      <div>
-        <a href="{{ url_for('configuracion.index') }}" class="option-usuario">
+      <nav>
+        <a
+          href="{{ url_for('configuracion.index') }}"
+          class="{% if request.endpoint.startswith('configuracion.index') %}active{% endif %}"
+        >
           <img
             src="{{ url_for('static', filename='icons/familiares.svg') }}"
             alt="usuarios"
+            class="{% if request.endpoint == 'configuracion' %}active{% endif %}"
           />
           Usuarios
         </a>
-      </div>
+      </nav>
 
-      <div>
+      <nav>
         <a
           href="{{ url_for('configuracion.permisos') }}"
-          class="option-permiso"
+          class="{% if request.endpoint.startswith('configuracion.permisos') %}active{% endif %}"
         >
           <img
             src="{{ url_for('static', filename='icons/permisos.svg') }}"
             alt="Permisos"
+            class="{% if request.endpoint == 'configuracion' %}active{% endif %}"
           />
           Permisos
         </a>
-      </div>
+      </nav>
     </section>
 
     {% block options %}
@@ -76,7 +81,7 @@
               {{ 'Admin' if u['rol_id'] == 1 else 'Usuario' }}
             </span>
           </td>
-          <td class="cont-cont">{{u['rol_id']}}</td>
+          <td class="cont-cont">{{u['total_permisos']}}</td>
         </tr>
 
         {% endfor %}

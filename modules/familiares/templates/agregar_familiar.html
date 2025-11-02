@@ -5,41 +5,126 @@
     <title>Agregar {{title}}</title>
     <link
       rel="stylesheet"
-      href="{{url_for('familiares.static', filename='familiares.css')}}"
+      href="{{url_for('familiares.static', filename='agregar_familiares.css')}}"
     />
   </head>
   <body class="agregar-familiar">
     {% extends "dashboar.html" %} {% block content %}
-    <div class="form-card">
-      <h2>Agregar {{title}}</h2>
-      <form method="POST">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" name="nombre" required />
 
-        <label for="apellido" class="form-label">Apellido</label>
-        <input type="text" class="form-control" name="apellido" required />
+    <div class="familiar-container">
+      <div class="familiar-header">
+        <h2>Agregar {{title}}</h2>
+        <div class="familiar-breadcrumb">Familiares / Nuevo registro</div>
+      </div>
 
-        <label for="parentesco" class="form-label">Parentesco</label>
-        <input type="text" class="form-control" name="parentesco" required />
+      <div class="familiar-body">
+        <form method="POST">
+          <div class="familiar-section">
+            <div class="section-header">
+              <div class="section-title">Información personal</div>
+              <div class="section-subtitle">Datos básicos del familiar</div>
+            </div>
 
-        <label for="telefono" class="form-label">Teléfono</label>
-        <input type="text" class="form-control" name="telefono" />
+            <div class="familiar-grid">
+              <div class="familiar-field">
+                <label class="field-label">
+                  Nombre <span class="required-indicator">*</span>
+                </label>
+                <input type="text" class="field-input" name="nombre" required />
+              </div>
 
-        <label for="correo" class="form-label">Correo</label>
-        <input type="email" class="form-control" name="correo" />
+              <div class="familiar-field">
+                <label class="field-label">
+                  Apellido <span class="required-indicator">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="field-input"
+                  name="apellido"
+                  required
+                />
+              </div>
 
-        <label for="estado" class="form-label">Estado</label>
-        <select class="form-control" name="estado" required>
-          <option value="1">Activo</option>
-          <option value="0">Inactivo</option>
-        </select>
+              <div class="familiar-field">
+                <label class="field-label">
+                  Parentesco <span class="required-indicator">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="field-input"
+                  name="parentesco"
+                  required
+                />
+              </div>
+            </div>
+          </div>
 
-        <label for="fechaRegistro" class="form-label">Fecha de Registro</label>
-        <input type="date" class="form-control" name="fechaRegistro" required />
+          <div class="familiar-divider"></div>
 
-        <button type="submit" class="btn-guardar">Agregar</button>
-      </form>
+          <div class="familiar-section">
+            <div class="section-header">
+              <div class="section-title">Información de contacto</div>
+              <div class="section-subtitle">
+                Medios para comunicarse con el familiar
+              </div>
+            </div>
+
+            <div class="familiar-grid">
+              <div class="familiar-field">
+                <label class="field-label">Teléfono</label>
+                <input type="text" class="field-input" name="telefono" />
+              </div>
+
+              <div class="familiar-field span-2">
+                <label class="field-label">Correo electrónico</label>
+                <input type="email" class="field-input" name="correo" />
+              </div>
+            </div>
+          </div>
+
+          <div class="familiar-divider"></div>
+
+          <div class="familiar-section">
+            <div class="section-header">
+              <div class="section-title">Información adicional</div>
+              <div class="section-subtitle">Estado y fecha de registro</div>
+            </div>
+
+            <div class="familiar-grid">
+              <div class="familiar-field">
+                <label class="field-label">
+                  Estado <span class="required-indicator">*</span>
+                </label>
+                <select class="field-select" name="estado" required>
+                  <option value="">Seleccionar</option>
+                  <option value="1">Activo</option>
+                  <option value="0">Inactivo</option>
+                </select>
+              </div>
+
+              <div class="familiar-field">
+                <label class="field-label">
+                  Fecha de registro <span class="required-indicator">*</span>
+                </label>
+                <input
+                  type="date"
+                  class="field-input"
+                  name="fechaRegistro"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="familiar-actions">
+            <button type="submit" class="action-btn btn-save">
+              Guardar familiar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+
     {% endblock %}
   </body>
 </html>
