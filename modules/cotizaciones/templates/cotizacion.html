@@ -23,6 +23,7 @@
           <img src="/static/icons/buscar.svg" alt="Buscar" />
           <input type="text" class="buscar" placeholder="Buscar {{title}}..." />
         </div>
+        {% if session.get("permisos", {}).get("crear_registros") %}
         <a href="{{ url_for('cotizacion.agregar') }}" class="agregar">
           <img
             class="ico_agregar"
@@ -30,6 +31,16 @@
             alt="Agregar"
           />Agregar
         </a>
+        {% else %}
+        <a href="javascript:void(0);" onclick="sinPermiso()" class="agregar">
+          <img
+            class="ico_agregar"
+            src="/static/icons/servicios.svg"
+            alt="Agregar"
+            style="opacity: 0.5; cursor: not-allowed"
+          />Agregar
+        </a>
+        {% endif %}
       </div>
     </section>
     <section class="tabla">
@@ -55,7 +66,7 @@
           </td>
         </p>
         <div class="acciones">
-          {% if session['rol_id'] == 1 %}
+          {% if session.get("permisos", {}).get("editar_registros") %}
           <a href="{{ url_for('cotizacion.editar', id=c['id_cotizacion']) }}">
             <img src="/static/icons/editar.svg" alt="editar" />
           </a>
@@ -67,22 +78,49 @@
               style="opacity: 0.5; cursor: not-allowed"
             />
           </a>
-          {% endif %}
-
+          {% endif %} {% if session.get("permisos", {}).get("ver_registros") %}
           <a
             href="{{ url_for('cotizacion.VerDetalles', id=c['id_cotizacion']) }}"
             ><img src="/static/icons/ver.svg" alt="cambiar estado"
           /></a>
+          {% else %}
+          <a href="javascript:void(0);" onclick="sinPermiso()">
+            <img
+              src="/static/icons/ver.svg"
+              alt="cambiar estado"
+              style="opacity: 0.5; cursor: not-allowed"
+            />
+          </a>
+          {% endif %} {% if session.get("permisos", {}).get("exportar_datos") %}
           <a
             href="{{ url_for('cotizacion.descargar_pdf', id=c['id_cotizacion']) }}"
             target="_blank"
             ><img src="/static/icons/pdf.svg" alt="descargar_pdf"
           /></a>
+          {% else %}
+          <a href="javascript:void(0);" onclick="sinPermiso()">
+            <img
+              src="/static/icons/pdf.svg"
+              alt="descargar_pdf"
+              style="opacity: 0.5; cursor: not-allowed"
+            />
+          </a>
+          {% endif %} {% if session.get("permisos",
+          {}).get("eliminar_registros") %}
           <a
             href="{{ url_for('cotizacion.cambiar_estado', id=c['id_cotizacion']) }}"
             onclick="return confirm('¿Seguro que deseas eliminar este registro?')"
             ><img src="/static/icons/borrar.svg" alt="borrar"
           /></a>
+          {% else %}
+          <a href="javascript:void(0);" onclick="sinPermiso()">
+            <img
+              src="/static/icons/borrar.svg"
+              alt="borrar"
+              style="opacity: 0.5; cursor: not-allowed"
+            />
+          </a>
+          {% endif %}
         </div>
       </div>
       {% endfor %}

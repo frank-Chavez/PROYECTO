@@ -1,0 +1,245 @@
+/* === ESTILOS PARA AGREGAR FAMILIAR - ADAPTATIVO === */
+
+.agregar-familiar {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  background: #f8f9fa;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.familiar-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5vh 1.5vw;
+  gap: 1.2vh;
+}
+
+.familiar-header {
+  background: white;
+  padding: 1.8vh 2vw;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-bottom: 3px solid #7c3bed;
+  flex-shrink: 0;
+}
+
+.familiar-header h2 {
+  font-size: clamp(18px, 1.8vh, 22px);
+  color: #1a202c;
+  font-weight: 600;
+  margin-bottom: 0.4vh;
+  letter-spacing: -0.3px;
+}
+
+.familiar-breadcrumb {
+  font-size: clamp(12px, 1.2vh, 14px);
+  color: #718096;
+  font-weight: 400;
+}
+
+.familiar-body {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  padding: 2vh 2vw;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.familiar-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.familiar-sections {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  min-height: 0;
+}
+
+.familiar-section {
+  flex-shrink: 0;
+}
+
+.section-header {
+  margin-bottom: 1.2vh;
+}
+
+.section-title {
+  font-size: clamp(14px, 1.3vh, 15px);
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.3vh;
+  letter-spacing: -0.2px;
+}
+
+.section-subtitle {
+  font-size: clamp(11px, 1vh, 12px);
+  color: #718096;
+  font-weight: 400;
+}
+
+.familiar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5vw;
+}
+
+.familiar-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.familiar-field.span-2 {
+  grid-column: span 2;
+}
+
+.field-label {
+  font-size: clamp(12px, 1.1vh, 13px);
+  color: #4a5568;
+  font-weight: 500;
+  margin-bottom: 0.5vh;
+  letter-spacing: -0.1px;
+}
+
+.required-indicator {
+  color: #e53e3e;
+}
+
+.field-input {
+  width: 100%;
+  padding: 0.8vh 0.8vw;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: clamp(13px, 1.2vh, 14px);
+  font-family: inherit;
+  transition: all 0.2s;
+  background: white;
+  color: #2d3748;
+}
+
+.field-input::placeholder {
+  color: #a0aec0;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: #7c3bed;
+  box-shadow: 0 0 0 3px rgba(124, 59, 237, 0.06);
+}
+
+.field-input:hover:not(:focus) {
+  border-color: #cbd5e0;
+}
+
+.field-select {
+  width: 100%;
+  padding: 0.8vh 0.8vw;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: clamp(13px, 1.2vh, 14px);
+  font-family: inherit;
+  transition: all 0.2s;
+  background: white;
+  cursor: pointer;
+  color: #2d3748;
+}
+
+.field-select:focus {
+  outline: none;
+  border-color: #7c3bed;
+  box-shadow: 0 0 0 3px rgba(124, 59, 237, 0.06);
+}
+
+.field-select:hover:not(:focus) {
+  border-color: #cbd5e0;
+}
+
+.familiar-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 1.5vh 0;
+  flex-shrink: 0;
+}
+
+.familiar-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.8vw;
+  padding-top: 1.5vh;
+  margin-top: auto;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  padding: 0.9vh 1.5vw;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: clamp(13px, 1.2vh, 14px);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+}
+
+.btn-cancel {
+  background: white;
+  color: #4a5568;
+  border: 1.5px solid #e2e8f0;
+}
+
+.btn-cancel:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.btn-save {
+  background: #7c3bed;
+  color: white;
+}
+
+.btn-save:hover {
+  background: #6829d4;
+}
+
+.btn-save:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 1200px) {
+  .familiar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .familiar-container {
+    padding: 1vh 2vw;
+  }
+
+  .familiar-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5vh;
+  }
+
+  .familiar-actions {
+    flex-direction: column-reverse;
+    gap: 1vh;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+}
