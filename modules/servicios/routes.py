@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, send_f
 from database import conection
 import pandas as pd
 import io
+from decoradores import permiso_requerido
 
 servicios_bd = Blueprint(
     "servicios", __name__, url_prefix="/servicios", template_folder="templates", static_folder="static"
@@ -17,22 +18,54 @@ def listar():
     conn = conection()
     servicios = conn.execute(
         """
-    SELECT s.id_servicio,
-           s.tipo_serv,
-           s.descripcion_serv,
-           s.categoria_serv,
-           s.precio_serv,
-           p.nombre_p AS proveedor,
-           s.estado_serv
-    FROM Servicios s
-    LEFT JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
-"""
+    SELECT 
+            s.id_servicio,
+            s.tipo_serv,
+            s.descripcion_serv,
+            s.categoria_serv,
+            s.precio_serv,
+            p.nombre_p,
+            s.estado_serv
+        FROM Servicios s
+        LEFT JOIN Proveedores p 
+        ON s.proveedor_id = p.id_proveedor
+        """
     ).fetchall()
     conn.close()
     return render_template("servicios.html", servicios=servicios, title="Servicios")
 
 
+@servicios_bd.route("/busador", methods=["GET", "POST"])
+def buscador():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        search = request.form["buscar"]
+        conn = conection()
+        servicios = conn.execute(
+            """SELECT 
+                s.id_servicio,
+                s.tipo_serv,
+                s.descripcion_serv,
+                s.categoria_serv,
+                s.precio_serv,
+                p.nombre_p,
+                s.estado_serv
+            FROM Servicios s
+            JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
+            WHERE LOWER(remove_acentos(s.tipo_serv)) LIKE ?
+            OR LOWER(remove_acentos(p.nombre_p)) LIKE ?""",
+            (f"%{search.lower()}%", f"%{search.lower()}%"),
+        ).fetchall()
+
+        conn.close()
+        return render_template("servicios.html", servicios=servicios, busqueda=search, title="Servicios")
+    return redirect(url_for("servicios.listar"))
+
+
 @servicios_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
+@permiso_requerido("eliminar_registros")
 def cambiar_estado(id):
 
     if "id_usuario" not in session:
@@ -51,6 +84,7 @@ def cambiar_estado(id):
 
 
 @servicios_bd.route("/editar/<int:id>", methods=["GET", "POST"])
+@permiso_requerido("editar_registros")
 def editar(id):
 
     if "id_usuario" not in session:
@@ -102,6 +136,7 @@ def editar(id):
 
 
 @servicios_bd.route("/VerDetalles/<int:id>", methods=["GET"])
+@permiso_requerido("ver_registros")
 def VerDetalles(id):
 
     if "id_usuario" not in session:
@@ -132,6 +167,7 @@ def VerDetalles(id):
 
 
 @servicios_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
+@permiso_requerido("crear_registros")
 def agregar_servicio():
 
     if "id_usuario" not in session:
@@ -163,6 +199,7 @@ def agregar_servicio():
 
 
 @servicios_bd.route("/exel")
+@permiso_requerido("exportar_datos")
 def exel():
 
     if "id_usuario" not in session:

@@ -4,18 +4,18 @@
 }
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 body {
   display: flex;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  background: #f5f7fa;
 }
-/* ----------------------*/
-
+/*-----------------------------------*/
 /* Sidebar - dashboar */
 .sidebar {
   position: fixed;
@@ -24,16 +24,19 @@ body {
   height: 100vh;
   width: 255px;
   background: #fff;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #e8eaed;
   display: flex;
   flex-direction: column;
   z-index: 100;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
 }
 
 main {
   margin-left: 255px;
   padding: 2rem;
   flex-grow: 1;
+  background: #f5f7fa;
+  min-height: 100vh;
 }
 
 .logo {
@@ -41,7 +44,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e8eaed;
   width: 100%;
   padding: 2.5rem 0;
 }
@@ -69,7 +72,7 @@ nav a {
   color: #444;
   padding: 0.6rem 0.8rem;
   border-radius: 8px;
-  transition: background 0.3s, color 0.3s;
+  transition: all 0.3s ease;
   height: auto;
   width: 190px;
   font-weight: 600;
@@ -91,23 +94,214 @@ nav a {
 }
 
 nav a:hover {
-  background: #eee;
+  background: #f5f7fa;
 }
 nav a.active {
   background: #7c3bed;
   color: white;
+  box-shadow: 0 2px 8px rgba(124, 59, 237, 0.25);
 }
 nav a.active img {
-  filter: brightness(0) invert(1); /* blanco */
+  filter: brightness(0) invert(1);
 }
 nav a img {
   width: 20px;
   height: 20px;
 }
-/* --------------------------------------------------------- */
 
-/* Estilo de las opciones que estan arribade la tabla */
+/*--------------- Dashboard Header ---------------*/
+.dashboard-header {
+  margin-bottom: 2rem;
+}
 
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border: 1px solid #e8eaed;
+  overflow: hidden;
+}
+
+.stat-card-body {
+  padding: 1.75rem;
+  text-align: center;
+}
+
+.stat-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #36383c;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #7c3bed;
+  line-height: 1;
+}
+
+/* Content Row */
+.content-row {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+  .content-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Activity Section */
+.activity-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e8eaed;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem 0;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.activity-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.activity-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.activity-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.activity-text {
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* Actions Section */
+.actions-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e8eaed;
+  height: fit-content;
+}
+
+.actions-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.action-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.action-btn-primary {
+  background: #7c3bed;
+  color: white;
+}
+
+.action-btn-primary img {
+  filter: brightness(0) invert(1);
+}
+
+.action-btn-success {
+  background: #10b981;
+  color: white;
+}
+
+.action-btn-success img {
+  filter: brightness(0) invert(1);
+}
+
+.action-btn-warning {
+  background: #f59e0b;
+  color: white;
+}
+
+.action-btn-warning img {
+  filter: brightness(0) invert(1);
+}
+
+/* Estilo de las opciones que están arriba de la tabla */
 section.opciones {
   display: flex;
   align-items: center;
@@ -143,21 +337,22 @@ section.opciones .opciones_bt a {
   margin: 0 auto;
 }
 
-.content-buscar img {
+.content-buscar button {
   position: absolute;
-  left: 10px; /* distancia desde el borde izquierdo */
   top: 50%;
   transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  opacity: 0.6;
-  pointer-events: none; /* no bloquea el clic en el input */
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  border: none;
+  background-color: #e0e0e0cb;
+  height: 41px;
+  width: 40px;
+  left: 1px;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
 }
 
 .content-buscar input {
   width: 100%;
-  padding: 10px 12px 10px 40px; /* deja espacio a la izquierda para el ícono */
+  padding: 10px 12px 10px 50px;
   border-radius: 10px;
   border: 1.5px solid #ccc;
   font-size: 14px;
@@ -195,14 +390,15 @@ section.opciones .opciones_bt img {
 section.opciones .ico_agregar {
   filter: brightness(0) invert(1);
 }
-/*--------------------------------------------------------*/
 
 /* Estilo de la tabla */
 section.tabla {
-  border: 1.6px solid #dadada9f;
+  border: 1.6px solid #e8eaed;
   width: 100%;
-  border-radius: 5px 5px 0 0;
-  overflow: hidden; /* que no sobresalga */
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 section.tabla .titulo,
@@ -210,21 +406,24 @@ section.tabla .contenido {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   align-items: center;
-  border-bottom: 1px solid #dadada9f;
+  border-bottom: 1px solid #e8eaed;
 }
 section.tabla .contenido {
   padding: 0.8rem;
+  transition: background 0.2s ease;
 }
 
-/*estilo de los iconos*/
+section.tabla .contenido:hover {
+  background: #f9fafb;
+}
+
 section.tabla .contenido img {
   height: auto;
   width: 18px;
 }
-/*--------------------*/
 
 section.tabla .titulo {
-  background: #f9f8fa;
+  background: #f9fafb;
 }
 
 section.tabla .titulo p {
@@ -233,7 +432,7 @@ section.tabla .titulo p {
   padding: 10px;
   font-weight: 600;
   text-align: center;
-  color: #8e8e8e;
+  color: #6b7280;
   font-size: 15px;
 }
 
@@ -243,7 +442,7 @@ section.tabla .contenido p {
   padding: 10px;
   font-weight: 600;
   text-align: center;
-  color: #545454;
+  color: #1a1a1a;
   font-size: 14px;
 }
 
@@ -252,21 +451,21 @@ section.tabla .acciones {
   justify-content: center;
   gap: 20px;
 }
-/*--------------------------------------------------------*/
 
-/*estilo del estado Activo - Inactivo*/
+/* Estado Activo - Inactivo */
 .text-green {
   background: #7c3bed;
   color: white;
-  padding: 5px 8px;
-  border-radius: 1rem;
+  padding: 5px 12px;
+  border-radius: 20px;
   font-size: 12px;
+  font-weight: 600;
 }
 .text-red {
-  background: #c1c1c1;
+  background: #9ca3af;
   color: #ffffff;
-  padding: 5px 8px;
-  border-radius: 1rem;
+  padding: 5px 12px;
+  border-radius: 20px;
   font-size: 12px;
+  font-weight: 600;
 }
-/*-----------------------------------*/

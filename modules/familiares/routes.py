@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, send_f
 from database import conection
 import pandas as pd
 import io
-
+from decoradores import permiso_requerido
 
 familiares_bd = Blueprint(
     "familiares", __name__, url_prefix="/familiares", template_folder="templates", static_folder="static"
@@ -20,7 +20,30 @@ def listar():
     return render_template("familiares.html", familiares=familiares, title="Familiares")
 
 
+@familiares_bd.route("/busador", methods=["GET", "POST"])
+def buscador():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        search = request.form["buscar"]
+        conn = conection()
+        familiares = conn.execute(
+            """
+            SELECT * FROM Familiares
+            WHERE LOWER(remove_acentos(f_nombre)) LIKE ?
+            OR LOWER(remove_acentos(f_apellido)) LIKE ?
+            """,
+            (f"%{search}%", f"%{search}%"),
+        ).fetchall()
+
+        conn.close()
+        return render_template("familiares.html", familiares=familiares, busqueda=search, title="Familiares")
+    return redirect(url_for("familiares.listar"))
+
+
 @familiares_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
+@permiso_requerido("eliminar_registros")
 def cambiar_estado(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -38,6 +61,7 @@ def cambiar_estado(id):
 
 
 @familiares_bd.route("/editar/<int:id>", methods=["GET", "POST"])
+@permiso_requerido("editar_registros")
 def editar(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -80,6 +104,7 @@ def editar(id):
 
 
 @familiares_bd.route("/VerDetalles/<int:id>", methods=["GET"])
+@permiso_requerido("ver_registros")
 def VerDetalles(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -102,6 +127,7 @@ def VerDetalles(id):
 
 
 @familiares_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
+@permiso_requerido("crear_registros")
 def agregar_familiar():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -130,13 +156,14 @@ def agregar_familiar():
         conn.commit()
         conn.close()
 
-        # 👇 Aquí el cambio: redirige a la lista de familiares
+        # Aquí el cambio: redirige a la lista de familiares
         return redirect(url_for("familiares.listar"))
 
     return render_template("agregar_familiar.html", title="Familiar")
 
 
 @familiares_bd.route("/exel")
+@permiso_requerido("exportar_datos")
 def exel():
     if "id_usuario" not in session:
         return redirect(url_for("login"))

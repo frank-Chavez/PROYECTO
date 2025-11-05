@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, send_f
 from database import conection
 import pandas as pd
 import io
-
+from decoradores import permiso_requerido
 
 proveedor_bd = Blueprint(
     "proveedor", __name__, url_prefix="/proveedor", template_folder="templates", static_folder="static"
@@ -20,7 +20,27 @@ def listar():
     return render_template("proveedor.html", proveedor=proveedor, title="Proveedor")
 
 
+@proveedor_bd.route("/busador", methods=["GET", "POST"])
+def buscador():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        search = request.form["buscar"]
+        conn = conection()
+        proveedor = conn.execute(
+            """SELECT * FROM Proveedores 
+            WHERE LOWER(remove_acentos(nombre_p)) LIKE ?
+            OR LOWER(remove_acentos(servicio_p)) LIKE ?""",
+            (f"%{search.lower()}%", f"%{search.lower()}%"),
+        ).fetchall()
+        conn.close()
+        return render_template("proveedor.html", proveedor=proveedor, busqueda=search, title="Proveedor")
+    return redirect(url_for("proveedor.listar"))
+
+
 @proveedor_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
+@permiso_requerido("eliminar_registros")
 def cambiar_estado(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -38,6 +58,7 @@ def cambiar_estado(id):
 
 
 @proveedor_bd.route("/editar/<int:id>", methods=["GET", "POST"])
+@permiso_requerido("editar_registros")
 def editar(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -79,6 +100,7 @@ def editar(id):
 
 
 @proveedor_bd.route("/VerDetalles/<int:id>", methods=["GET"])
+@permiso_requerido("ver_registros")
 def VerDetalles(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -101,6 +123,7 @@ def VerDetalles(id):
 
 
 @proveedor_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
+@permiso_requerido("crear_registros")
 def agregar_fallecido():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -132,6 +155,7 @@ def agregar_fallecido():
 
 
 @proveedor_bd.route("/exel")
+@permiso_requerido("exportar_datos")
 def exel():
     if "id_usuario" not in session:
         return redirect(url_for("login"))

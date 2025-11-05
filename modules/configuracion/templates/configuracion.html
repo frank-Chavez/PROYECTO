@@ -44,44 +44,81 @@
           Permisos
         </a>
       </nav>
+      <nav>
+        <a
+          href="{{ url_for('configuracion.agregar_usuario') }}"
+          class="{% if request.endpoint.startswith('configuracion.agregar_usuario') %}active{% endif %}"
+        >
+          <img
+            src="{{ url_for('static', filename='icons/agregar_user.svg') }}"
+            alt="Agregar_usuarios"
+            class="{% if request.endpoint == 'configuracion' %}active{% endif %}"
+          />Agregar Usuario
+        </a>
+      </nav>
+      <nav>
+        <a
+          href="{{ url_for('configuracion.seguridad') }}"
+          class="{% if request.endpoint.startswith('configuracion.seguridad') %}active{% endif %}"
+        >
+          <img
+            src="{{ url_for('static', filename='icons/seguridad.svg') }}"
+            alt="seguridad"
+            class="{% if request.endpoint == 'configuracion' %}active{% endif %}"
+          />Seguridad
+        </a>
+      </nav>
     </section>
 
     {% block options %}
     <div class="cont-from">
       <form
-        action="/buscar"
-        meth
-        class="tabla-titulo"
-        od="GET"
-        aria-label="Buscar"
+        name="formSearch"
+        method="POST"
+        action="{{ url_for('configuracion.buscador') }}"
+        class="search-form"
       >
+        <button type="submit" class="search-button">
+          <img src="/static/icons/buscar.svg" alt="Buscar" />
+        </button>
         <input
-          id="search"
-          name="q"
           type="search"
-          placeholder="Buscar..."
+          name="buscar"
+          placeholder="Buscar {{title}}..."
           class="search-input"
         />
       </form>
     </div>
+
     <table class="tabla">
       <thead class="tabla-head">
         <tr>
           <th class="tabla-titulo">Usuario</th>
           <th class="tabla-titulo">Rol</th>
           <th class="tabla-titulo">Permisos</th>
+          <th class="tabla-titulo">Acciones</th>
         </tr>
       </thead>
       <tbody class="tabla-body">
-        {% for u in index%}
+        {% for usuario in index%}
         <tr class="tabla-cont">
-          <td class="cont-cont">{{u['nombre_u']}}</td>
+          <td class="cont-cont">{{usuario['nombre_u']}}</td>
           <td class="cont-cont">
             <span class="rol">
-              {{ 'Admin' if u['rol_id'] == 1 else 'Usuario' }}
+              {{ 'Admin' if usuario['rol_id'] == 1 else 'Usuario' }}
             </span>
           </td>
-          <td class="cont-cont">{{u['total_permisos']}}</td>
+          <td class="cont-cont">{{usuario['total_permisos']}}</td>
+          <td class="cont-cont">
+            <form
+              action="{{ url_for('configuracion.eliminar_usuario', usuario_id=usuario['id_usuario']) }}"
+              method="POST"
+            >
+              <button type="submit" class="btn">
+                <img src="/static/icons/borrar.svg" alt="el" />
+              </button>
+            </form>
+          </td>
         </tr>
 
         {% endfor %}

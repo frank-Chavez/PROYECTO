@@ -12,7 +12,7 @@
   margin-bottom: 2rem;
 }
 
-nav a {
+section nav a {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -21,6 +21,7 @@ nav a {
   text-decoration: none;
   color: inherit;
   transition: background 1s ease, color 0.3s ease;
+  background-color: rgb(233, 233, 233);
 }
 
 nav a img {
@@ -47,18 +48,25 @@ nav a img {
 /*estilo de la tabla de usuarios*/
 
 .cont-from {
+  position: relative;
   background-color: #ffffff;
   border-radius: 0.5rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   border: 1px solid #e5e7eb;
   margin-bottom: 1.5rem;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.search-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .search-input {
   width: 100%;
-  box-sizing: border-box;
-  padding: 12px 16px;
+  padding: 12px 16px 12px 42px; /* espacio para el ícono a la izquierda */
   font-size: 1rem;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -71,6 +79,30 @@ nav a img {
 .search-input:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.search-button {
+  position: absolute;
+  left: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+}
+
+.search-button img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+.search-button:hover img {
+  opacity: 1;
 }
 
 .tabla {
