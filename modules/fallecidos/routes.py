@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, send_f
 from database import conection
 import pandas as pd
 import io
+from decoradores import permiso_requerido
 
 fallecidos_bd = Blueprint(
     "fallecidos", __name__, url_prefix="/fallecidos", template_folder="templates", static_folder="static"
@@ -19,7 +20,26 @@ def listar():
     return render_template("fallecidos.html", Fallecidos=fallecidos, title="Fallecidos")
 
 
+@fallecidos_bd.route("/busador", methods=["GET", "POST"])
+def buscador():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        search = request.form["buscar"]
+        conn = conection()
+        fallecidos = conn.execute(
+            """SELECT * FROM Fallecidos 
+            WHERE LOWER(remove_acentos(nombre_f)) LIKE ?""",
+            ("%" + search + "%",),
+        ).fetchall()
+        conn.close()
+        return render_template("fallecidos.html", Fallecidos=fallecidos, busqueda=search, title="Fallecidos")
+    return redirect(url_for("fallecidos.listar"))
+
+
 @fallecidos_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
+@permiso_requerido("eliminar_registros")
 def cambiar_estado(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -37,6 +57,7 @@ def cambiar_estado(id):
 
 
 @fallecidos_bd.route("/editar/<int:id>", methods=["GET", "POST"])
+@permiso_requerido("editar_registros")
 def editar(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -78,6 +99,7 @@ def editar(id):
 
 
 @fallecidos_bd.route("/VerDetalles/<int:id>", methods=["GET"])
+@permiso_requerido("ver_registros")
 def VerDetalles(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -100,6 +122,7 @@ def VerDetalles(id):
 
 
 @fallecidos_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
+@permiso_requerido("crear_registros")
 def agregar_fallecido():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -131,6 +154,7 @@ def agregar_fallecido():
 
 
 @fallecidos_bd.route("/exel")
+@permiso_requerido("exportar_datos")
 def exel():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -179,20 +203,3 @@ def exel():
         print("Error al generar Excel:", e)
         traceback.print_exc()
         return f"Error al generar el archivo Excel: {e}", 500
-
-
-# eliminar
-"""@fallecidos_bd.route('/eliminar/<int:id>', methods=['POST'])
-def eliminar(id):
-    conn = conection()
-    conn.execute("DELETE FROM Fallecidos WHERE id_fallecido = ?", (id,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for("fallecidos.listar"))
-
-
-<form action="{{ url_for('fallecidos.eliminar', id=f.id_fallecido) }}" method="POST" style="display:inline;">
-    <button type="submit" onclick="return confirm('¿Seguro que deseas eliminar este registro?');">
-        Eliminar
-    </button>
-</form>"""

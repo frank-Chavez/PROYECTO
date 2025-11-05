@@ -34,7 +34,36 @@ def index():
     ).fetchall()
     conn.close()
 
-    return render_template("configuracion.html", index=index)
+    return render_template("configuracion.html", index=index, title="Usuarios")
+
+
+# --- proteccion para todas las rutas del modulo de configuracion solo el admin o el que tenga permiso puede entrar al modulo
+@configuracion_bd.before_request
+def verificar_permisos_config():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if not session.get("permisos", {}).get("administrar_sistema"):
+        flash("No tienes permiso para acceder a la configuración.", "danger")
+        return redirect(url_for("dashboar"))
+
+
+@configuracion_bd.route("/busador", methods=["GET", "POST"])
+def buscador():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        search = request.form["buscar"]
+        conn = conection()
+        configuracion = conn.execute(
+            """SELECT * FROM Usuario 
+            WHERE LOWER(remove_acentos(nombre_u)) LIKE ?""",
+            ("%" + search + "%",),
+        ).fetchall()
+        conn.close()
+        return render_template("configuracion.html", index=configuracion, busqueda=search, title="Usuarios")
+    return redirect(url_for("configuracion.index"))
 
 
 @configuracion_bd.route("/permisos")
@@ -78,12 +107,12 @@ def guardar_permisos():
     # Validaciones de seguridad
     if usuario_id == 1 and admin_sistema_valor == 0:
         conn.close()
-        flash("⚠️ No se puede quitar el permiso de administrador al usuario principal.", "error")
+        flash("No se puede quitar el permiso de administrador al usuario principal.", "error")
         return redirect(url_for("configuracion.permisos"))
 
     if usuario_id == session["id_usuario"] and admin_sistema_valor == 0:
         conn.close()
-        flash("⚠️ No puedes quitarte tu propio permiso de administrador.", "error")
+        flash("No puedes quitarte tu propio permiso de administrador.", "error")
         return redirect(url_for("configuracion.permisos"))
 
     # Construimos permisos con validaciones aplicadas
@@ -146,3 +175,85 @@ def guardar_permisos():
 
     flash("Permisos actualizados correctamente.")
     return redirect(url_for("configuracion.permisos") + f"#usuario-{usuario_id}")
+
+
+@configuracion_bd.route("/agregar_usuario", methods=["GET", "POST"])
+def agregar_usuario():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        contraseña = request.form["contraseña"]
+        rol = request.form["rol"]
+
+        conn = conection()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO Usuario (nombre_u, contraseña_u, rol_id)
+            VALUES (?, ?, ?)
+        """,
+            (nombre, contraseña, rol),
+        )
+        usuario_id = cursor.lastrowid
+
+        if rol == "1":
+            permisos = (1, 1, 1, 1, 1, 1)
+        else:
+            permisos = (1, 1, 1, 0, 0, 0)
+        cursor.execute(
+            """
+                INSERT INTO PermisosUsuario (
+                    usuario_id, ver_registros, crear_registros, editar_registros,
+                    eliminar_registros, exportar_datos, administrar_sistema
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+            (usuario_id, *permisos),
+        )
+
+        conn.commit()
+        conn.close()
+        return redirect(url_for("configuracion.agregar_usuario"))
+
+    return render_template("AgregarUsuario.html", title="Agregar Usuario")
+
+
+@configuracion_bd.route("/eliminar_usuario/<int:usuario_id>", methods=["POST"])
+def eliminar_usuario(usuario_id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if usuario_id == 1:
+        flash("No se puede eliminar el usuario principal.", "error")
+        return redirect(url_for("configuracion.index"))
+
+    if usuario_id == session["id_usuario"]:
+        flash("No puedes eliminar tu propio usuario.", "error")
+        return redirect(url_for("configuracion.index"))
+
+    conn = conection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM PermisosUsuario WHERE usuario_id = ?", (usuario_id,))
+    cursor.execute("DELETE FROM Usuario WHERE id_usuario = ?", (usuario_id,))
+
+    conn.commit()
+    conn.close()
+
+    flash("Usuario eliminado correctamente.")
+    return redirect(url_for("configuracion.index"))
+
+
+@configuracion_bd.route("/seguridad")
+def seguridad():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    conn = conection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Usuario ")
+    usuarios = cursor.fetchall()
+    conn.close()
+
+    return render_template("seguridad.html", seguridad=usuarios, title="Seguridad")

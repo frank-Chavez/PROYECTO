@@ -68,6 +68,7 @@
 
 .familiar-section {
   flex-shrink: 0;
+  margin-bottom: 30px;
 }
 
 .section-header {
@@ -78,14 +79,8 @@
   font-size: clamp(14px, 1.3vh, 15px);
   font-weight: 600;
   color: #2d3748;
-  margin-bottom: 0.3vh;
+  margin-bottom: 0.2vh;
   letter-spacing: -0.2px;
-}
-
-.section-subtitle {
-  font-size: clamp(11px, 1vh, 12px);
-  color: #718096;
-  font-weight: 400;
 }
 
 .familiar-grid {
@@ -104,7 +99,7 @@
 }
 
 .field-label {
-  font-size: clamp(12px, 1.1vh, 13px);
+  font-size: clamp(15px, 1.1vh, 13px);
   color: #4a5568;
   font-weight: 500;
   margin-bottom: 0.5vh;
@@ -164,13 +159,6 @@
   border-color: #cbd5e0;
 }
 
-.familiar-divider {
-  height: 1px;
-  background: #e2e8f0;
-  margin: 1.5vh 0;
-  flex-shrink: 0;
-}
-
 .familiar-actions {
   display: flex;
   justify-content: flex-end;
@@ -178,7 +166,6 @@
   gap: 0.8vw;
   padding-top: 1.5vh;
   margin-top: auto;
-  border-top: 1px solid #e2e8f0;
   flex-shrink: 0;
 }
 

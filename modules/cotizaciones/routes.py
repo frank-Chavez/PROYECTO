@@ -12,6 +12,7 @@ from database import conection
 from weasyprint import HTML
 import io
 from datetime import date
+from decoradores import permiso_requerido
 
 cotizaciones_bd = Blueprint(
     "cotizacion",
@@ -22,18 +23,69 @@ cotizaciones_bd = Blueprint(
 )
 
 
+# ----------------------------------------Tabla principal de cotizaciones----------------------------------------
 @cotizaciones_bd.route("/")
 def listar():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
 
     conn = conection()
-    cotizacion = conn.execute("SELECT * FROM Cotizacion").fetchall()
+    cotizacion = conn.execute(
+        """
+    SELECT  
+        c.id_cotizacion,
+        c.numero_cot,
+        c.fecha_cot,
+        c.monto_cot,
+        c.validacion_cot,
+        c.estado_cot,
+        f.f_nombre,
+        f.f_apellido
+    FROM Cotizacion c
+    JOIN cotizacion_detalles d ON c.id_cotizacion = d.id_cotizacion
+    JOIN Familiares f ON d.id_familiar = f.id_familiar
+    """
+    ).fetchall()
     conn.close()
-    return render_template("cotizacion.html", cotizacion=cotizacion, title="cotizaciones")
+    return render_template("cotizacion.html", cotizacion=cotizacion, title="Cotizaciones")
 
 
+# ----------------------------------------Opcion de busqueda----------------------------------------
+@cotizaciones_bd.route("/busador", methods=["GET", "POST"])
+def buscador():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        search = request.form["buscar"]
+        conn = conection()
+        cotizacion = conn.execute(
+            """
+            SELECT 
+                c.id_cotizacion,
+                c.numero_cot,
+                c.fecha_cot,
+                c.monto_cot,
+                c.validacion_cot,
+                c.estado_cot,
+                f.f_nombre,
+                f.f_apellido
+            FROM Cotizacion c
+            JOIN cotizacion_detalles d ON c.id_cotizacion = d.id_cotizacion
+            JOIN Familiares f ON d.id_familiar = f.id_familiar
+            WHERE LOWER(remove_acentos(f.f_nombre)) LIKE ?
+            """,
+            ("%" + search + "%",),
+        ).fetchall()
+
+        conn.close()
+        return render_template("cotizacion.html", cotizacion=cotizacion, busqueda=search, title="Cotizaciones")
+    return redirect(url_for("cotizacion.listar"))
+
+
+# ----------------------------------------Opcion de cambiar el estado----------------------------------------
 @cotizaciones_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
+@permiso_requerido("eliminar_registros")
 def cambiar_estado(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -53,7 +105,9 @@ def cambiar_estado(id):
     return redirect(url_for("cotizacion.listar"))
 
 
+# ----------------------------------------Opcion de editar----------------------------------------
 @cotizaciones_bd.route("/editar/<int:id>", methods=["GET", "POST"])
+@permiso_requerido("editar_registros")
 def editar(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -187,7 +241,9 @@ def editar(id):
     )
 
 
+# ----------------------------------------Opcion para ver los detalles o informacion----------------------------------------
 @cotizaciones_bd.route("/VerDetalles/<int:id>", methods=["GET"])
+@permiso_requerido("ver_registros")
 def VerDetalles(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -251,7 +307,9 @@ def VerDetalles(id):
     )
 
 
+# ----------------------------------------Opcion de agregar informacion----------------------------------------
 @cotizaciones_bd.route("/agregar", methods=["GET", "POST"])
+@permiso_requerido("crear_registros")
 def agregar():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -367,7 +425,9 @@ def agregar():
         )
 
 
+# ----------------------------------------Opcion de descargar PDF ya que es cotizaciones----------------------------------------
 @cotizaciones_bd.route("/pdf/<int:id>", methods=["GET"])
+@permiso_requerido("exportar_datos")
 def descargar_pdf(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))

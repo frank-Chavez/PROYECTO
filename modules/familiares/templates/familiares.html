@@ -1,8 +1,8 @@
-<!DOCTYh4E html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewh4ort" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}}</title>
     <link
       rel="stylesheet"
@@ -19,8 +19,22 @@
       <h1>{{title}}</h1>
       <div class="opciones_bt">
         <div class="content-buscar">
-          <img src="/static/icons/buscar.svg" alt="Buscar" />
-          <input type="text" class="buscar" placeholder="Buscar {{title}}..." />
+          <form
+            name="formSearch"
+            method="post"
+            action="{{ url_for('familiares.buscador') }}"
+            class="cont_busc"
+          >
+            <input
+              type="search"
+              name="buscar"
+              class="buscar"
+              placeholder="Buscar {{title}}..."
+            />
+            <button type="submit" class="btn_buscar">
+              <img src="/static/icons/buscar.svg" alt="Buscar" />
+            </button>
+          </form>
         </div>
         {% if session.get("permisos", {}).get("crear_registros") %}
         <a href="{{ url_for('familiares.agregar') }}" class="agregar">

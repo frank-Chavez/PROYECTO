@@ -19,8 +19,22 @@
       <h1>{{title}}</h1>
       <div class="opciones_bt">
         <div class="content-buscar">
-          <img src="/static/icons/buscar.svg" alt="Buscar" />
-          <input type="text" class="buscar" placeholder="Buscar {{title}}..." />
+          <form
+            name="formSearch"
+            method="post"
+            action="{{url_for('planes.buscador')}}"
+            class="cont_busc"
+          >
+            <input
+              type="search"
+              name="buscar"
+              class="buscar"
+              placeholder="Buscar {{title}}..."
+            />
+            <button type="submit" class="btn_buscar">
+              <img src="/static/icons/buscar.svg" alt="Buscar" />
+            </button>
+          </form>
         </div>
         {% if session.get("permisos", {}).get("crear_registros") %}
         <a href="{{ url_for('planes.agregar') }}" class="agregar"

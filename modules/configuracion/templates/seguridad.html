@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('configuracion.static', filename='seguridad.css')}}"
+    />
+  </head>
+  <body>
+    {% extends "configuracion.html" %} {% block options %} {% for Usuario in
+    seguridad %}
+    <div class="content-securiti">
+      <div>
+        <div>{{Usuario['nombre_u']}}</div>
+      </div>
+      <div class="password">
+        <input
+          type="password"
+          id="pass{{ loop.index }}"
+          value="{{ Usuario['contraseña_u'] }}"
+          readonly
+        />
+        <button
+          type="button"
+          onclick="togglePassword('pass{{ loop.index }}', this)"
+        >
+          <img src="/static/icons/ver.svg" alt="" />
+        </button>
+      </div>
+      <div class="cont-cambiar">
+        <button class="cambiar-cont" type="button">Cambiar contraseña</button>
+      </div>
+    </div>
+
+    <script>
+      function togglePassword(id, button) {
+        const input = document.getElementById(id);
+        const img = button.querySelector('img');
+
+        if (input.type === 'password') {
+          input.type = 'text';
+          img.src = '/static/icons/ver2.svg';
+        } else {
+          input.type = 'password';
+          img.src = '/static/icons/ver.svg';
+        }
+      }
+    </script>
+
+    {% endfor %} {% endblock %}
+  </body>
+</html>

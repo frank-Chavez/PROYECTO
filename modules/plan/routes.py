@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, send_f
 from database import conection
 import pandas as pd
 import io
-
+from decoradores import permiso_requerido
 
 planes_bd = Blueprint("planes", __name__, url_prefix="/planes", template_folder="templates", static_folder="static")
 
@@ -15,10 +15,27 @@ def listar():
     conn = conection()
     planes = conn.execute("SELECT * FROM planes").fetchall()
     conn.close()
-    return render_template("planes.html", planes=planes, title="planes")
+    return render_template("planes.html", planes=planes, title="Planes")
+
+
+@planes_bd.route("/busador", methods=["GET", "POST"])
+def buscador():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        search = request.form["buscar"]
+        conn = conection()
+        planes = conn.execute(
+            """SELECT * FROM Planes WHERE LOWER(remove_acentos(tipo_plan)) LIKE ?""", ("%" + search + "%",)
+        ).fetchall()
+        conn.close()
+        return render_template("planes.html", planes=planes, busqueda=search, title="Planes")
+    return redirect(url_for("planes.listar"))
 
 
 @planes_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
+@permiso_requerido("eliminar_registros")
 def cambiar_estado(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -36,6 +53,7 @@ def cambiar_estado(id):
 
 
 @planes_bd.route("/editar/<int:id>", methods=["GET", "POST"])
+@permiso_requerido("editar_registros")
 def editar(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -77,6 +95,7 @@ def editar(id):
 
 
 @planes_bd.route("/VerDetalles/<int:id>", methods=["GET"])
+@permiso_requerido("ver_registros")
 def VerDetalles(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -99,6 +118,7 @@ def VerDetalles(id):
 
 
 @planes_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
+@permiso_requerido("crear_registros")
 def agregar_plan():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -129,6 +149,7 @@ def agregar_plan():
 
 
 @planes_bd.route("/exel")
+@permiso_requerido("exportar_datos")
 def exel():
     if "id_usuario" not in session:
         return redirect(url_for("login"))

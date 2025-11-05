@@ -132,138 +132,159 @@
     </aside>
 
     <!-- Main -->
-    <main style="padding: 2rem; flex: 1 1 auto">
+    <main>
       {% block content %}
 
-      <h1 class="mb-1">Dashboard</h1>
-      <p class="text-muted mb-4">Bienvenido al sistema de gestión crematorio</p>
+      <div class="dashboard-header">
+        <div>
+          <h1 class="dashboard-title">Dashboard</h1>
+          <p class="dashboard-subtitle">
+            Bienvenido al sistema de gestión crematorio
+          </p>
+        </div>
+      </div>
 
       <!-- Tarjetas resumen (totales REALES) -->
-      <div class="row g-3 mb-4 text-center">
-        <div class="col-md-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="mb-1">Familiares Registrados</h5>
-              <div class="display-5 fw-bold">{{ familiares_count }}</div>
-            </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-body">
+            <h5 class="stat-title">Familiares Registrados</h5>
+            <div class="stat-number">{{ familiares_count }}</div>
           </div>
         </div>
 
-        <div class="col-md-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="mb-1">Servicios Activos</h5>
-              <div class="display-5 fw-bold">{{ servicios_count }}</div>
-            </div>
+        <div class="stat-card">
+          <div class="stat-card-body">
+            <h5 class="stat-title">Servicios Activos</h5>
+            <div class="stat-number">{{ servicios_count }}</div>
           </div>
         </div>
 
-        <div class="col-md-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="mb-1">Cotizaciones del Mes</h5>
-              <div class="display-5 fw-bold">{{ cotizaciones_count }}</div>
-            </div>
+        <div class="stat-card">
+          <div class="stat-card-body">
+            <h5 class="stat-title">Cotizaciones del Mes</h5>
+            <div class="stat-number">{{ cotizaciones_count }}</div>
           </div>
         </div>
 
-        <div class="col-md-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="mb-1">Proveedores Activos</h5>
-              <div class="display-5 fw-bold">{{ proveedores_count }}</div>
-            </div>
+        <div class="stat-card">
+          <div class="stat-card-body">
+            <h5 class="stat-title">Proveedores Activos</h5>
+            <div class="stat-number">{{ proveedores_count }}</div>
           </div>
         </div>
       </div>
 
-      <!-- Actividad Reciente + Acciones Rápidas (MISMA FILA) -->
-      <div class="row g-3">
+      <!-- Actividad Reciente + Acciones Rápidas -->
+      <div class="content-row">
         <!-- Actividad Reciente -->
-        <div class="col-lg-7">
-          <h4 class="mb-3">Actividad Reciente</h4>
-          <ul class="list-group">
+        <div class="activity-section">
+          <h4 class="section-title">Actividad Reciente</h4>
+          <div class="activity-list">
             <!-- Familiar más reciente -->
-            <li class="list-group-item">
+            <div class="activity-item">
+              <img
+                src="{{ url_for('static', filename='icons/familiares.svg') }}"
+                alt=""
+                class="activity-icon"
+              />
+              <div class="activity-content">
+                <span class="activity-label">Nuevo familiar:</span>
+                <span class="activity-text">
+                  {% if reciente_familiar %} {{ reciente_familiar[0] }} ({{
+                  reciente_familiar[1] }}) {% else %} (sin registros) {% endif
+                  %}
+                </span>
+              </div>
+            </div>
+
+            <!-- Cotización más reciente -->
+            <div class="activity-item">
+              <img
+                src="{{ url_for('static', filename='icons/cotizaciones.svg') }}"
+                alt=""
+                class="activity-icon"
+              />
+              <div class="activity-content">
+                <span class="activity-label">Cotización:</span>
+                <span class="activity-text">
+                  {% if reciente_cotizacion %} {{ reciente_cotizacion[0] }} ({{
+                  reciente_cotizacion[1] }}) {% else %} (sin registros) {% endif
+                  %}
+                </span>
+              </div>
+            </div>
+
+            <!-- Servicio más reciente -->
+            <div class="activity-item">
+              <img
+                src="{{ url_for('static', filename='icons/servicios.svg') }}"
+                alt=""
+                class="activity-icon"
+              />
+              <div class="activity-content">
+                <span class="activity-label">Servicio:</span>
+                <span class="activity-text">
+                  {% if reciente_servicio %} {{ reciente_servicio[0] }} {% if
+                  reciente_servicio[1] %}({{ reciente_servicio[1] }}){% endif %}
+                  {% else %} (sin registros) {% endif %}
+                </span>
+              </div>
+            </div>
+
+            <!-- Proveedor más reciente -->
+            <div class="activity-item">
+              <img
+                src="{{ url_for('static', filename='icons/proveedor.svg') }}"
+                alt=""
+                class="activity-icon"
+              />
+              <div class="activity-content">
+                <span class="activity-label">Proveedor:</span>
+                <span class="activity-text">
+                  {% if reciente_proveedor %} {{ reciente_proveedor[0] }} ({{
+                  reciente_proveedor[1] }}) {% else %} (sin registros) {% endif
+                  %}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="actions-section">
+          <h4 class="section-title">Acciones Rápidas</h4>
+          <div class="actions-card">
+            <a
+              href="{{ url_for('familiares.agregar') }}"
+              class="action-btn action-btn-primary"
+            >
               <img
                 src="{{ url_for('static', filename='icons/familiares.svg') }}"
                 alt=""
               />
-              Nuevo familiar: {% if reciente_familiar %} {{ reciente_familiar[0]
-              }} ({{ reciente_familiar[1] }}) {% else %}(sin registros){% endif
-              %}
-            </li>
-
-            <!-- Cotización más reciente -->
-            <li class="list-group-item">
+              Agregar Familiar
+            </a>
+            <a
+              href="{{ url_for('cotizacion.agregar') }}"
+              class="action-btn action-btn-success"
+            >
               <img
                 src="{{ url_for('static', filename='icons/cotizaciones.svg') }}"
                 alt=""
               />
-              Cotización: {% if reciente_cotizacion %} #{{
-              reciente_cotizacion[0] }} ({{ reciente_cotizacion[1] }}) {% else
-              %}(sin registros){% endif %}
-            </li>
-
-            <!-- Servicio más reciente (no tienes fecha en tabla Servicios) -->
-            <li class="list-group-item">
+              Agregar Cotización
+            </a>
+            <a
+              href="{{ url_for('planes.agregar') }}"
+              class="action-btn action-btn-warning"
+            >
               <img
-                src="{{ url_for('static', filename='icons/servicios.svg') }}"
+                src="{{ url_for('static', filename='icons/planes.svg') }}"
                 alt=""
               />
-              Servicio: {% if reciente_servicio %} {{ reciente_servicio[0] }} {%
-              if reciente_servicio[1] %}({{ reciente_servicio[1] }}){% endif %}
-              {% else %}(sin registros){% endif %}
-            </li>
-
-            <!-- Proveedor más reciente -->
-            <li class="list-group-item">
-              <img
-                src="{{ url_for('static', filename='icons/proveedor.svg') }}"
-                alt=""
-              />
-              Proveedor: {% if reciente_proveedor %} {{ reciente_proveedor[0] }}
-              ({{ reciente_proveedor[1] }}) {% else %}(sin registros){% endif %}
-            </li>
-          </ul>
-        </div>
-
-        <!-- Acciones Rápidas -->
-        <div class="col-lg-5">
-          <h4 class="mb-3">Acciones Rápidas</h4>
-          <div class="card shadow-sm">
-            <div class="card-body d-grid gap-2">
-              <a
-                href="{{ url_for('familiares.agregar') }}"
-                class="btn btn-outline-primary w-100"
-              >
-                <img
-                  src="{{ url_for('static', filename='icons/familiares.svg') }}"
-                  alt=""
-                />
-                Agregar Familiar
-              </a>
-              <a
-                href="{{ url_for('cotizacion.agregar') }}"
-                class="btn btn-outline-success w-100"
-              >
-                <img
-                  src="{{ url_for('static', filename='icons/cotizaciones.svg') }}"
-                  alt=""
-                />
-                Agregar Cotización
-              </a>
-              <a
-                href="{{ url_for('planes.agregar') }}"
-                class="btn btn-outline-warning w-100"
-              >
-                <img
-                  src="{{ url_for('static', filename='icons/planes.svg') }}"
-                  alt=""
-                />
-                Agregar Plan
-              </a>
-            </div>
+              Agregar Plan
+            </a>
           </div>
         </div>
       </div>
