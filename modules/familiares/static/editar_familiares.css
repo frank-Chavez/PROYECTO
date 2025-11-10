@@ -91,6 +91,7 @@ body {
   font-weight: 600 !important;
   color: #1a1a2e !important;
   border-left: 3px solid #7c3bed !important;
+  border: none;
 }
 
 .form-control:focus {
@@ -124,11 +125,24 @@ select.form-control {
 .btn-guardar {
   background: #7c3bed !important;
   color: white !important;
+  padding: 10px !important;
+  border-radius: 10px !important;
+  border: none !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
 }
 
 .btn-cancelar {
   background: #6b7280 !important;
   color: white !important;
+  padding: 10px !important;
+  text-decoration: none !important;
+  border-radius: 10px !important;
+  border: none !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
 }
 
 /* Estilos para el formulario completo */

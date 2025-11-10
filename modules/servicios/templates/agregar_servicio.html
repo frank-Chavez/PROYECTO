@@ -16,74 +16,143 @@
 
   <body>
     {% extends "dashboar.html" %} {% block content %}
-    <div class="container">
-      <h2 class="title">Agregar {{ title }}</h2>
-      <p class="subtitle">
-        Crea un nuevo servicio para usar en las cotizaciones
-      </p>
+    <div class="contenedor-principal">
+      <!-- Encabezado -->
+      <div class="encabezado-pagina">
+        <div class="contenido-encabezado">
+          <h1 class="titulo-principal">Agregar {{ title }}</h1>
+          <p class="subtitulo-pagina">
+            Crea un nuevo servicio para usar en las cotizaciones
+          </p>
+        </div>
+      </div>
 
-      <div class="card">
-        <form method="POST" class="service-form">
-          <div class="form-group">
-            <label for="tipoServ">Tipo de Servicio <span>*</span></label>
-            <input
-              type="text"
-              name="tipoServ"
-              placeholder="Ej: Traslado..."
-              required
-            />
-          </div>
+      <!-- Cuerpo -->
+      <div class="cuerpo-pagina">
+        <div class="contenedor-formulario">
+          <form method="POST">
+            <div class="contenido-formulario">
+              <!-- Sección: Información del Servicio -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Información del Servicio</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario doble">
+                    <label class="etiqueta-campo" for="tipoServ">
+                      Tipo de Servicio
+                      <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="tipoServ"
+                      name="tipoServ"
+                      class="input-texto"
+                      placeholder="Ej: Traslado..."
+                      required
+                    />
+                  </div>
 
-          <div class="form-group">
-            <label for="descripcionServ">Descripción <span>*</span></label>
-            <textarea
-              name="descripcionServ"
-              placeholder="Describe los detalles del servicio..."
-              rows="4"
-              required
-            ></textarea>
-          </div>
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="categoriaServ">
+                      Categoría <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="categoriaServ"
+                      name="categoriaServ"
+                      class="input-texto"
+                      placeholder="Categoría..."
+                      required
+                    />
+                  </div>
 
-          <div class="form-group">
-            <label for="categoriaServ">Categoría <span>*</span></label>
-            <input
-              type="text"
-              name="categoriaServ"
-              placeholder="Categoria..."
-              required
-            />
-          </div>
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="proveedor_id">
+                      Proveedor <span class="asterisco-requerido">*</span>
+                    </label>
+                    <select
+                      id="proveedor_id"
+                      name="proveedor_id"
+                      class="select-opciones"
+                      required
+                    >
+                      <option value="">Seleccione un proveedor</option>
+                      {% for prov in proveedores %}
+                      <option value="{{ prov[0] }}">{{ prov[1] }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
 
-          <div class="form-group">
-            <label for="precio_serv">Precio <span>*</span></label>
-            <input
-              type="number"
-              name="precio_serv"
-              step="0.01"
-              placeholder="0.00"
-              required
-            />
-          </div>
+                  <div class="campo-formulario triple">
+                    <label class="etiqueta-campo" for="descripcionServ">
+                      Descripción <span class="asterisco-requerido">*</span>
+                    </label>
+                    <textarea
+                      id="descripcionServ"
+                      name="descripcionServ"
+                      class="input-textarea"
+                      placeholder="Describe los detalles del servicio..."
+                      rows="4"
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
 
-          <div class="form-group">
-            <label for="estado">Estado</label>
-            <select name="estado">
-              <option value="1">Activo</option>
-              <option value="0">Inactivo</option>
-            </select>
-          </div>
+              <!-- Sección: Precio y Estado -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Precio y Estado</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="precio_serv">
+                      Precio <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="precio_serv"
+                      name="precio_serv"
+                      step="0.01"
+                      class="input-numero"
+                      placeholder="0.00"
+                      required
+                    />
+                  </div>
 
-          <div class="buttons">
-            <button type="submit" class="btn btn-primary">
-              Guardar Servicio
-            </button>
-            <a
-              href="{{ url_for('servicios.listar') }}"
-              class="btn btn-secondary"
-              >Cancelar</a
-            >
-          </div>
-        </form>
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="estado">
+                      Estado <span class="asterisco-requerido">*</span>
+                    </label>
+                    <select
+                      id="estado"
+                      name="estado"
+                      class="select-opciones"
+                      required
+                    >
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pie de formulario con botones -->
+            <div class="pie-formulario">
+              <a
+                href="{{ url_for('servicios.listar') }}"
+                class="boton-accion boton-cancelar"
+              >
+                Cancelar
+              </a>
+              <button type="submit" class="boton-accion boton-guardar">
+                Guardar Servicio
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
     {% endblock %}

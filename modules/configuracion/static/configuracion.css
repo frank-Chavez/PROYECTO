@@ -20,7 +20,7 @@ section nav a {
   border-radius: 6px;
   text-decoration: none;
   color: inherit;
-  transition: background 1s ease, color 0.3s ease;
+  transition: background 50s ease, color 0.3s ease;
   background-color: rgb(233, 233, 233);
 }
 
@@ -152,4 +152,9 @@ nav a img {
   font-weight: 600; /* font-semibold */
   background-color: #f3e8ff; /* bg-green-100 */
   color: #7e22ce;
+}
+button.btn {
+  border: none;
+  background: none;
+  cursor: pointer;
 }

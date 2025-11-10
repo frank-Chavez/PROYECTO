@@ -4,34 +4,157 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agregar {{title}}</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('proveedor.static', filename='agregar_proveedor.css')}}"
+    />
   </head>
   <body>
     {% extends "dashboar.html" %} {% block content %}
-    <h2>Agregar {{title}}</h2>
-    <form method="POST">
-      <label for="nombre">Nombre</label>
-      <input type="text" name="nombre" required />
+    <div class="contenedor-principal">
+      <!-- Encabezado -->
+      <div class="encabezado-pagina">
+        <div class="contenido-encabezado">
+          <h1 class="titulo-principal">Agregar {{title}}</h1>
+          <p class="subtitulo-pagina">
+            Complete los campos requeridos para registrar el servicio
+          </p>
+        </div>
+      </div>
 
-      <label for="Telefono">Telefono</label>
-      <input type="text" name="Telefono" required />
+      <!-- Cuerpo -->
+      <div class="cuerpo-pagina">
+        <div class="contenedor-formulario">
+          <form method="POST">
+            <div class="contenido-formulario">
+              <!-- Sección: Información del Servicio -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Información del Servicio</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario doble">
+                    <label class="etiqueta-campo" for="nombre">
+                      Nombre <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      class="input-texto"
+                      placeholder="Ingrese el nombre del servicio"
+                      required
+                    />
+                  </div>
 
-      <label for="correo">correo</label>
-      <input type="email" name="correo" required />
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="servicio">
+                      Servicio <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="servicio"
+                      name="servicio"
+                      class="input-texto"
+                      placeholder="Tipo de servicio"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
 
-      <label for="servicio">Servicio</label>
-      <input type="text" name="servicio" required />
+              <!-- Sección: Información de Contacto -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Información de Contacto</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="Telefono">
+                      Teléfono <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="Telefono"
+                      name="Telefono"
+                      class="input-texto"
+                      placeholder="Ingrese el teléfono"
+                      required
+                    />
+                  </div>
 
-      <label for="fechaRegistro">Fecha Registro</label>
-      <input type="date" name="fechaRegistro" required />
+                  <div class="campo-formulario doble">
+                    <label class="etiqueta-campo" for="correo">
+                      Correo Electrónico
+                      <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="correo"
+                      name="correo"
+                      class="input-email"
+                      placeholder="ejemplo@correo.com"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
 
-      <label for="estado">Estado</label>
-      <select name="estado">
-        <option value="1">Activo</option>
-        <option value="0">Inactivo</option>
-      </select>
+              <!-- Sección: Información Adicional -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Información Adicional</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="fechaRegistro">
+                      Fecha de Registro
+                      <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      id="fechaRegistro"
+                      name="fechaRegistro"
+                      class="input-fecha"
+                      required
+                    />
+                  </div>
 
-      <button type="submit">Agregar</button>
-    </form>
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="estado">
+                      Estado <span class="asterisco-requerido">*</span>
+                    </label>
+                    <select
+                      id="estado"
+                      name="estado"
+                      class="select-opciones"
+                      required
+                    >
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pie de formulario con botones -->
+            <div class="pie-formulario">
+              <button
+                type="button"
+                class="boton-accion boton-cancelar"
+                onclick="history.back()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="boton-accion boton-guardar">
+                Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     {% endblock %}
   </body>
 </html>

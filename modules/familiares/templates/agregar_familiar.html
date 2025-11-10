@@ -8,114 +8,146 @@
       href="{{url_for('familiares.static', filename='agregar_familiares.css')}}"
     />
   </head>
-  <body class="agregar-familiar">
+  <body>
     {% extends "dashboar.html" %} {% block content %}
-
-    <div class="familiar-container">
-      <div class="familiar-header">
-        <h2>Agregar {{title}}</h2>
-        <div class="familiar-breadcrumb">Familiares / Nuevo registro</div>
+    <div class="contenedor-principal">
+      <!-- Encabezado -->
+      <div class="encabezado-pagina">
+        <div class="contenido-encabezado">
+          <h1 class="titulo-principal">Agregar {{title}}</h1>
+          <p class="subtitulo-pagina">Familiares / Nuevo registro</p>
+        </div>
       </div>
 
-      <div class="familiar-body">
-        <form method="POST">
-          <div class="familiar-section">
-            <div class="section-header">
-              <div class="section-title">Información personal</div>
+      <!-- Cuerpo -->
+      <div class="cuerpo-pagina">
+        <div class="contenedor-formulario">
+          <form method="POST">
+            <div class="contenido-formulario">
+              <!-- Sección: Información Personal -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Información personal</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo">
+                      Nombre <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      class="input-texto"
+                      name="nombre"
+                      placeholder="Ingrese el nombre"
+                      required
+                    />
+                  </div>
+
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo">
+                      Apellido <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      class="input-texto"
+                      name="apellido"
+                      placeholder="Ingrese el apellido"
+                      required
+                    />
+                  </div>
+
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo">
+                      Parentesco <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      class="input-texto"
+                      name="parentesco"
+                      placeholder="Ej: Padre, Madre, Hijo"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección: Información de Contacto -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Información de contacto</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo">Teléfono</label>
+                    <input
+                      type="text"
+                      class="input-texto"
+                      name="telefono"
+                      placeholder="Ingrese el teléfono"
+                    />
+                  </div>
+
+                  <div class="campo-formulario doble">
+                    <label class="etiqueta-campo">Correo electrónico</label>
+                    <input
+                      type="email"
+                      class="input-email"
+                      name="correo"
+                      placeholder="ejemplo@correo.com"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección: Información Adicional -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Información adicional</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo">
+                      Estado <span class="asterisco-requerido">*</span>
+                    </label>
+                    <select class="select-opciones" name="estado" required>
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
+                    </select>
+                  </div>
+
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo">
+                      Fecha de registro
+                      <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      class="input-fecha"
+                      name="fechaRegistro"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="familiar-grid">
-              <div class="familiar-field">
-                <label class="field-label">
-                  Nombre <span class="required-indicator">*</span>
-                </label>
-                <input type="text" class="field-input" name="nombre" required />
-              </div>
-
-              <div class="familiar-field">
-                <label class="field-label">
-                  Apellido <span class="required-indicator">*</span>
-                </label>
-                <input
-                  type="text"
-                  class="field-input"
-                  name="apellido"
-                  required
-                />
-              </div>
-
-              <div class="familiar-field">
-                <label class="field-label">
-                  Parentesco <span class="required-indicator">*</span>
-                </label>
-                <input
-                  type="text"
-                  class="field-input"
-                  name="parentesco"
-                  required
-                />
-              </div>
+            <!-- Pie de formulario con botones -->
+            <div class="pie-formulario">
+              <button
+                type="button"
+                class="boton-accion boton-cancelar"
+                onclick="history.back()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="boton-accion boton-guardar">
+                Guardar familiar
+              </button>
             </div>
-          </div>
-
-          <div class="familiar-section">
-            <div class="section-header">
-              <div class="section-title">Información de contacto</div>
-            </div>
-
-            <div class="familiar-grid">
-              <div class="familiar-field">
-                <label class="field-label">Teléfono</label>
-                <input type="text" class="field-input" name="telefono" />
-              </div>
-
-              <div class="familiar-field span-2">
-                <label class="field-label">Correo electrónico</label>
-                <input type="email" class="field-input" name="correo" />
-              </div>
-            </div>
-          </div>
-
-          <div class="familiar-section">
-            <div class="section-header">
-              <div class="section-title">Información adicional</div>
-            </div>
-
-            <div class="familiar-grid">
-              <div class="familiar-field">
-                <label class="field-label">
-                  Estado <span class="required-indicator">*</span>
-                </label>
-                <select class="field-select" name="estado" required>
-                  <option value="">Seleccionar</option>
-                  <option value="1">Activo</option>
-                  <option value="0">Inactivo</option>
-                </select>
-              </div>
-
-              <div class="familiar-field">
-                <label class="field-label">
-                  Fecha de registro <span class="required-indicator">*</span>
-                </label>
-                <input
-                  type="date"
-                  class="field-input"
-                  name="fechaRegistro"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="familiar-actions">
-            <button type="submit" class="action-btn btn-save">
-              Guardar familiar
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-
     {% endblock %}
   </body>
 </html>

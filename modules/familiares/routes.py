@@ -15,9 +15,33 @@ def listar():
         return redirect(url_for("login"))
 
     conn = conection()
-    familiares = conn.execute("SELECT * FROM Familiares").fetchall()
+    conn.row_factory = lambda cursor, row: {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
+    cursor = conn.cursor()
+
+    page = int(request.args.get("page", 1))
+    per_page = 6
+    offset = (page - 1) * per_page
+
+    cursor.execute("SELECT COUNT(*) AS total FROM Familiares")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT * FROM Familiares LIMIT ? OFFSET ?", (per_page, offset))
+    familiares = cursor.fetchall()
+
+    cursor.close()
     conn.close()
-    return render_template("familiares.html", familiares=familiares, title="Familiares")
+
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        "familiares.html",
+        title="Familiares",
+        familiares=familiares,
+        page=page,
+        total=total,
+        per_page=per_page,
+        total_pages=total_pages,
+    )
 
 
 @familiares_bd.route("/busador", methods=["GET", "POST"])
@@ -38,7 +62,16 @@ def buscador():
         ).fetchall()
 
         conn.close()
-        return render_template("familiares.html", familiares=familiares, busqueda=search, title="Familiares")
+        return render_template(
+            "familiares.html",
+            familiares=familiares,
+            busqueda=search,
+            page=1,
+            total=len(familiares),
+            per_page=len(familiares),
+            total_pages=1,
+            title="Familiares",
+        )
     return redirect(url_for("familiares.listar"))
 
 

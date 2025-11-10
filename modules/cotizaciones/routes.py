@@ -30,24 +30,53 @@ def listar():
         return redirect(url_for("login"))
 
     conn = conection()
-    cotizacion = conn.execute(
+    conn.row_factory = lambda cursor, row: {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
+    cursor = conn.cursor()
+
+    # Parámetros de paginación
+    page = int(request.args.get("page", 1))
+    per_page = 6
+    offset = (page - 1) * per_page
+
+    # Total de registros
+    cursor.execute("SELECT COUNT(*) AS total FROM Cotizacion")
+    total = cursor.fetchone()["total"]
+
+    # Consulta con JOIN (no LEFT JOIN)
+    cursor.execute(
         """
-    SELECT  
-        c.id_cotizacion,
-        c.numero_cot,
-        c.fecha_cot,
-        c.monto_cot,
-        c.validacion_cot,
-        c.estado_cot,
-        f.f_nombre,
-        f.f_apellido
-    FROM Cotizacion c
-    JOIN cotizacion_detalles d ON c.id_cotizacion = d.id_cotizacion
-    JOIN Familiares f ON d.id_familiar = f.id_familiar
-    """
-    ).fetchall()
+        SELECT
+            c.id_cotizacion,
+            c.numero_cot,
+            c.fecha_cot,
+            c.monto_cot,
+            c.validacion_cot,
+            c.estado_cot,
+            f.f_nombre,
+            f.f_apellido
+        FROM Cotizacion c
+        JOIN cotizacion_detalles d ON c.id_cotizacion = d.id_cotizacion
+        JOIN Familiares f ON d.id_familiar = f.id_familiar
+        ORDER BY c.id_cotizacion DESC
+        LIMIT ? OFFSET ?
+        """,
+        (per_page, offset),
+    )
+    cotizacion = cursor.fetchall()
+    cursor.close()
     conn.close()
-    return render_template("cotizacion.html", cotizacion=cotizacion, title="Cotizaciones")
+
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        "cotizacion.html",
+        title="Cotizaciones",
+        cotizacion=cotizacion,
+        page=page,
+        total=total,
+        per_page=per_page,
+        total_pages=total_pages,
+    )
 
 
 # ----------------------------------------Opcion de busqueda----------------------------------------
@@ -79,7 +108,16 @@ def buscador():
         ).fetchall()
 
         conn.close()
-        return render_template("cotizacion.html", cotizacion=cotizacion, busqueda=search, title="Cotizaciones")
+        return render_template(
+            "cotizacion.html",
+            cotizacion=cotizacion,
+            busqueda=search,
+            page=1,
+            total=len(cotizacion),
+            per_page=len(cotizacion),
+            total_pages=1,
+            title="Cotizaciones",
+        )
     return redirect(url_for("cotizacion.listar"))
 
 

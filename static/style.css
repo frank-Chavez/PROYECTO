@@ -469,3 +469,46 @@ section.tabla .acciones {
   font-size: 12px;
   font-weight: 600;
 }
+
+/*-----------estilo de la parte de abajo de las tablas---------------*/
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination span {
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: #6c63ff;
+  font-weight: bold;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.nav-btn:hover {
+  color: #4e47d6;
+}
+
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  transition: 0.3s;
+}
+
+.arrow-icon.right {
+  transform: rotate(180deg);
+}

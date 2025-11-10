@@ -67,14 +67,17 @@
                     </div>
 
                     <div class="form-group-plan">
-                        <label for="nombre_p" class="form-label-plan">Proveedor *</label>
-                        <input type="text" 
-                               name="nombre_p" 
-                               id="nombre_p" 
-                               class="form-control-plan" 
-                               value="{{ servicioss['nombre_p'] }}" 
-                               required>
+                        <label for="proveedor_id" class="form-label-plan">Proveedor *</label>
+                        <select name="proveedor_id" id="proveedor_id" class="form-control-plan" required>
+                            <option value="">Seleccione un proveedor</option>
+                            {% for prov in proveedores %}
+                                <option value="{{ prov[0] }}" {% if prov[0] == servicioss['proveedor_id'] %}selected{% endif %}>
+                                    {{ prov[1] }}
+                                </option>
+                            {% endfor %}
+                        </select>
                     </div>
+
 
                     <div class="form-group-plan">
                         <label for="estado_serv" class="form-label-plan">Estado *</label>

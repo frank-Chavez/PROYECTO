@@ -91,6 +91,7 @@ body {
   font-weight: 600 !important;
   color: #1a1a2e !important;
   border-left: 3px solid #7c3bed !important;
+  border: none;
 }
 
 .form-control:focus {
@@ -125,11 +126,22 @@ select.form-control {
 .btn-guardar {
   background: #7c3bed !important;
   color: white !important;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .btn-cancelar {
   background: #6b7280 !important;
   color: white !important;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 form {

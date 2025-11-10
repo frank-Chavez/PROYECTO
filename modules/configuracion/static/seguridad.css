@@ -9,11 +9,9 @@
   padding: 14px 18px;
   margin: 10px 0;
   transition: all 0.3s ease;
-  max-width: 450px;
   gap: 20px;
 }
 
-/* Nombre del usuario */
 .content-securiti > div:first-child {
   font-weight: 600;
   font-size: 1rem;
@@ -42,29 +40,12 @@
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.password button:hover {
-  transform: scale(1.1);
-  opacity: 0.8;
-}
-
-/* Ícono del ojo */
 .password img {
   width: 22px;
   height: 22px;
-  filter: invert(30%) sepia(5%) saturate(700%) hue-rotate(180deg);
-  transition: filter 0.3s ease;
 }
 
-.password button:hover img {
-  filter: invert(36%) sepia(84%) saturate(600%) hue-rotate(185deg);
-}
-
-/*boton para cambiar la contraseña*/
-.cont-cambiar {
-  background-color: #2c3e50;
-}
 .cambiar-cont {
   height: auto;
-  width: 100%;
   border: none;
 }

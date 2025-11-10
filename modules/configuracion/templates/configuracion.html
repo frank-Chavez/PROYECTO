@@ -114,7 +114,11 @@
               action="{{ url_for('configuracion.eliminar_usuario', usuario_id=usuario['id_usuario']) }}"
               method="POST"
             >
-              <button type="submit" class="btn">
+              <button
+                type="submit"
+                class="btn"
+                onclick="return confirm('¿Seguro que deseas eliminar este usuario?')"
+              >
                 <img src="/static/icons/borrar.svg" alt="el" />
               </button>
             </form>
