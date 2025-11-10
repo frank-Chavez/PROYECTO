@@ -12,14 +12,14 @@ body {
   padding: 0;
 }
 
-.contenedor-principal {
+.page-container {
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-.encabezado-pagina {
+.page-header {
   background: #ffffff;
   border-bottom: 1px solid #e2e8f0;
   padding: 24px 32px;
@@ -29,31 +29,30 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.contenido-encabezado {
+.header-content {
   max-width: 1400px;
   margin: 0 auto;
 }
 
-.titulo-principal {
+.page-title {
   font-size: 24px;
   font-weight: 600;
   color: #1a202c;
   margin-bottom: 4px;
 }
 
-.subtitulo-pagina {
+.page-subtitle {
   font-size: 14px;
   color: #718096;
   font-weight: 400;
 }
 
-.cuerpo-pagina {
+.page-body {
   flex: 1;
   padding: 32px;
-  background: #f8f9fa;
 }
 
-.contenedor-formulario {
+.form-container {
   max-width: 1400px;
   margin: 0 auto;
   background: #ffffff;
@@ -61,23 +60,23 @@ body {
   border-radius: 8px;
 }
 
-.contenido-formulario {
-  padding: 40px 40px 0 40px;
+.form-content {
+  padding: 40px 40px 20px 40px;
 }
 
-.seccion-formulario {
+.form-section {
   margin-bottom: 40px;
 }
 
-.seccion-formulario:last-of-type {
+.form-section:last-of-type {
   margin-bottom: 0;
 }
 
-.encabezado-seccion {
+.section-header {
   padding-bottom: 12px;
 }
 
-.titulo-seccion {
+.section-title {
   font-size: 16px;
   font-weight: 600;
   color: #2d3748;
@@ -86,7 +85,7 @@ body {
   gap: 8px;
 }
 
-.titulo-seccion::before {
+.section-title::before {
   content: '';
   width: 3px;
   height: 18px;
@@ -94,26 +93,26 @@ body {
   border-radius: 2px;
 }
 
-.grilla-campos {
+.form-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
-.campo-formulario {
+.form-field {
   display: flex;
   flex-direction: column;
 }
 
-.campo-formulario.doble {
+.form-field.span-2 {
   grid-column: span 2;
 }
 
-.campo-formulario.triple {
+.form-field.span-3 {
   grid-column: span 3;
 }
 
-.etiqueta-campo {
+.field-label {
   font-size: 14px;
   font-weight: 500;
   color: #4a5568;
@@ -123,14 +122,12 @@ body {
   gap: 4px;
 }
 
-.asterisco-requerido {
+.required {
   color: #e53e3e;
 }
 
-.input-texto,
-.input-numero,
-.input-textarea,
-.select-opciones {
+.field-input,
+.field-select {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid #cbd5e0;
@@ -142,50 +139,39 @@ body {
   color: #2d3748;
 }
 
-.input-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.input-texto::placeholder,
-.input-numero::placeholder,
-.input-textarea::placeholder {
+.field-input::placeholder {
   color: #a0aec0;
 }
 
-.input-texto:hover,
-.input-numero:hover,
-.input-textarea:hover,
-.select-opciones:hover {
+.field-input:hover,
+.field-select:hover {
   border-color: #a0aec0;
 }
 
-.input-texto:focus,
-.input-numero:focus,
-.input-textarea:focus,
-.select-opciones:focus {
+.field-input:focus,
+.field-select:focus {
   outline: none;
   border-color: #7c3bed;
   box-shadow: 0 0 0 3px rgba(124, 59, 237, 0.08);
 }
 
-.select-opciones {
+.field-select {
   cursor: pointer;
   appearance: none;
-
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 40px;
 }
 
-.pie-formulario {
+.form-footer {
   padding: 24px 40px;
   display: flex;
   justify-content: flex-end;
   gap: 12px;
 }
 
-.boton-accion {
+.btn {
   padding: 10px 24px;
   border-radius: 6px;
   font-size: 14px;
@@ -194,101 +180,98 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 120px;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
 }
 
-.boton-cancelar {
+.btn-cancel {
   background: #ffffff;
   color: #4a5568;
   border: 1px solid #cbd5e0;
 }
 
-.boton-cancelar:hover {
+.btn-cancel:hover {
   background: #f7fafc;
   border-color: #a0aec0;
 }
 
-.boton-guardar {
+.btn-save {
   background: #7c3bed;
   color: #ffffff;
 }
 
-.boton-guardar:hover {
+.btn-save:hover {
   background: #6829d4;
 }
 
-.boton-guardar:active {
+.btn-save:active {
   transform: translateY(1px);
 }
 
-/* Diseño Responsive */
+/* Responsive Design */
 @media (max-width: 1200px) {
-  .grilla-campos {
+  .form-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .campo-formulario.triple {
+  .form-field.span-3 {
     grid-column: span 2;
   }
 }
 
 @media (max-width: 768px) {
-  .encabezado-pagina {
+  .page-header {
     padding: 20px 16px;
   }
 
-  .titulo-principal {
+  .page-title {
     font-size: 20px;
   }
 
-  .cuerpo-pagina {
+  .page-body {
     padding: 16px;
   }
 
-  .contenido-formulario {
+  .form-content {
     padding: 24px 16px;
   }
 
-  .grilla-campos {
+  .form-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
 
-  .campo-formulario.doble,
-  .campo-formulario.triple {
+  .form-field.span-2,
+  .form-field.span-3 {
     grid-column: span 1;
   }
 
-  .pie-formulario {
+  .form-footer {
     padding: 16px;
     flex-direction: column-reverse;
   }
 
-  .boton-accion {
+  .btn {
     width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .encabezado-pagina {
+  .page-header {
     padding: 16px;
   }
 
-  .titulo-principal {
+  .page-title {
     font-size: 18px;
   }
 
-  .subtitulo-pagina {
+  .page-subtitle {
     font-size: 13px;
   }
 
-  .contenido-formulario {
+  .form-content {
     padding: 20px 12px;
   }
 
-  .seccion-formulario {
+  .form-section {
     margin-bottom: 32px;
   }
 }

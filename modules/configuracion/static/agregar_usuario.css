@@ -1,0 +1,46 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  padding: 50px;
+  border-radius: 10px;
+}
+
+.text {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+.input {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #bdbdbd;
+  background: #ffffff;
+  color: #6c6c6c;
+  font-size: 15px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #7c3bed;
+  box-shadow: 0 0 0 5px rgba(124, 59, 237, 0.08);
+}
+
+.buton {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #7c3bed;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.roles {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 900px 0 0;
+}

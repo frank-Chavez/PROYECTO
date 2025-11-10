@@ -15,6 +15,7 @@ def index():
     if not session.get("permisos", {}).get("administrar_sistema"):
         flash("No tienes permiso para acceder a esta sección.")
         return redirect(url_for("dashboar"))
+
     conn = conection()
     index = conn.execute(
         """

@@ -120,13 +120,13 @@ body {
 
 .badge-activo {
   background: #3e9e78;
-  color: #065f46;
+  color: #ffffff;
   border: 1px solid #3e9e78;
 }
 
 .badge-inactivo {
   background: #d64141;
-  color: #991b1b;
+  color: #ffffff;
   border: 1px solid #370000;
 }
 

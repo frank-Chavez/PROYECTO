@@ -15,9 +15,33 @@ def listar():
         return redirect(url_for("login"))
 
     conn = conection()
-    fallecidos = conn.execute("SELECT * FROM Fallecidos").fetchall()
+    conn.row_factory = lambda cursor, row: {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
+    cursor = conn.cursor()
+
+    page = int(request.args.get("page", 1))
+    per_page = 6
+    offset = (page - 1) * per_page
+
+    cursor.execute("SELECT COUNT(*) AS total FROM Fallecidos")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT * FROM Fallecidos LIMIT ? OFFSET ?", (per_page, offset))
+    fallecidos = cursor.fetchall()
+
+    cursor.close()
     conn.close()
-    return render_template("fallecidos.html", Fallecidos=fallecidos, title="Fallecidos")
+
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        "fallecidos.html",
+        title="Fallecidos",
+        fallecidos=fallecidos,
+        page=page,
+        total=total,
+        per_page=per_page,
+        total_pages=total_pages,
+    )
 
 
 @fallecidos_bd.route("/busador", methods=["GET", "POST"])
@@ -34,7 +58,16 @@ def buscador():
             ("%" + search + "%",),
         ).fetchall()
         conn.close()
-        return render_template("fallecidos.html", Fallecidos=fallecidos, busqueda=search, title="Fallecidos")
+        return render_template(
+            "fallecidos.html",
+            fallecidos=fallecidos,
+            busqueda=search,
+            page=1,
+            total=len(fallecidos),
+            per_page=len(fallecidos),
+            total_pages=1,
+            title="Fallecidos",
+        )
     return redirect(url_for("fallecidos.listar"))
 
 

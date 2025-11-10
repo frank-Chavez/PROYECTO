@@ -123,25 +123,25 @@ body {
 
 .badge-activo {
   background: #3e9e78;
-  color: #065f46;
+  color: #ffffff;
   border: 1px solid #3e9e78;
 }
 
 .badge-inactivo {
   background: #d64141;
-  color: #991b1b;
+  color: #ffffff;
   border: 1px solid #370000;
 }
 
 .badge-aprobada {
   background: #597fb2;
-  color: #1e40af;
+  color: #ffffff;
   border: 1px solid #001630;
 }
 
 .badge-rechazada {
   background: #b9a348;
-  color: #92400e;
+  color: #ffffff;
   border: 1px solid #362a01;
 }
 

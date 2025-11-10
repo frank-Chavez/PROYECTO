@@ -1,109 +1,291 @@
-/* ======== ESTILO GLOBAL ======== */
-body.agregar-plan {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f9f7f4;
+* {
   margin: 0;
   padding: 0;
-  color: #2d2d2d;
+  box-sizing: border-box;
 }
 
-/* ======== TARJETA DEL FORMULARIO ======== */
-.plan-card {
-  max-width: 700px;
-  width: 90%;
-  margin: 60px auto;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   background: #ffffff;
-  padding: 40px 50px;
-  border-radius: 16px;
-  box-shadow: 0px 8px 28px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e0ddd9;
+  min-height: 100vh;
+  padding: 0;
 }
 
-.plan-card h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
+.contenedor-principal {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.encabezado-pagina {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 24px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.contenido-encabezado {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.titulo-principal {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 4px;
+}
+
+.subtitulo-pagina {
+  font-size: 14px;
+  color: #718096;
+  font-weight: 400;
+}
+
+.cuerpo-pagina {
+  flex: 1;
+  padding: 32px;
+  background: #f8f9fa;
+}
+
+.contenedor-formulario {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.contenido-formulario {
+  padding: 40px 40px 0 40px;
+}
+
+.seccion-formulario {
   margin-bottom: 40px;
-  color: #4a3a2d;
-  border-bottom: 2px solid #d4c5b4;
-  padding-bottom: 10px;
 }
 
-/* ======== ETIQUETAS ======== */
-.plan-label {
-  display: block;
+.seccion-formulario:last-of-type {
+  margin-bottom: 0;
+}
+
+.encabezado-seccion {
+  padding-bottom: 12px;
+}
+
+.titulo-seccion {
+  font-size: 16px;
   font-weight: 600;
-  margin-top: 20px;
+  color: #2d3748;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titulo-seccion::before {
+  content: '';
+  width: 3px;
+  height: 18px;
+  background: #7c3bed;
+  border-radius: 2px;
+}
+
+.grilla-campos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo-formulario.doble {
+  grid-column: span 2;
+}
+
+.campo-formulario.triple {
+  grid-column: span 3;
+}
+
+.etiqueta-campo {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
   margin-bottom: 8px;
-  font-size: 1rem;
-  color: #4b3f3f;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-/* ======== CAMPOS DEL FORMULARIO ======== */
-.plan-control {
+.asterisco-requerido {
+  color: #e53e3e;
+}
+
+.input-texto,
+.input-numero,
+.input-textarea,
+.select-opciones {
   width: 100%;
-  padding: 14px;
-  border: 1px solid #cfc5c0;
-  border-radius: 10px;
-  font-size: 1rem;
-  background-color: #fafafa;
-  color: #333;
-  transition: all 0.25s ease-in-out;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #2d3748;
 }
 
-.plan-control:focus {
-  outline: none;
-  border-color: #8c6b4f;
-  background-color: #fff;
-  box-shadow: 0 0 6px rgba(140, 107, 79, 0.4);
-}
-
-textarea.plan-control {
+.input-textarea {
   resize: vertical;
+  min-height: 100px;
 }
 
-/* ======== BOTÓN GUARDAR ======== */
-.btn-guardar-plan {
-  width: 100%;
-  margin-top: 35px;
-  padding: 14px 0;
-  background: #8c6b4f;
-  color: #ffffff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+.input-texto::placeholder,
+.input-numero::placeholder,
+.input-textarea::placeholder {
+  color: #a0aec0;
 }
 
-.btn-guardar-plan:hover {
-  background: #6f523d;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(140, 107, 79, 0.4);
+.input-texto:hover,
+.input-numero:hover,
+.input-textarea:hover,
+.select-opciones:hover {
+  border-color: #a0aec0;
 }
 
-.btn-guardar-plan:focus {
+.input-texto:focus,
+.input-numero:focus,
+.input-textarea:focus,
+.select-opciones:focus {
   outline: none;
+  border-color: #7c3bed;
+  box-shadow: 0 0 0 3px rgba(124, 59, 237, 0.08);
 }
 
-/* ======== ESTILO PLACEHOLDER ======== */
-.plan-control::placeholder {
-  color: #aaa;
-  font-style: italic;
+.select-opciones {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
 }
 
-/* ======== RESPONSIVE ======== */
+.pie-formulario {
+  padding: 24px 40px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.boton-accion {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.boton-cancelar {
+  background: #ffffff;
+  color: #4a5568;
+  border: 1px solid #cbd5e0;
+}
+
+.boton-cancelar:hover {
+  background: #f7fafc;
+  border-color: #a0aec0;
+}
+
+.boton-guardar {
+  background: #7c3bed;
+  color: #ffffff;
+}
+
+.boton-guardar:hover {
+  background: #6829d4;
+}
+
+.boton-guardar:active {
+  transform: translateY(1px);
+}
+
+/* Diseño Responsive */
+@media (max-width: 1200px) {
+  .grilla-campos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .campo-formulario.triple {
+    grid-column: span 2;
+  }
+}
+
 @media (max-width: 768px) {
-  .plan-card {
-    padding: 25px 20px;
+  .encabezado-pagina {
+    padding: 20px 16px;
   }
 
-  .plan-card h2 {
-    font-size: 1.7rem;
+  .titulo-principal {
+    font-size: 20px;
   }
 
-  .btn-guardar-plan {
-    font-size: 1rem;
+  .cuerpo-pagina {
+    padding: 16px;
+  }
+
+  .contenido-formulario {
+    padding: 24px 16px;
+  }
+
+  .grilla-campos {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .campo-formulario.doble,
+  .campo-formulario.triple {
+    grid-column: span 1;
+  }
+
+  .pie-formulario {
+    padding: 16px;
+    flex-direction: column-reverse;
+  }
+
+  .boton-accion {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .encabezado-pagina {
+    padding: 16px;
+  }
+
+  .titulo-principal {
+    font-size: 18px;
+  }
+
+  .subtitulo-pagina {
+    font-size: 13px;
+  }
+
+  .contenido-formulario {
+    padding: 20px 12px;
+  }
+
+  .seccion-formulario {
+    margin-bottom: 32px;
   }
 }

@@ -13,9 +13,33 @@ def listar():
         return redirect(url_for("login"))
 
     conn = conection()
-    planes = conn.execute("SELECT * FROM planes").fetchall()
+    conn.row_factory = lambda cursor, row: {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
+    cursor = conn.cursor()
+
+    page = int(request.args.get("page", 1))
+    per_page = 6
+    offset = (page - 1) * per_page
+
+    cursor.execute("SELECT COUNT(*) AS total FROM planes")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT * FROM planes LIMIT ? OFFSET ?", (per_page, offset))
+    planes = cursor.fetchall()
+
+    cursor.close()
     conn.close()
-    return render_template("planes.html", planes=planes, title="Planes")
+
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        "planes.html",
+        title="Planes",
+        planes=planes,
+        page=page,
+        total=total,
+        per_page=per_page,
+        total_pages=total_pages,
+    )
 
 
 @planes_bd.route("/busador", methods=["GET", "POST"])
@@ -30,7 +54,16 @@ def buscador():
             """SELECT * FROM Planes WHERE LOWER(remove_acentos(tipo_plan)) LIKE ?""", ("%" + search + "%",)
         ).fetchall()
         conn.close()
-        return render_template("planes.html", planes=planes, busqueda=search, title="Planes")
+        return render_template(
+            "planes.html",
+            planes=planes,
+            busqueda=search,
+            page=1,
+            total=len(planes),
+            per_page=len(planes),
+            total_pages=1,
+            title="Planes",
+        )
     return redirect(url_for("planes.listar"))
 
 

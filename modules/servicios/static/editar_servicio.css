@@ -140,12 +140,6 @@ textarea.form-control-plan {
   transition: all 0.2s ease;
 }
 
-.btn-guardar-plan:hover {
-  background: #6829d4 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(124, 59, 237, 0.3);
-}
-
 .btn-cancelar-plan {
   background: #6b7280 !important;
   color: white !important;
@@ -159,12 +153,6 @@ textarea.form-control-plan {
   display: inline-block;
   text-align: center;
   transition: all 0.2s ease;
-}
-
-.btn-cancelar-plan:hover {
-  background: #4b5563 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(107, 114, 128, 0.3);
 }
 
 form {

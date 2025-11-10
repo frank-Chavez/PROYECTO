@@ -4,31 +4,132 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agregar {{title}}</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('fallecidos.static', filename='agregar_fallecido.css')}}"
+    />
   </head>
   <body>
     {% extends "dashboar.html" %} {% block content %}
-    <h2>Agregar {{title}}</h2>
-    <form method="POST">
-      <label for="nombre">Nombre</label>
-      <input type="text" name="nombre" required />
+    <div class="page-container">
+      <!-- Header -->
+      <div class="page-header">
+        <div class="header-content">
+          <h1 class="page-title">Agregar {{title}}</h1>
+          <p class="page-subtitle">
+            Complete los campos requeridos para registrar la información
+          </p>
+        </div>
+      </div>
 
-      <label for="edad">Edad</label>
-      <input type="text" name="edad" required />
+      <!-- Body -->
+      <div class="page-body">
+        <div class="form-container">
+          <form method="POST">
+            <div class="form-content">
+              <!-- Sección: Información Personal -->
+              <div class="form-section">
+                <div class="section-header">
+                  <div class="section-title">Información Personal</div>
+                </div>
+                <div class="form-grid">
+                  <div class="form-field span-2">
+                    <label class="field-label" for="nombre">
+                      Nombre Completo <span class="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      class="field-input"
+                      placeholder="Ingrese el nombre completo"
+                      required
+                    />
+                  </div>
 
-      <label for="fechaDefuncion">Fecha Defuncion</label>
-      <input type="date" name="fechaDefuncion" required />
+                  <div class="form-field">
+                    <label class="field-label" for="edad">
+                      Edad <span class="required">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="edad"
+                      name="edad"
+                      class="field-input"
+                      placeholder="Ej: 45"
+                      min="0"
+                      max="150"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
 
-      <label for="fechaRegistro">Fecha Registro</label>
-      <input type="date" name="fechaRegistro" required />
+              <!-- Sección: Fechas y Estado -->
+              <div class="form-section">
+                <div class="section-header">
+                  <div class="section-title">Fechas y Estado</div>
+                </div>
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label class="field-label" for="fechaDefuncion">
+                      Fecha de Defunción <span class="required">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      id="fechaDefuncion"
+                      name="fechaDefuncion"
+                      class="field-input"
+                      required
+                    />
+                  </div>
 
-      <label for="estado">Estado</label>
-      <select name="estado" required>
-        <option value="1">Activo</option>
-        <option value="0">Inactivo</option>
-      </select>
+                  <div class="form-field">
+                    <label class="field-label" for="fechaRegistro">
+                      Fecha de Registro <span class="required">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      id="fechaRegistro"
+                      name="fechaRegistro"
+                      class="field-input"
+                      required
+                    />
+                  </div>
 
-      <button type="submit">Agregar</button>
-    </form>
+                  <div class="form-field">
+                    <label class="field-label" for="estado">
+                      Estado <span class="required">*</span>
+                    </label>
+                    <select
+                      id="estado"
+                      name="estado"
+                      class="field-select"
+                      required
+                    >
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer con botones -->
+            <div class="form-footer">
+              <button
+                type="button"
+                class="btn btn-cancel"
+                onclick="history.back()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-save">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     {% endblock %}
   </body>
 </html>

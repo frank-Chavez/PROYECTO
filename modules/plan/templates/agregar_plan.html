@@ -12,62 +12,156 @@
       href="{{url_for('planes.static', filename='agregar_plan.css')}}"
     />
   </head>
-  <body class="agregar-plan">
+  <body>
     {% extends "dashboar.html" %} {% block content %}
-    <div class="plan-card">
-      <h2>{{title}}</h2>
-      <form method="POST">
-        <label for="tipo_plan" class="plan-label">Tipo de Plan</label>
-        <select class="plan-control" name="tipo_plan" required>
-          <option value="Basico">Básico</option>
-          <option value="Intermedio">Intermedio</option>
-          <option value="Premium">Premium</option>
-          <option value="Empresarial">Empresarial</option>
-        </select>
+    <div class="contenedor-principal">
+      <!-- Encabezado -->
+      <div class="encabezado-pagina">
+        <div class="contenido-encabezado">
+          <h1 class="titulo-principal">{{title}}</h1>
+          <p class="subtitulo-pagina">
+            Configure los detalles del plan de servicios
+          </p>
+        </div>
+      </div>
 
-        <label for="precio_plan" class="plan-label">Precio</label>
-        <input
-          type="number"
-          step="0.01"
-          min="0"
-          class="plan-control"
-          name="precio_plan"
-          required
-        />
+      <!-- Cuerpo -->
+      <div class="cuerpo-pagina">
+        <div class="contenedor-formulario">
+          <form method="POST">
+            <div class="contenido-formulario">
+              <!-- Sección: Información del Plan -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Información del Plan</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="tipo_plan">
+                      Tipo de Plan <span class="asterisco-requerido">*</span>
+                    </label>
+                    <select
+                      id="tipo_plan"
+                      class="select-opciones"
+                      name="tipo_plan"
+                      required
+                    >
+                      <option value="">Seleccione un tipo</option>
+                      <option value="Basico">Básico</option>
+                      <option value="Intermedio">Intermedio</option>
+                      <option value="Premium">Premium</option>
+                      <option value="Empresarial">Empresarial</option>
+                    </select>
+                  </div>
 
-        <label for="duracion_plan" class="plan-label">Duración</label>
-        <input
-          type="text"
-          class="plan-control"
-          name="duracion_plan"
-          placeholder="Ej: 12 meses"
-          required
-        />
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="precio_plan">
+                      Precio <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="precio_plan"
+                      step="0.01"
+                      min="0"
+                      class="input-numero"
+                      name="precio_plan"
+                      placeholder="0.00"
+                      required
+                    />
+                  </div>
 
-        <label for="categoria_plan" class="plan-label">Categoría</label>
-        <input
-          type="text"
-          class="plan-control"
-          name="categoria_plan"
-          required
-        />
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="duracion_plan">
+                      Duración <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="duracion_plan"
+                      class="input-texto"
+                      name="duracion_plan"
+                      placeholder="Ej: 12 meses"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
 
-        <label for="condiciones_plan" class="plan-label">Condiciones</label>
-        <textarea
-          class="plan-control"
-          name="condiciones_plan"
-          rows="4"
-          required
-        ></textarea>
+              <!-- Sección: Categoría y Estado -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Categoría y Estado</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario doble">
+                    <label class="etiqueta-campo" for="categoria_plan">
+                      Categoría <span class="asterisco-requerido">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="categoria_plan"
+                      class="input-texto"
+                      name="categoria_plan"
+                      placeholder="Ingrese la categoría"
+                      required
+                    />
+                  </div>
 
-        <label for="estado_plan" class="plan-label">Estado</label>
-        <select class="plan-control" name="estado_plan" required>
-          <option value="1">Activo</option>
-          <option value="0">Inactivo</option>
-        </select>
+                  <div class="campo-formulario">
+                    <label class="etiqueta-campo" for="estado_plan">
+                      Estado <span class="asterisco-requerido">*</span>
+                    </label>
+                    <select
+                      id="estado_plan"
+                      class="select-opciones"
+                      name="estado_plan"
+                      required
+                    >
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-        <button type="submit" class="btn-guardar-plan">Agregar</button>
-      </form>
+              <!-- Sección: Condiciones -->
+              <div class="seccion-formulario">
+                <div class="encabezado-seccion">
+                  <div class="titulo-seccion">Condiciones del Plan</div>
+                </div>
+                <div class="grilla-campos">
+                  <div class="campo-formulario triple">
+                    <label class="etiqueta-campo" for="condiciones_plan">
+                      Condiciones <span class="asterisco-requerido">*</span>
+                    </label>
+                    <textarea
+                      id="condiciones_plan"
+                      class="input-textarea"
+                      name="condiciones_plan"
+                      rows="4"
+                      placeholder="Describa las condiciones y términos del plan"
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pie de formulario con botones -->
+            <div class="pie-formulario">
+              <button
+                type="button"
+                class="boton-accion boton-cancelar"
+                onclick="history.back()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="boton-accion boton-guardar">
+                Agregar Plan
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
     {% endblock %}
   </body>

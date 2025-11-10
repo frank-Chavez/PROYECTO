@@ -133,6 +133,41 @@
       </div>
       {% endfor %}
     </section>
+    <div class="table-footer">
+      <p>{{ total }} registrados</p>
+      <div class="pagination">
+        {% if page > 1 %}
+        <a
+          href="{{ url_for('servicios.listar', page=page-1) }}"
+          class="nav-btn"
+        >
+          <img
+            src="/static/icons/derecha.svg"
+            alt="Anterior"
+            class="arrow-icon left"
+          />
+        </a>
+        {% endif %}
+
+        <span>
+          {{ (page * per_page) if (page * per_page) < total else total }} de {{
+          total }}
+        </span>
+
+        {% if page < total_pages %}
+        <a
+          href="{{ url_for('servicios.listar', page=page+1) }}"
+          class="nav-btn"
+        >
+          <img
+            src="/static/icons/derecha.svg"
+            alt="Siguiente"
+            class="arrow-icon right"
+          />
+        </a>
+        {% endif %}
+      </div>
+    </div>
     {% endblock %}
   </body>
 </html>

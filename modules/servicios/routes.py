@@ -11,14 +11,23 @@ servicios_bd = Blueprint(
 
 @servicios_bd.route("/")
 def listar():
-
     if "id_usuario" not in session:
         return redirect(url_for("login"))
 
     conn = conection()
-    servicios = conn.execute(
+    conn.row_factory = lambda cursor, row: {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
+    cursor = conn.cursor()
+
+    page = int(request.args.get("page", 1))
+    per_page = 6
+    offset = (page - 1) * per_page
+
+    cursor.execute("SELECT COUNT(*) AS total FROM Servicios")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute(
         """
-    SELECT 
+        SELECT 
             s.id_servicio,
             s.tipo_serv,
             s.descripcion_serv,
@@ -29,10 +38,26 @@ def listar():
         FROM Servicios s
         LEFT JOIN Proveedores p 
         ON s.proveedor_id = p.id_proveedor
-        """
-    ).fetchall()
+        LIMIT ? OFFSET ?
+        """,
+        (per_page, offset),
+    )
+    servicios = cursor.fetchall()
+
+    cursor.close()
     conn.close()
-    return render_template("servicios.html", servicios=servicios, title="Servicios")
+
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        "servicios.html",
+        title="Servicios",
+        servicios=servicios,
+        page=page,
+        total=total,
+        per_page=per_page,
+        total_pages=total_pages,
+    )
 
 
 @servicios_bd.route("/busador", methods=["GET", "POST"])
@@ -60,7 +85,16 @@ def buscador():
         ).fetchall()
 
         conn.close()
-        return render_template("servicios.html", servicios=servicios, busqueda=search, title="Servicios")
+        return render_template(
+            "servicios.html",
+            servicios=servicios,
+            busqueda=search,
+            page=1,
+            total=len(servicios),
+            per_page=len(servicios),
+            total_pages=1,
+            title="Servicios",
+        )
     return redirect(url_for("servicios.listar"))
 
 
@@ -91,29 +125,35 @@ def editar(id):
         return redirect(url_for("login"))
 
     conn = conection()
+    cursor = conn.cursor()
+
+    # Traer proveedores activos
+    cursor.execute("SELECT id_proveedor, nombre_p FROM Proveedores WHERE estado_p=1")
+    proveedores = cursor.fetchall()
 
     if request.method == "POST":
-        tipoServvicio = request.form["tipo_serv"]
+        tipo_serv = request.form["tipo_serv"]
         descripcion = request.form["descripcion_serv"]
         categoria = request.form["categoria_serv"]
-        servicio = request.form["precio_serv"]
-        proveedor = request.form["proveedor_id"]
-        estado = request.form["estado_serv"]
+        precio_serv = float(request.form["precio_serv"])
+        proveedor_id = int(request.form["proveedor_id"])
+        estado_serv = int(request.form["estado_serv"])
 
-        conn.execute(
+        cursor.execute(
             """
-                UPDATE Servicios 
-                SET tipo_serv = ?, descripcion_serv = ?, categoria_serv = ?, precio_serv = ?, proveedor_id = ?, estado_serv    = ?
-                WHERE id_servicio = ?
+            UPDATE Servicios 
+            SET tipo_serv = ?, descripcion_serv = ?, categoria_serv = ?, precio_serv = ?, proveedor_id = ?, estado_serv = ?
+            WHERE id_servicio = ?
             """,
-            (tipoServvicio, descripcion, categoria, servicio, proveedor, estado, id),
+            (tipo_serv, descripcion, categoria, precio_serv, proveedor_id, estado_serv, id),
         )
         conn.commit()
         conn.close()
 
         return redirect(url_for("servicios.listar"))
 
-    editar = conn.execute(
+    # Obtener datos del servicio a editar
+    editar = cursor.execute(
         """
         SELECT 
             s.id_servicio,
@@ -127,12 +167,12 @@ def editar(id):
         FROM Servicios s
         LEFT JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
         WHERE s.id_servicio = ?
-    """,
+        """,
         (id,),
     ).fetchone()
     conn.close()
 
-    return render_template("editar_servicios.html", servicioss=editar, title="Registrar servico")
+    return render_template("editar_servicios.html", servicioss=editar, proveedores=proveedores, title="Editar Servicio")
 
 
 @servicios_bd.route("/VerDetalles/<int:id>", methods=["GET"])
@@ -153,7 +193,7 @@ def VerDetalles(id):
                p.nombre_p,
                s.estado_serv
         FROM Servicios s
-        JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
+        LEFT JOIN Proveedores p ON s.proveedor_id = p.id_proveedor
         WHERE s.id_servicio = ?
     """,
         (id,),
@@ -169,33 +209,38 @@ def VerDetalles(id):
 @servicios_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
 @permiso_requerido("crear_registros")
 def agregar_servicio():
-
     if "id_usuario" not in session:
         return redirect(url_for("login"))
+
+    conn = conection()
+    cursor = conn.cursor()
+    # Traer proveedores activos para el select
+    cursor.execute("SELECT id_proveedor, nombre_p FROM Proveedores WHERE estado_p=1")
+    proveedores = cursor.fetchall()
 
     if request.method == "POST":
         tipoServ = request.form["tipoServ"]
         descripcionServ = request.form["descripcionServ"]
         categoriaServ = request.form["categoriaServ"]
-        precio_serv = request.form["precio_serv"]
-        estado = request.form["estado"]
+        precio_serv = float(request.form["precio_serv"])
+        estado = int(request.form["estado"])
+        proveedor_id = int(request.form["proveedor_id"])
 
-        conn = conection()
-        cursor = conn.cursor()
         cursor.execute(
             """
             INSERT INTO Servicios (
-                tipo_serv, descripcion_serv, categoria_serv, precio_serv, estado_serv
-            ) VALUES (?, ?, ?, ?, ?)
-        """,
-            (tipoServ, descripcionServ, categoriaServ, precio_serv, estado),
+                tipo_serv, descripcion_serv, categoria_serv, precio_serv, proveedor_id, estado_serv
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (tipoServ, descripcionServ, categoriaServ, precio_serv, proveedor_id, estado),
         )
         conn.commit()
         conn.close()
 
         return redirect(url_for("servicios.listar"))
 
-    return render_template("agregar_servicio.html", title="Servicio")
+    conn.close()
+    return render_template("agregar_servicio.html", title="Servicio", proveedores=proveedores)
 
 
 @servicios_bd.route("/exel")

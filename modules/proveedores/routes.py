@@ -15,9 +15,33 @@ def listar():
         return redirect(url_for("login"))
 
     conn = conection()
-    proveedor = conn.execute("SELECT * FROM Proveedores").fetchall()
+    conn.row_factory = lambda cursor, row: {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
+    cursor = conn.cursor()
+
+    page = int(request.args.get("page", 1))
+    per_page = 6
+    offset = (page - 1) * per_page
+
+    cursor.execute("SELECT COUNT(*) AS total FROM Proveedores")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT * FROM Proveedores LIMIT ? OFFSET ?", (per_page, offset))
+    proveedor = cursor.fetchall()
+
+    cursor.close()
     conn.close()
-    return render_template("proveedor.html", proveedor=proveedor, title="Proveedor")
+
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        "proveedor.html",
+        title="Proveedor",
+        proveedor=proveedor,
+        page=page,
+        total=total,
+        per_page=per_page,
+        total_pages=total_pages,
+    )
 
 
 @proveedor_bd.route("/busador", methods=["GET", "POST"])
@@ -35,7 +59,16 @@ def buscador():
             (f"%{search.lower()}%", f"%{search.lower()}%"),
         ).fetchall()
         conn.close()
-        return render_template("proveedor.html", proveedor=proveedor, busqueda=search, title="Proveedor")
+        return render_template(
+            "proveedor.html",
+            proveedor=proveedor,
+            busqueda=search,
+            page=1,
+            total=len(proveedor),
+            per_page=len(proveedor),
+            total_pages=1,
+            title="Proveedor",
+        )
     return redirect(url_for("proveedor.listar"))
 
 
