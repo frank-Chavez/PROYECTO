@@ -1,51 +1,129 @@
-/* Contenedor principal de cada usuario */
-.content-securiti {
-  display: grid;
-  align-items: center;
-  justify-content: space-between;
-  background: #ffffff;
-  border: 1px solid #dcdfe6;
+.card {
+  background: white;
   border-radius: 12px;
-  padding: 14px 18px;
-  margin: 10px 0;
-  transition: all 0.3s ease;
-  gap: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
 }
 
-.content-securiti > div:first-child {
+.h1 {
+  font-size: 25px;
   font-weight: 600;
-  font-size: 1rem;
-  color: #2c3e50;
-  letter-spacing: 0.3px;
+  color: #1d1d1f;
+  padding-bottom: 10px;
 }
 
-/* Input del password */
-.password input {
+.form-group {
+  margin-bottom: 30px;
+}
+
+/* === ESTILO DEL INPUT PARA PASSWORD Y TEXT === */
+input[type='password'],
+input[type='text'] {
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+}
+
+input[type='password']:focus,
+input[type='text']:focus {
+  border-color: #9333ea;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+input[type='password']::placeholder,
+input[type='text']::placeholder {
+  color: #86868b;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+button {
+  padding: 10px 32px;
+  font-size: 16px;
+  font-weight: 500;
   border: none;
   border-radius: 8px;
-  padding: 6px 10px;
-  width: auto;
-  font-size: 0.95rem;
-  color: #2c3e50;
-  background-color: #ffffff;
-  transition: border-color 0.3s ease;
-}
-
-/* Botón de ver/ocultar */
-.password button {
-  background: none;
-  border: none;
   cursor: pointer;
-  padding: 4px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.password img {
-  width: 22px;
-  height: 22px;
+.btn-primary {
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  color: white;
 }
 
-.cambiar-cont {
-  height: auto;
-  border: none;
+.btn-primary:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+}
+
+.btn-secondary {
+  background: #f5f5f7;
+  color: #1d1d1f;
+  border: 1px solid #d2d2d7;
+}
+
+.btn-secondary:hover {
+  background: #e8e8ed;
+}
+
+.full-width-button {
+  width: 100%;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+/* Estado expandido */
+.expanded-view {
+  display: none;
+}
+
+.expanded-view.active {
+  display: block;
+}
+
+.collapsed-view.active {
+  display: block;
+}
+
+.collapsed-view {
+  display: none;
+}
+
+/* === OJO PARA VER CONTRASEÑA === */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-right: 40px;
+}
+
+.toggle-pass {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  user-select: none;
+}
+
+.toggle-pass img {
+  width: 100%;
 }

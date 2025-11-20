@@ -1,55 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{title}}</title>
+    <title>{{ title }}</title>
     <link
       rel="stylesheet"
-      href="{{url_for('configuracion.static', filename='seguridad.css')}}"
+      href="{{ url_for('configuracion.static', filename='seguridad.css') }}"
     />
   </head>
+
   <body>
     {% extends "configuracion.html" %} {% block options %} {% for Usuario in
     seguridad %}
-    <div class="content-securiti">
-      <div>
-        <div>{{Usuario['nombre_u']}}</div>
-      </div>
-      <div class="password">
-        <input
-          type="password"
-          id="pass{{ loop.index }}"
-          value="{{ Usuario['contraseña_u'] }}"
-          readonly
-        />
+    <div class="card">
+      <!-- Vista colapsada -->
+      <div
+        class="collapsed-view active"
+        id="collapsed-{{ Usuario.id_usuario }}"
+      >
+        <h1 class="h1">{{ Usuario.nombre_u }}</h1>
         <button
-          type="button"
-          onclick="togglePassword('pass{{ loop.index }}', this)"
+          class="btn-primary full-width-button"
+          onclick="expandForm('{{ Usuario.id_usuario }}')"
         >
-          <img src="/static/icons/ver.svg" alt="" />
+          Cambiar Contraseña
         </button>
       </div>
-      <div class="content-butom">
-        <button class="cambiar-cont" type="button">Cambiar contraseña</button>
+
+      <!-- Vista expandida -->
+      <div class="expanded-view" id="expanded-{{ Usuario.id_usuario }}">
+        <h1>{{ Usuario.nombre_u }}</h1>
+
+        <form onsubmit="guardarContraseña('{{ Usuario.id_usuario }}', event)">
+          <div class="form-group">
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="nueva-pass-{{ Usuario.id_usuario }}"
+                placeholder="Nueva contraseña (mín. 8 caracteres)"
+                minlength="8"
+                required
+              />
+
+              <!-- Icono con cambio dinámico -->
+              <span
+                class="toggle-pass"
+                onclick="togglePassword('{{ Usuario.id_usuario }}')"
+              >
+                <img
+                  id="icono-pass-{{ Usuario.id_usuario }}"
+                  src="/static/icons/ver.svg"
+                  alt="ver"
+                />
+              </span>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button
+              type="button"
+              class="btn-secondary"
+              onclick="collapseForm('{{ Usuario.id_usuario }}')"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary">Guardar</button>
+          </div>
+        </form>
       </div>
     </div>
+    {% endfor %}
 
     <script>
-      function togglePassword(id, button) {
-        const input = document.getElementById(id);
-        const img = button.querySelector('img');
+      const URL_CAMBIAR = "{{ url_for('configuracion.cambiar_contrasena') }}";
+
+      function expandForm(id) {
+        document.getElementById('collapsed-' + id).classList.remove('active');
+        document.getElementById('expanded-' + id).classList.add('active');
+      }
+
+      function collapseForm(id) {
+        document.getElementById('expanded-' + id).classList.remove('active');
+        document.getElementById('collapsed-' + id).classList.add('active');
+      }
+
+      function guardarContraseña(id, event) {
+        event.preventDefault();
+        const input = document.getElementById('nueva-pass-' + id);
+        const nueva = input.value.trim();
+
+        if (nueva.length < 8) {
+          alert('La contraseña debe tener mínimo 8 caracteres');
+          return;
+        }
+        if (!confirm('¿Cambiar la contraseña de este usuario?')) return;
+
+        fetch(URL_CAMBIAR, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `usuario_id=${id}&nueva=${encodeURIComponent(nueva)}`,
+        })
+          .then((r) => r.text())
+          .then((res) => {
+            if (res === 'OK') {
+              alert('¡Contraseña cambiada con éxito!');
+              input.value = '';
+              collapseForm(id);
+            } else {
+              alert('Error al guardar');
+            }
+          })
+          .catch(() => alert('Error de conexión'));
+      }
+
+      /* === MOSTRAR / OCULTAR CONTRASEÑA + CAMBIO DE ICONO === */
+      function togglePassword(id) {
+        const input = document.getElementById('nueva-pass-' + id);
+        const icon = document.getElementById('icono-pass-' + id);
 
         if (input.type === 'password') {
           input.type = 'text';
-          img.src = '/static/icons/ver2.svg';
+          icon.src = '/static/icons/ver2.svg'; // ojo cerrado
         } else {
           input.type = 'password';
-          img.src = '/static/icons/ver.svg';
+          icon.src = '/static/icons/ver.svg'; // ojo abierto
         }
       }
     </script>
 
-    {% endfor %} {% endblock %}
+    {% endblock %}
   </body>
 </html>

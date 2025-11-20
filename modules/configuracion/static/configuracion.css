@@ -38,7 +38,7 @@ nav a.active {
   color: white;
 }
 nav a.active img {
-  filter: brightness(0) invert(1); /* blanco */
+  filter: brightness(0) invert(1);
 }
 nav a img {
   width: 20px;
@@ -107,10 +107,12 @@ nav a img {
 
 .tabla {
   width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 .tabla-head {
-  background-color: #f9f8fa;
+  background-color: #d6d6d6;
   border-bottom: 1px solid #e5e7eb;
   border: 1px solid #e5e7eb;
 }
@@ -120,7 +122,7 @@ nav a img {
   text-align: left;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #8e8e8e;
+  color: #525252;
   text-transform: uppercase;
 }
 

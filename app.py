@@ -9,6 +9,8 @@ from modules.proveedores.routes import proveedor_bd
 from modules.servicios.routes import servicios_bd
 from modules.cotizaciones.routes import cotizaciones_bd
 from modules.configuracion.routes import configuracion_bd
+from werkzeug.security import check_password_hash
+
 
 load_dotenv()
 app = Flask(__name__)
@@ -40,38 +42,93 @@ def login():
     if "id_usuario" in session:
         return redirect(url_for("dashboar"))
 
-    mensaje = None
+    error = None
+
     if request.method == "POST":
         usuario = request.form.get("username")
         password = request.form.get("password")
 
         conn = conection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM Usuario WHERE nombre_u=? AND contraseña_u=?", (usuario, password))
+
+        # Buscar usuario
+        cursor.execute("SELECT * FROM Usuario WHERE nombre_u = ?", (usuario,))
         user = cursor.fetchone()
 
-        if user:
+        if user and check_password_hash(user["password"], password):
+            # --- INICIO DE SESIÓN EXITOSO ---
             session["id_usuario"] = user["id_usuario"]
             session["nombre_u"] = user["nombre_u"]
             session["rol_id"] = user["rol_id"]
 
             # Nombre del rol
-            cursor.execute("SELECT tipo_rol FROM Rol WHERE rol_id=?", (user["rol_id"],))
+            cursor.execute("SELECT tipo_rol FROM Rol WHERE rol_id = ?", (user["rol_id"],))
             rol = cursor.fetchone()
             session["rol_nombre"] = rol["tipo_rol"] if rol else "Desconocido"
 
-            # Permisos
-            cursor.execute("SELECT * FROM PermisosUsuario WHERE usuario_id=?", (user["id_usuario"],))
-            permisos = cursor.fetchone()
-            session["permisos"] = dict(permisos) if permisos else {}
+            # ========= CARGAR PERMISOS POR MÓDULO (NUEVO SISTEMA) =========
+            cursor.execute(
+                """
+                SELECT m.clave_modulo, pm.ver, pm.crear, pm.editar, pm.eliminar, pm.exportar
+                FROM PermisoModulo pm
+                JOIN Modulo m ON pm.modulo_id = m.id_modulo
+                WHERE pm.usuario_id = ?
+            """,
+                (user["id_usuario"],),
+            )
+
+            permisos_raw = cursor.fetchall()
+
+            permisos_dict = {"administrar_sistema": False}  # por defecto
+
+            for fila in permisos_raw:
+                clave = fila["clave_modulo"]
+                permisos_dict[clave] = {
+                    "ver": bool(fila["ver"]),
+                    "crear": bool(fila["crear"]),
+                    "editar": bool(fila["editar"]),
+                    "eliminar": bool(fila["eliminar"]),
+                    "exportar": bool(fila["exportar"]),
+                }
+
+            # Si el usuario tiene permiso en el módulo "configuracion", lo marcamos como admin del sistema
+            if permisos_dict.get("configuracion", {}).get("ver"):
+                permisos_dict["administrar_sistema"] = True
+
+            # Si es el usuario ID 1 (superadmin), forzar todos los permisos
+            if user["id_usuario"] == 1:
+                permisos_dict["administrar_sistema"] = True
+                # Opcional: darle todos los permisos aunque no estén en DB
+                for clave in [
+                    "cotizaciones",
+                    "planes",
+                    "servicios",
+                    "proveedores",
+                    "familiares",
+                    "fallecidos",
+                    "configuracion",
+                ]:
+                    if clave not in permisos_dict:
+                        permisos_dict[clave] = {
+                            "ver": True,
+                            "crear": True,
+                            "editar": True,
+                            "eliminar": True,
+                            "exportar": True,
+                        }
+
+            session["permisos"] = permisos_dict
 
             conn.close()
+            flash(f"Bienvenido, {user['nombre_u']}!", "success")
             return redirect(url_for("dashboar"))
 
-        mensaje = "Usuario o contraseña incorrectos"
-        conn.close()
+        # Si falla
+        error = "Usuario o contraseña incorrectos"
+        if user:
+            conn.close()
 
-    return render_template("login.html", mensaje=mensaje)
+    return render_template("login.html", error=error)
 
 
 # -------------------- LOGOUT --------------------

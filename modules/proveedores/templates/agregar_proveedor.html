@@ -116,6 +116,7 @@
                       id="fechaRegistro"
                       name="fechaRegistro"
                       class="input-fecha"
+                      id="fechaRegistro"
                       required
                     />
                   </div>
@@ -155,6 +156,11 @@
         </div>
       </div>
     </div>
-    {% endblock %}
   </body>
+  <script>
+    document.getElementById('fechaRegistro').value = new Date()
+      .toISOString()
+      .split('T')[0];
+  </script>
+  {% endblock %}
 </html>

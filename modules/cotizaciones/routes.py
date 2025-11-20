@@ -8,6 +8,7 @@ from flask import (
     request,
     session,
 )
+from datetime import date
 from database import conection
 from weasyprint import HTML
 import io
@@ -123,7 +124,7 @@ def buscador():
 
 # ----------------------------------------Opcion de cambiar el estado----------------------------------------
 @cotizaciones_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
-@permiso_requerido("eliminar_registros")
+@permiso_requerido("cotizacion", "eliminar")
 def cambiar_estado(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -145,7 +146,7 @@ def cambiar_estado(id):
 
 # ----------------------------------------Opcion de editar----------------------------------------
 @cotizaciones_bd.route("/editar/<int:id>", methods=["GET", "POST"])
-@permiso_requerido("editar_registros")
+@permiso_requerido("cotizacion", "editar")
 def editar(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -281,7 +282,7 @@ def editar(id):
 
 # ----------------------------------------Opcion para ver los detalles o informacion----------------------------------------
 @cotizaciones_bd.route("/VerDetalles/<int:id>", methods=["GET"])
-@permiso_requerido("ver_registros")
+@permiso_requerido("cotizacion", "ver")
 def VerDetalles(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -347,7 +348,7 @@ def VerDetalles(id):
 
 # ----------------------------------------Opcion de agregar informacion----------------------------------------
 @cotizaciones_bd.route("/agregar", methods=["GET", "POST"])
-@permiso_requerido("crear_registros")
+@permiso_requerido("cotizacion", "crear")
 def agregar():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -378,14 +379,14 @@ def agregar():
         if request.method == "POST":
             fecha_cot = request.form.get("fecha_cot")
             monto_cot = request.form.get("monto_cot")
-            validacion_cot = request.form.get("validacion_cot")
-            estado_cot = request.form.get("estado_cot", 1)
+            validacion_cot = "Aprobada"
+            estado_cot = 1
             planes_seleccionado = request.form.get("plan_cremacion")
             servicios_seleccionados = request.form.getlist("servicio_adicional")
             familiares_seleccionado = request.form.getlist("nombre_cliente")
 
             # Validación: campos obligatorios
-            if not (fecha_cot and monto_cot and validacion_cot):
+            if not monto_cot:
                 return render_template(
                     "agregar_cotizacion.html",
                     title="Agregar Cotización",
@@ -465,7 +466,7 @@ def agregar():
 
 # ----------------------------------------Opcion de descargar PDF ya que es cotizaciones----------------------------------------
 @cotizaciones_bd.route("/pdf/<int:id>", methods=["GET"])
-@permiso_requerido("exportar_datos")
+@permiso_requerido("cotizacion", "exportar")
 def descargar_pdf(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
