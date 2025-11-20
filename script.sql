@@ -4,13 +4,6 @@ CREATE TABLE Rol (
     tipo_rol TEXT NOT NULL
 );
 CREATE TABLE sqlite_sequence(name,seq);
-CREATE TABLE Usuario (
-    id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre_u TEXT NOT NULL,
-    contraseña_u TEXT NOT NULL,
-    rol_id INTEGER,
-    FOREIGN KEY (rol_id) REFERENCES Rol(rol_id)
-);
 CREATE TABLE Familiares (
     id_familiar INTEGER PRIMARY KEY AUTOINCREMENT,
     f_nombre TEXT NOT NULL,
@@ -93,14 +86,32 @@ CREATE TABLE proveedor_servicio (
     FOREIGN KEY (id_proveedores) REFERENCES Proveedores(id_proveedor),
     FOREIGN KEY (id_servicios) REFERENCES Servicios(id_servicio)
 );
-CREATE TABLE PermisosUsuario (
+CREATE TABLE IF NOT EXISTS "Usuario" (
+    id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre_u TEXT NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    rol_id INTEGER,
+    FOREIGN KEY (rol_id) REFERENCES Rol(rol_id)
+);
+CREATE TABLE Modulo (
+
+    id_modulo INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    nombre_modulo TEXT NOT NULL UNIQUE,
+
+    clave_modulo TEXT NOT NULL UNIQUE
+
+);
+CREATE TABLE PermisoModulo (
     id_permiso INTEGER PRIMARY KEY AUTOINCREMENT,
     usuario_id INTEGER NOT NULL,
-    ver_registros INTEGER DEFAULT 0,
-    crear_registros INTEGER DEFAULT 0,
-    editar_registros INTEGER DEFAULT 0,
-    eliminar_registros INTEGER DEFAULT 0,
-    exportar_datos INTEGER DEFAULT 0,
-    administrar_sistema INTEGER DEFAULT 0,
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
+    modulo_id INTEGER NOT NULL,
+    ver INTEGER DEFAULT 1,
+    crear INTEGER DEFAULT 0,
+    editar INTEGER DEFAULT 0,
+    eliminar INTEGER DEFAULT 0,
+    exportar INTEGER DEFAULT 0,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario),
+    FOREIGN KEY (modulo_id) REFERENCES Modulo(id_modulo),
+    UNIQUE(usuario_id, modulo_id)
 );

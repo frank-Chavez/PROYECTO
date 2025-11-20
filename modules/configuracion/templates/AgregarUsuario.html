@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{title}}</title>
+    <title>{{ title }}</title>
     <link
       rel="stylesheet"
-      href="{{url_for('configuracion.static', filename= 'agregar_usuario.css')}}"
+      href="{{ url_for('configuracion.static', filename='agregar_usuario.css') }}"
     />
   </head>
   <body>
@@ -14,21 +14,43 @@
 
     <form class="formulario" action="" method="POST">
       <label class="text" for="nombre">Nombre de usuario:</label>
-      <input class="input" type="text" id="nombre" name="nombre" required />
-
-      <label class="text" for="contraseña">Contraseña:</label>
       <input
         class="input"
-        type="password"
-        id="contraseña"
-        name="contraseña"
+        type="text"
+        id="nombre"
+        name="nombre"
         required
+        autocomplete="off"
       />
+
+      <label class="text" for="contraseña">Contraseña:</label>
+      <div class="password-wrapper">
+        <input
+          class="input"
+          type="password"
+          id="contraseña"
+          name="contraseña"
+          required
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="toggle-password"
+          id="toggleBtn"
+          title="Mostrar/Ocultar contraseña"
+        >
+          <img
+            src="{{ url_for('static', filename='icons/ver2.svg') }}"
+            alt="Mostrar"
+            id="ojoIcon"
+          />
+        </button>
+      </div>
 
       <div class="roles">
         <label class="text" for="rol">Rol del usuario:</label>
         <select class="input" name="rol" id="rol" required>
-          <option value="0">Elige un rol</option>
+          <option value="">Elige un rol</option>
           <option value="1">Administrador</option>
           <option value="2">Usuario</option>
         </select>
@@ -36,6 +58,25 @@
 
       <input class="buton" type="submit" value="Agregar Usuario" />
     </form>
+
+    <script>
+      document
+        .getElementById('toggleBtn')
+        .addEventListener('click', function () {
+          const passwordInput = document.getElementById('contraseña');
+          const icon = document.getElementById('ojoIcon');
+
+          if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.src = "{{ url_for('static', filename='icons/ver.svg') }}";
+            icon.alt = 'Ocultar';
+          } else {
+            passwordInput.type = 'password';
+            icon.src = "{{ url_for('static', filename='icons/ver2.svg') }}";
+            icon.alt = 'Mostrar';
+          }
+        });
+    </script>
 
     {% endblock %}
   </body>

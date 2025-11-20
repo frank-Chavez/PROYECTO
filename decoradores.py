@@ -2,28 +2,35 @@ from functools import wraps
 from flask import session, redirect, url_for, flash
 
 
-def permiso_requerido(nombre_permiso):
+def permiso_requerido(modulo, accion):
     """
-    Decorador para verificar si el usuario tiene un permiso específico.
-    Ejemplo: @permiso_requerido("editar_registros")
+    Ejemplo: @permiso_requerido("familiares", "editar")
     """
 
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            # Si no está logueado, lo mandamos al login
+
             if "id_usuario" not in session:
                 flash("Debes iniciar sesión primero.", "warning")
                 return redirect(url_for("login"))
 
             permisos = session.get("permisos", {})
 
-            # Si el permiso no existe o es 0, lo redirigimos al dashboard
-            if not permisos.get(nombre_permiso, 0):
-                flash("No tienes permiso para acceder a esta sección.", "danger")
-                return redirect(url_for("dashboar"))  # ajusta si tu dashboard tiene otro nombre
+            # Si es super admin, permitir todo
+            if permisos.get("administrar_sistema"):
+                return f(*args, **kwargs)
 
-            # Si todo ok, continúa la ejecución normal
+            # Verificar módulo
+            if modulo not in permisos:
+                flash("No tienes permiso para acceder a este módulo.", "danger")
+                return redirect(url_for("dashboar"))
+
+            # Verificar acción
+            if not permisos[modulo].get(accion, False):
+                flash("No tienes permiso para realizar esta acción.", "danger")
+                return redirect(url_for("dashboar"))
+
             return f(*args, **kwargs)
 
         return wrapper

@@ -73,7 +73,7 @@ def buscador():
 
 
 @proveedor_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
-@permiso_requerido("eliminar_registros")
+@permiso_requerido("proveedor", "eliminar")
 def cambiar_estado(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -91,7 +91,7 @@ def cambiar_estado(id):
 
 
 @proveedor_bd.route("/editar/<int:id>", methods=["GET", "POST"])
-@permiso_requerido("editar_registros")
+@permiso_requerido("proveedor", "editar")
 def editar(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -133,7 +133,7 @@ def editar(id):
 
 
 @proveedor_bd.route("/VerDetalles/<int:id>", methods=["GET"])
-@permiso_requerido("ver_registros")
+@permiso_requerido("proveedor", "ver")
 def VerDetalles(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -156,7 +156,7 @@ def VerDetalles(id):
 
 
 @proveedor_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
-@permiso_requerido("crear_registros")
+@permiso_requerido("proveedor", "crear")
 def agregar_fallecido():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -188,7 +188,7 @@ def agregar_fallecido():
 
 
 @proveedor_bd.route("/exel")
-@permiso_requerido("exportar_datos")
+@permiso_requerido("proveedor", "exportar")
 def exel():
     if "id_usuario" not in session:
         return redirect(url_for("login"))

@@ -67,39 +67,18 @@
                   {% endfor %}
                 </select>
               </div>
-
-              <div class="content_campos">
-                <div>
-                  <label for="fecha_cot" class="text"
-                    >Fecha de Cotización
-                  </label>
-                  <input
-                    type="date"
-                    name="fecha_cot"
-                    class="campo_fecha"
-                    required
-                  />
-                </div>
-                <div>
-                  <label for="validacion_cot" class="text">Validación</label>
-                  <select
-                    name="validacion_cot"
-                    class="campo_validacion"
-                    required
-                  >
-                    <option value="Aprobada">Aprobada</option>
-                    <option value="Rechazada">Rechazada</option>
-                  </select>
-                </div>
-              </div>
-
               <div>
-                <label for="estado_cot" class="text">Estado</label>
-                <select name="estado_cot" class="campo_estado" required>
-                  <option value="1">Activo</option>
-                  <option value="0">Inactivo</option>
-                </select>
+                <label for="fecha_cot" class="text">Fecha de Cotización </label>
+                <input
+                  type="date"
+                  name="fecha_cot"
+                  class="campo_fecha"
+                  id="fecha_cot"
+                  required
+                />
               </div>
+              <input type="hidden" name="estado_cot" value="1" />
+              <input type="hidden" name="validacion_cot" value="Aprobada" />
             </div>
 
             <!-- Columna Derecha -->
@@ -207,6 +186,10 @@
 
         calcularTotal();
       });
+
+      document.getElementById('fecha_cot').value = new Date()
+        .toISOString()
+        .split('T')[0];
     </script>
 
     {% endblock %}

@@ -99,7 +99,7 @@ def buscador():
 
 
 @servicios_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
-@permiso_requerido("eliminar_registros")
+@permiso_requerido("servicios", "eliminar")
 def cambiar_estado(id):
 
     if "id_usuario" not in session:
@@ -118,7 +118,7 @@ def cambiar_estado(id):
 
 
 @servicios_bd.route("/editar/<int:id>", methods=["GET", "POST"])
-@permiso_requerido("editar_registros")
+@permiso_requerido("servicios", "editar")
 def editar(id):
 
     if "id_usuario" not in session:
@@ -176,7 +176,7 @@ def editar(id):
 
 
 @servicios_bd.route("/VerDetalles/<int:id>", methods=["GET"])
-@permiso_requerido("ver_registros")
+@permiso_requerido("servicios", "ver")
 def VerDetalles(id):
 
     if "id_usuario" not in session:
@@ -207,7 +207,7 @@ def VerDetalles(id):
 
 
 @servicios_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
-@permiso_requerido("crear_registros")
+@permiso_requerido("servicios", "crear")
 def agregar_servicio():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -244,7 +244,7 @@ def agregar_servicio():
 
 
 @servicios_bd.route("/exel")
-@permiso_requerido("exportar_datos")
+@permiso_requerido("servicios", "exportar")
 def exel():
 
     if "id_usuario" not in session:

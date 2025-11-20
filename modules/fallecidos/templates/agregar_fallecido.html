@@ -72,19 +72,6 @@
                 </div>
                 <div class="form-grid">
                   <div class="form-field">
-                    <label class="field-label" for="fechaDefuncion">
-                      Fecha de Defunción <span class="required">*</span>
-                    </label>
-                    <input
-                      type="date"
-                      id="fechaDefuncion"
-                      name="fechaDefuncion"
-                      class="field-input"
-                      required
-                    />
-                  </div>
-
-                  <div class="form-field">
                     <label class="field-label" for="fechaRegistro">
                       Fecha de Registro <span class="required">*</span>
                     </label>
@@ -92,6 +79,19 @@
                       type="date"
                       id="fechaRegistro"
                       name="fechaRegistro"
+                      class="field-input"
+                      id="fechaRegistros"
+                      required
+                    />
+                  </div>
+                  <div class="form-field">
+                    <label class="field-label" for="fechaDefuncion">
+                      Fecha de Defunción <span class="required">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      id="fechaDefuncion"
+                      name="fechaDefuncion"
                       class="field-input"
                       required
                     />
@@ -130,6 +130,11 @@
         </div>
       </div>
     </div>
-    {% endblock %}
   </body>
+  <script>
+    document.getElementById('fechaRegistro').value = new Date()
+      .toISOString()
+      .split('T')[0];
+  </script>
+  {% endblock %}
 </html>

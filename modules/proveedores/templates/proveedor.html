@@ -36,7 +36,7 @@
             </button>
           </form>
         </div>
-        {% if session.get("permisos", {}).get("crear_registros") %}
+        {% if session.get("permisos", {}).get("proveedores", {}).get("crear") %}
         <a href="{{ url_for('proveedor.agregar') }}" class="agregar">
           <img
             class="ico_agregar"
@@ -53,7 +53,8 @@
             style="opacity: 0.5; cursor: not-allowed"
           />Agregar
         </a>
-        {% endif %} {% if session.get("permisos", {}).get("exportar_datos") %}
+        {% endif %} {% if session.get("permisos", {}).get("proveedores",
+        {}).get("exportar") %}
         <a href="{{url_for('proveedor.exel')}}" class="descargar"
           ><img src="/static/icons/descargar.svg" alt="descargar" />EXCEL</a
         >
@@ -91,7 +92,8 @@
           </td>
         </p>
         <div class="acciones">
-          {% if session.get("permisos", {}).get("editar_registros") %}
+          {% if session.get("permisos", {}).get("proveedores", {}).get("editar")
+          %}
           <a href="{{ url_for('proveedor.editar', id=f['id_proveedor']) }}"
             ><img src="/static/icons/editar.svg" alt="editar"
           /></a>
@@ -103,7 +105,8 @@
               style="opacity: 0.5; cursor: not-allowed"
             />
           </a>
-          {% endif %} {% if session.get("permisos", {}).get("ver_registros") %}
+          {% endif %} {% if session.get("permisos", {}).get("proveedores",
+          {}).get("ver") %}
           <a href="{{ url_for('proveedor.VerDetalles', id=f['id_proveedor']) }}"
             ><img src="/static/icons/ver.svg" alt="cambiar estado"
           /></a>
@@ -115,8 +118,8 @@
               style="opacity: 0.5; cursor: not-allowed"
             />
           </a>
-          {% endif %} {% if session.get("permisos",
-          {}).get("eliminar_registros")%}
+          {% endif %} {% if session.get("permisos", {}).get("proveedores",
+          {}).get("eliminar") %}
           <a
             href="{{ url_for('proveedor.cambiar_estado', id=f['id_proveedor']) }}"
             onclick="return confirm('¿Seguro que deseas cambiar el estado de este registro?')"
@@ -136,7 +139,7 @@
       {% endfor %}
     </section>
     <div class="table-footer">
-      <p>{{ total }} registrados</p>
+      <p>{{ total }} {{title}} registrados</p>
       <div class="pagination">
         {% if page > 1 %}
         <a

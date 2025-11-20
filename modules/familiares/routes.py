@@ -76,7 +76,7 @@ def buscador():
 
 
 @familiares_bd.route("/cambiar_estado/<int:id>", methods=["GET"])
-@permiso_requerido("eliminar_registros")
+@permiso_requerido("familiares", "eliminar")
 def cambiar_estado(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -94,7 +94,7 @@ def cambiar_estado(id):
 
 
 @familiares_bd.route("/editar/<int:id>", methods=["GET", "POST"])
-@permiso_requerido("editar_registros")
+@permiso_requerido("familiares", "editar")
 def editar(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -137,7 +137,7 @@ def editar(id):
 
 
 @familiares_bd.route("/VerDetalles/<int:id>", methods=["GET"])
-@permiso_requerido("ver_registros")
+@permiso_requerido("familiares", "ver")
 def VerDetalles(id):
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -160,7 +160,7 @@ def VerDetalles(id):
 
 
 @familiares_bd.route("/agregar", methods=["GET", "POST"], endpoint="agregar")
-@permiso_requerido("crear_registros")
+@permiso_requerido("familiares", "crear")
 def agregar_familiar():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
@@ -196,7 +196,7 @@ def agregar_familiar():
 
 
 @familiares_bd.route("/exel")
-@permiso_requerido("exportar_datos")
+@permiso_requerido("familiares", "exportar")
 def exel():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
