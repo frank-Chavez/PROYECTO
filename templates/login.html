@@ -5,135 +5,584 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}}</title>
     <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
+      * {
         margin: 0;
-        height: 100vh;
+        padding: 0;
+        box-sizing: border-box;
       }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        background: #f5f5f5;
+      }
+
       .container {
         width: 100%;
         height: 100%;
-        --color: rgba(160, 160, 160, 0.3);
-        background-color: #292b2b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          #8a4574 0%,
+          #7a3967 50%,
+          #6a2f57 100%
+        );
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Formas geométricas animadas en el fondo */
+      .container::before {
+        content: '';
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        top: -250px;
+        right: -250px;
+        animation: float 20s ease-in-out infinite;
+      }
+
+      .container::after {
+        content: '';
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.08) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        bottom: -200px;
+        left: -200px;
+        animation: float 15s ease-in-out infinite reverse;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        33% {
+          transform: translate(30px, -30px) rotate(120deg);
+        }
+        66% {
+          transform: translate(-20px, 20px) rotate(240deg);
+        }
+      }
+
+      /* Patrón de cuadrícula sutil */
+      .background-pattern {
+        position: absolute;
+        width: 100%;
+        height: 100%;
         background-image: linear-gradient(
-            0deg,
-            transparent 24%,
-            var(--color) 25%,
-            var(--color) 26%,
-            transparent 27%,
-            transparent 74%,
-            var(--color) 75%,
-            var(--color) 76%,
-            transparent 77%,
-            transparent
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
           ),
-          linear-gradient(
-            90deg,
-            transparent 24%,
-            var(--color) 25%,
-            var(--color) 26%,
-            transparent 27%,
-            transparent 74%,
-            var(--color) 75%,
-            var(--color) 76%,
-            transparent 77%,
-            transparent
-          );
-        background-size: 55px 55px;
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        pointer-events: none;
+      }
+
+      /* Partículas decorativas */
+      .particle {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: rise linear infinite;
+      }
+
+      .particle:nth-child(1) {
+        width: 3px;
+        height: 3px;
+        left: 10%;
+        animation-duration: 15s;
+        animation-delay: 0s;
+      }
+
+      .particle:nth-child(2) {
+        width: 5px;
+        height: 5px;
+        left: 25%;
+        animation-duration: 18s;
+        animation-delay: 2s;
+      }
+
+      .particle:nth-child(3) {
+        width: 4px;
+        height: 4px;
+        left: 40%;
+        animation-duration: 20s;
+        animation-delay: 4s;
+      }
+
+      .particle:nth-child(4) {
+        width: 6px;
+        height: 6px;
+        left: 60%;
+        animation-duration: 16s;
+        animation-delay: 1s;
+      }
+
+      .particle:nth-child(5) {
+        width: 3px;
+        height: 3px;
+        left: 75%;
+        animation-duration: 19s;
+        animation-delay: 3s;
+      }
+
+      .particle:nth-child(6) {
+        width: 5px;
+        height: 5px;
+        left: 90%;
+        animation-duration: 17s;
+        animation-delay: 5s;
+      }
+
+      @keyframes rise {
+        0% {
+          bottom: -10%;
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.8;
+        }
+        90% {
+          opacity: 0.8;
+        }
+        100% {
+          bottom: 110%;
+          opacity: 0;
+        }
       }
 
       .login-box {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 400px;
-        padding: 40px;
-        transform: translate(-50%, -50%);
-        background: #181414fc;
-        box-shadow: 0 15px 25px #00000099;
-        border-radius: 10px;
+        position: relative;
+        width: 450px;
+        padding: 45px;
+        background: #ffffff;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        animation: fadeInUp 0.6s ease-out;
       }
 
-      .login-box h1 {
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo-container {
         text-align: center;
-        color: white;
-        margin-bottom: 30px;
+        margin: -45px -45px 35px -45px;
+        padding: 40px 45px 30px 45px;
+        background: linear-gradient(180deg, #7a3967 0%, #6a2f57 100%);
+        border-radius: 12px 12px 0 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Efecto decorativo en el header */
+      .logo-container::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+      }
+
+      .logo-container img {
+        max-width: 180px;
+        height: auto;
+        margin-bottom: 15px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+
+      .logo-container h1 {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo-container p {
+        color: #f0e6ed;
+        font-size: 14px;
+        font-weight: 400;
       }
 
       .user-box {
+        position: relative;
+        margin-bottom: 25px;
+      }
+
+      .user-box label {
+        display: block;
+        color: #495057;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .input-wrapper {
         position: relative;
       }
 
       .user-box input {
         width: 100%;
-        padding: 10px 0;
-        font-size: 16px;
-        color: #fff;
-        margin-bottom: 30px;
-        border: none;
-        border-bottom: 1px solid #fff;
-        background: transparent;
+        padding: 13px 15px;
+        padding-right: 45px;
+        font-size: 15px;
+        color: #495057;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        background: #f8f9fa;
         outline: none;
+        transition: all 0.3s ease;
       }
 
-      .user-box label {
+      .user-box input:focus {
+        border-color: #7a3967;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(122, 57, 103, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .user-box input:hover:not(:focus) {
+        border-color: #b8b8b8;
+      }
+
+      /* Iconos en los inputs */
+      .user-box.username::before {
+        content: '👤';
         position: absolute;
-        top: 0;
-        left: 0;
-        padding: 10px 0;
-        font-size: 16px;
-        color: #fff;
+        right: 50px;
+        top: 40px;
+        font-size: 18px;
+        opacity: 0.4;
         pointer-events: none;
-        transition: 0.5s;
       }
 
-      .user-box input:focus ~ label,
-      .user-box input:valid ~ label {
-        top: -20px;
-        font-size: 12px;
-        color: #bdb8b8;
-      }
-
-      .login-box form {
-        text-align: center;
-      }
-
-      .login-box button {
-        padding: 10px 20px;
-        background: #181414fc;
-        color: white;
-        border: 3px solid white;
-        border-radius: 8px;
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
         cursor: pointer;
-        transition: 1s;
-        margin-top: 30px;
+        padding: 6px;
+        color: #6c757d;
+        transition: all 0.2s ease;
+        border-radius: 4px;
       }
 
-      .login-box button:hover {
-        background: white;
-        color: black;
+      .toggle-password:hover {
+        color: #7a3967;
+        background: rgba(122, 57, 103, 0.1);
+      }
+
+      .toggle-password:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      .toggle-password svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+
+      .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        font-size: 14px;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+        color: #495057;
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+
+      .remember-me:hover {
+        color: #7a3967;
+      }
+
+      .remember-me input {
+        margin-right: 8px;
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        accent-color: #7a3967;
+      }
+
+      .forgot-password a {
+        color: #7a3967;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-weight: 500;
+      }
+
+      .forgot-password a:hover {
+        color: #5f2d51;
+        text-decoration: underline;
+      }
+
+      .login-box button[type='submit'] {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #7a3967 0%, #6a2f57 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 12px rgba(122, 57, 103, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .login-box button[type='submit']::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+
+      .login-box button[type='submit']:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      .login-box button[type='submit']:hover {
+        background: linear-gradient(135deg, #8a4574 0%, #7a3967 100%);
+        box-shadow: 0 6px 16px rgba(122, 57, 103, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .login-box button[type='submit']:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(122, 57, 103, 0.3);
+      }
+
+      .error-message {
+        color: #dc3545;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        padding: 12px;
+        background: #f8d7da;
+        border-radius: 6px;
+        border-left: 4px solid #dc3545;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-10px);
+        }
+        75% {
+          transform: translateX(10px);
+        }
+      }
+
+      .footer-text {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #e9ecef;
+        color: #6c757d;
+        font-size: 13px;
+      }
+
+      /* Loading state */
+      .login-box button[type='submit']:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      @media (max-width: 480px) {
+        .login-box {
+          width: 90%;
+          padding: 35px 25px;
+        }
+
+        .logo-container {
+          margin: -35px -25px 30px -25px;
+          padding: 35px 25px 25px 25px;
+        }
+
+        .logo-container img {
+          max-width: 150px;
+        }
+
+        .logo-container h1 {
+          font-size: 20px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
+      <!-- Patrón de fondo -->
+      <div class="background-pattern"></div>
+
+      <!-- Partículas flotantes -->
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+
       <div class="login-box">
-        <h1>Login</h1>
-        <form method="post">
-          <div class="user-box">
-            <input type="text" name="username" required />
-            <label>Username</label>
+        <div class="logo-container">
+          <img
+            src="/static/img/logo-empresa.webp"
+            alt="Crematorio Virgen de la Natividad"
+            onerror="this.style.display='none'"
+          />
+        </div>
+
+        <form method="post" onsubmit="handleSubmit(event)">
+          <div class="user-box username">
+            <label for="username">Usuario</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                autocomplete="username"
+                placeholder="Ingrese su usuario"
+              />
+            </div>
           </div>
+
           <div class="user-box">
-            <input type="password" name="password" required />
-            <label>Password</label>
+            <label for="password">Contraseña</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+                placeholder="Ingrese su contraseña"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                onclick="togglePassword()"
+                title="Mostrar/Ocultar contraseña"
+              >
+                <svg
+                  id="eye-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
-          <button type="submit">Iniciar sesión</button>
+
+          <button type="submit" id="submitBtn">Iniciar Sesión</button>
+
           {% if error %}
-          <p style="color: red; text-align: center">{{ error }}</p>
+          <p class="error-message">{{ error }}</p>
           {% endif %}
         </form>
+
+        <div class="footer-text">© 2024 Crematorio Virgen de la Natividad</div>
       </div>
     </div>
+
+    <script>
+      function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          eyeIcon.innerHTML =
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />';
+        } else {
+          passwordInput.type = 'password';
+          eyeIcon.innerHTML =
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
+        }
+      }
+
+      function handleSubmit(event) {
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Iniciando...';
+        // El formulario se enviará normalmente
+      }
+
+      // Auto-focus en el primer campo al cargar
+      window.addEventListener('load', function () {
+        document.getElementById('username').focus();
+      });
+    </script>
   </body>
 </html>
