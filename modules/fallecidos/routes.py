@@ -25,7 +25,7 @@ def listar():
     cursor.execute("SELECT COUNT(*) AS total FROM Fallecidos")
     total = cursor.fetchone()["total"]
 
-    cursor.execute("SELECT * FROM Fallecidos LIMIT ? OFFSET ?", (per_page, offset))
+    cursor.execute("SELECT * FROM Fallecidos ORDER BY id_fallecido DESC LIMIT ? OFFSET ?", (per_page, offset))
     fallecidos = cursor.fetchall()
 
     cursor.close()
@@ -53,11 +53,18 @@ def buscador():
         search = request.form["buscar"]
         conn = conection()
         fallecidos = conn.execute(
-            """SELECT * FROM Fallecidos 
-            WHERE LOWER(remove_acentos(nombre_f)) LIKE ?""",
-            ("%" + search + "%",),
+            """
+            SELECT * FROM Fallecidos
+            WHERE edad_f LIKE ?
+            OR nombre_f LIKE ?
+            """,
+            (
+                f"%{search}%",
+                f"%{search}%",
+            ),  # un solo parámetro
         ).fetchall()
         conn.close()
+
         return render_template(
             "fallecidos.html",
             fallecidos=fallecidos,
@@ -203,7 +210,6 @@ def exel():
             f.edad_f AS 'Edad',
             REPLACE(f.fechaRegistro_f, '-','/')  AS 'Fecha de Registro',
             REPLACE(f.fechaActualizacion_f, '-','/')  AS 'Fecha de Actualizacion',
-            f.estado_f AS 'Estado',
 
             CASE 
                 WHEN f.estado_f = 1 THEN 'Activo'

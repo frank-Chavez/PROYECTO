@@ -14,18 +14,25 @@
     <address id="from">
       Crematorio Virgen de la Natividad
       RUC: 20450359051
-      Teléfono: +51
+      Teléfono 1: +51 931 112 364
+      Teléfono 2: +51 928 496 439
     </address>
 
+
+
+
     <address id="to">
-      {% if familiares %}
-      {% for f in familiares %}
-      Cliente: {{ f.f_nombre }} {{ f.f_apellido }}<br> Correo: {{ f.f_correo}}{% if not loop.last %}, {% endif %}
-      {% endfor %}
+      {% if cliente %}
+        <strong>Cliente:</strong> {{ cliente.nombre }}
+        {% if cliente.correo %}
+            <strong>Correo:</strong> {{ cliente.correo }}
+        {% endif %}
       {% else %}
-      No hay familiares asociados
+        No hay cliente asociado
       {% endif %}
     </address>
+
+
   </aside>
   <dl id="informations">
     <dt>N° DE RESIVO</dt>
@@ -48,7 +55,7 @@
           {% if plan %}
           {{ plan.tipo_plan }}
           {% else %}
-
+          No hay plan seleccionado
           {% endif %}
         </td>
         <td>

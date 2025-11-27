@@ -36,7 +36,7 @@
                           <!-- Badge que indica el tipo de usuario -->
                           {% if uid == 1 %}
                               <span class="badge badge-warning text-dark ml-3">ADMINISTRADOR PRINCIPAL</span>
-                          {% elif permisos.get(uid, {}).get(7, {}).get('ver', 0) == 1 %}
+                          {% elif usuario.rol_id == 1 %}
                               <span class="badge badge-danger ml-3">ADMINISTRADOR</span>
                           {% else %}
                               <span class="badge badge-secondary ml-3">USUARIO</span>

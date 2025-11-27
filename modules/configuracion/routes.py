@@ -73,33 +73,39 @@ def permisos():
 
     conn = conection()
 
-    # Obtener todos los usuarios
-    usuarios = conn.execute("SELECT id_usuario, nombre_u FROM Usuario ORDER BY nombre_u").fetchall()
+    # UNA SOLA consulta: trae todo lo que necesitas
+    usuarios = conn.execute(
+        """
+        SELECT u.id_usuario, u.nombre_u, u.rol_id, COALESCE(r.tipo_rol, 'Sin rol') as tipo_rol
+        FROM Usuario u
+        LEFT JOIN Rol r ON u.rol_id = r.rol_id
+        ORDER BY u.nombre_u
+    """
+    ).fetchall()
 
-    # Obtener todos los módulos
     modulos = conn.execute(
         "SELECT id_modulo, nombre_modulo, clave_modulo FROM Modulo ORDER BY nombre_modulo"
     ).fetchall()
 
-    # Obtener todos los permisos existentes
     permisos_db = conn.execute(
-        """
-        SELECT usuario_id, modulo_id, ver, crear, editar, eliminar, exportar 
-        FROM PermisoModulo
-    """
+        "SELECT usuario_id, modulo_id, ver, crear, editar, eliminar, exportar FROM PermisoModulo"
     ).fetchall()
 
-    # Convertir a diccionario para fácil acceso en la plantilla
     permisos_dict = {}
     for p in permisos_db:
-        if p[0] not in permisos_dict:
-            permisos_dict[p[0]] = {}
-        permisos_dict[p[0]][p[1]] = {"ver": p[2], "crear": p[3], "editar": p[4], "eliminar": p[5], "exportar": p[6]}
+        uid, mid = p[0], p[1]
+        if uid not in permisos_dict:
+            permisos_dict[uid] = {}
+        permisos_dict[uid][mid] = {"ver": p[2], "crear": p[3], "editar": p[4], "eliminar": p[5], "exportar": p[6]}
 
     conn.close()
 
     return render_template(
-        "permisos.html", usuarios=usuarios, modulos=modulos, permisos=permisos_dict, title="Permisos por Módulo"
+        "permisos.html",
+        usuarios=usuarios,  # ahora trae rol y tipo_rol
+        modulos=modulos,
+        permisos=permisos_dict,
+        title="Permisos por Módulo",
     )
 
 
@@ -210,7 +216,7 @@ def agregar_usuario():
     if request.method == "POST":
         nombre = request.form["nombre"]
         contraseña = request.form["contraseña"]
-        rol = request.form.get("rol", "2")  # por defecto no admin
+        rol = request.form.get("rol", "2")
 
         password_hash = generate_password_hash(contraseña)
 
@@ -222,16 +228,17 @@ def agregar_usuario():
         )
         usuario_id = cursor.lastrowid
 
-        # --- NUEVO: Dar permisos por módulo ---
+        # Obtener todos los módulos
         cursor.execute("SELECT id_modulo FROM Modulo")
         modulos = cursor.fetchall()
 
-        es_admin = rol == "1"  # si el rol 1 es administrador
+        es_admin = rol == "1"
 
         for modulo in modulos:
             modulo_id = modulo[0]
+
             if es_admin:
-                # Admin tiene todo
+                # Admin → todo en 1
                 cursor.execute(
                     """
                     INSERT INTO PermisoModulo (usuario_id, modulo_id, ver, crear, editar, eliminar, exportar)
@@ -239,29 +246,29 @@ def agregar_usuario():
                 """,
                     (usuario_id, modulo_id),
                 )
+
             else:
-                # Usuario normal: solo ver y crear en algunos módulos (tú decides)
-                # Ejemplo: solo ver cotizaciones y crear cotizaciones
-                if modulo_id == 1:  # Supongamos que 1 = cotizaciones
-                    cursor.execute(
-                        """
-                        INSERT INTO PermisoModulo (usuario_id, modulo_id, ver, crear, editar, eliminar, exportar)
-                        VALUES (?, ?, 1, 1, 0, 0, 0)
-                    """,
-                        (usuario_id, modulo_id),
-                    )
+                # Usuario normal → SIN acceso a configuración (id=7)
+                if modulo_id == 7:
+                    continue  # ¡No darle acceso!
+
+                # Permisos según módulo
+                if modulo_id == 1:  # Cotizaciones
+                    valores = (1, 1, 0, 0, 0)
                 else:
-                    cursor.execute(
-                        """
-                        INSERT INTO PermisoModulo (usuario_id, modulo_id, ver, crear, editar, eliminar, exportar)
-                        VALUES (?, ?, 1, 0, 0, 0, 0)
-                    """,
-                        (usuario_id, modulo_id),
-                    )
+                    valores = (1, 0, 0, 0, 0)
+
+                cursor.execute(
+                    """
+                    INSERT INTO PermisoModulo (usuario_id, modulo_id, ver, crear, editar, eliminar, exportar)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                    (usuario_id, modulo_id, *valores),
+                )
 
         conn.commit()
         conn.close()
-        flash("Usuario creado correctamente con permisos por módulo.")
+        flash("Usuario creado correctamente con permisos por módulo.", "success")
         return redirect(url_for("configuracion.index"))
 
     return render_template("AgregarUsuario.html", title="Agregar Usuario")

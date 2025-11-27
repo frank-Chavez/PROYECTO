@@ -38,6 +38,7 @@ def listar():
         FROM Servicios s
         LEFT JOIN Proveedores p 
         ON s.proveedor_id = p.id_proveedor
+        ORDER BY s.id_servicio DESC
         LIMIT ? OFFSET ?
         """,
         (per_page, offset),

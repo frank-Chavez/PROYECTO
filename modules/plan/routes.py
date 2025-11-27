@@ -23,7 +23,7 @@ def listar():
     cursor.execute("SELECT COUNT(*) AS total FROM planes")
     total = cursor.fetchone()["total"]
 
-    cursor.execute("SELECT * FROM planes LIMIT ? OFFSET ?", (per_page, offset))
+    cursor.execute("SELECT * FROM planes ORDER BY id_plan DESC LIMIT ? OFFSET ?", (per_page, offset))
     planes = cursor.fetchall()
 
     cursor.close()
@@ -51,7 +51,15 @@ def buscador():
         search = request.form["buscar"]
         conn = conection()
         planes = conn.execute(
-            """SELECT * FROM Planes WHERE LOWER(remove_acentos(tipo_plan)) LIKE ?""", ("%" + search + "%",)
+            """
+            SELECT * FROM Planes 
+            WHERE LOWER(remove_acentos(tipo_plan)) LIKE ?
+            OR LOWER(remove_acentos(duracion_plan)) LIKE ?
+            """,
+            (
+                f"%{search}%",
+                f"%{search}%",
+            ),
         ).fetchall()
         conn.close()
         return render_template(
@@ -198,7 +206,6 @@ def exel():
             p.duracion_plan AS 'Duracion del Plan',
             p.categoria_plan AS 'Categoria del Plan',
             p.condiciones_plan AS 'Condiciones del Plan',
-            p.estado_plan AS 'Estado',
             CASE 
                 WHEN p.estado_plan = 1 THEN 'Activo'
                 ELSE 'Inactivo'

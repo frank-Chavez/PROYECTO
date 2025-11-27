@@ -76,10 +76,9 @@ def login():
             """,
                 (user["id_usuario"],),
             )
-
             permisos_raw = cursor.fetchall()
 
-            permisos_dict = {"administrar_sistema": False}  # por defecto
+            permisos_dict = {"administrar_sistema": False}
 
             for fila in permisos_raw:
                 clave = fila["clave_modulo"]
@@ -90,16 +89,16 @@ def login():
                     "eliminar": bool(fila["eliminar"]),
                     "exportar": bool(fila["exportar"]),
                 }
-
-            # Si el usuario tiene permiso en el módulo "configuracion", lo marcamos como admin del sistema
-            if permisos_dict.get("configuracion", {}).get("ver"):
+            # ¡¡AQUÍ ESTÁ EL CAMBIO CLAVE!!
+            # Solo el ROL 1 o el usuario ID=1 son administradores del sistema
+            if user["rol_id"] == 1 or user["id_usuario"] == 1:
                 permisos_dict["administrar_sistema"] = True
+            else:
+                permisos_dict["administrar_sistema"] = False
 
-            # Si es el usuario ID 1 (superadmin), forzar todos los permisos
+            # Superadmin (id=1) tiene TODO aunque no esté en la BD
             if user["id_usuario"] == 1:
-                permisos_dict["administrar_sistema"] = True
-                # Opcional: darle todos los permisos aunque no estén en DB
-                for clave in [
+                claves = [
                     "cotizaciones",
                     "planes",
                     "servicios",
@@ -107,16 +106,16 @@ def login():
                     "familiares",
                     "fallecidos",
                     "configuracion",
-                ]:
-                    if clave not in permisos_dict:
-                        permisos_dict[clave] = {
-                            "ver": True,
-                            "crear": True,
-                            "editar": True,
-                            "eliminar": True,
-                            "exportar": True,
-                        }
-
+                    "reportes",
+                ]
+                for clave in claves:
+                    permisos_dict[clave] = {
+                        "ver": True,
+                        "crear": True,
+                        "editar": True,
+                        "eliminar": True,
+                        "exportar": True,
+                    }
             session["permisos"] = permisos_dict
 
             conn.close()
