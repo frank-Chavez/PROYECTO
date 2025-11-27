@@ -302,6 +302,7 @@
   background-color: #7c3bed;
   color: white;
   font-weight: 700;
+  cursor: pointer;
 }
 .butom_cancelar {
   display: flex;

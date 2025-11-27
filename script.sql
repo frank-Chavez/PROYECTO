@@ -1,9 +1,10 @@
 CREATE TABLE Rol (
     rol_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    estado_rol INTEGER NOT NULL, -- 0 o 1
+    estado_rol INTEGER NOT NULL,
+    -- 0 o 1
     tipo_rol TEXT NOT NULL
 );
-CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE sqlite_sequence(name, seq);
 CREATE TABLE Familiares (
     id_familiar INTEGER PRIMARY KEY AUTOINCREMENT,
     f_nombre TEXT NOT NULL,
@@ -20,7 +21,8 @@ CREATE TABLE Fallecidos (
     id_fallecido INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre_f TEXT NOT NULL,
     fecha_defuncion DATE NOT NULL,
-    estado_f INTEGER, -- booleano
+    estado_f INTEGER,
+    -- booleano
     edad_f INTEGER,
     familiar_id INTEGER,
     fechaRegistro_f DATE,
@@ -61,13 +63,17 @@ CREATE TABLE Cotizacion (
     fecha_cot DATE NOT NULL,
     monto_cot REAL NOT NULL,
     estado_cot INTEGER NOT NULL,
-    validacion_cot TEXT
+    validacion_cot TEXT,
+    nombre_cliente TEXT
 );
 CREATE TABLE cotizacion_detalles (
     id_detalle INTEGER PRIMARY KEY AUTOINCREMENT,
     id_cotizacion INTEGER,
     id_plan INTEGER,
-    id_servicio INTEGER, id_familiar INTEGER, cantidad INTEGER DEFAULT 1,
+    id_servicio INTEGER,
+    id_familiar INTEGER,
+    cantidad INTEGER DEFAULT 1,
+    nombre_manual TEXT,
     FOREIGN KEY (id_cotizacion) REFERENCES Cotizacion(id_cotizacion),
     FOREIGN KEY (id_plan) REFERENCES Planes(id_plan),
     FOREIGN KEY (id_servicio) REFERENCES Servicios(id_servicio)
@@ -94,13 +100,9 @@ CREATE TABLE IF NOT EXISTS "Usuario" (
     FOREIGN KEY (rol_id) REFERENCES Rol(rol_id)
 );
 CREATE TABLE Modulo (
-
     id_modulo INTEGER PRIMARY KEY AUTOINCREMENT,
-
     nombre_modulo TEXT NOT NULL UNIQUE,
-
     clave_modulo TEXT NOT NULL UNIQUE
-
 );
 CREATE TABLE PermisoModulo (
     id_permiso INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -21,15 +21,12 @@
                     readonly><br><br>
 
                 <label for="nombre_cliente" class="text">Nombre del Cliente:</label><br>
-                <select name="nombre_cliente" class="campo_name" required>
-                    <option value="">Elige un familiar</option>
+                <input list="lista_familiares" name="nombre_cliente" class="campo_plan" value="{{ cot['nombre_cliente'] }}" required />
+                <datalist id="lista_familiares">
                     {% for f in familiares_disponibles %}
-                    <option value="{{ f['id_familiar'] }}" {% if familiares and
-                        f['id_familiar']==familiares[0]['id_familiar'] %}selected{% endif %}>
-                        {{ f['f_nombre'] }} {{ f['f_apellido'] }}
-                    </option>
+                    <option value="{{ f['f_nombre'] }} {{ f['f_apellido'] }}"></option>
                     {% endfor %}
-                </select>
+                </datalist>
                 <br><br>
 
                 <label for="plan_cremacion" class="text">Plan de Cremación:</label><br>
@@ -66,30 +63,9 @@
                 </label>
                 {% endfor %}
                 <br>
-
-                <label for="fecha_cot" class="text">Fecha de Cotización:</label><br>
-                <input type="date" name="fecha_cot" value="{{ cot['fecha_cot'] }}" class="campo_fecha" required><br><br>
-
                 <label for="monto_cot" class="text">Monto de Cotización:</label><br>
                 <input type="number" name="monto_cot" id="monto_cot" value="{{ cot['monto_cot'] }}" step="0.01"
                     class="campo_monto" readonly><br><br>
-
-                <label for="validacion_cot" class="text">Validación de Cotización:</label><br>
-                <select name="validacion_cot" class="campo_validacion">
-                    <option value="">Elije una validación</option>
-                    <option value="Aprobada" {{ 'selected' if cot['validacion_cot']=='Aprobada' else '' }}>Aprobada
-                    </option>
-                    <option value="Rechazada" {{ 'selected' if cot['validacion_cot']=='Rechazada' else '' }}>Rechazada
-                    </option>
-                </select><br><br>
-
-                <label for="estado_cot" class="text">Estado:</label><br>
-                <select name="estado_cot" class="campo_estado" required>
-                    <option value="1" {% if cot['estado_cot']==1 %}selected{% endif %}>Activo</option>
-                    <option value="0" {% if cot['estado_cot']==0 %}selected{% endif %}>Inactivo</option>
-                </select>
-                <br><br>
-
             </form>
         </section>
         <section class="content_resumen">
@@ -108,7 +84,7 @@
             const montoInput = document.getElementById("monto_cot");
             const planSelect = document.querySelector("select[name='plan_cremacion']");
             const serviciosCheckboxes = document.querySelectorAll("input[name='servicios_adicionales']");
-            const nombreCliente = document.querySelector("select[name='nombre_cliente']");
+            const nombreCliente = document.querySelector("input[name='nombre_cliente']");
             const cantidadInputs = document.querySelectorAll(".cantidad-input");
 
             // Función para habilitar/deshabilitar inputs de cantidad

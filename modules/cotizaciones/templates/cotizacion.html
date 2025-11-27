@@ -62,7 +62,7 @@
     <section class="tabla">
       <div class="titulo">
         <p>Numero Cotizacion</p>
-        <p>Familiar</p>
+        <p>Cliente</p>
         <p>Fecha</p>
         <p>Monto</p>
         <p>Estado</p>
@@ -71,7 +71,7 @@
       {% for c in cotizacion %}
       <div class="contenido">
         <p>{{ c['numero_cot'] }}</p>
-        <p>{{ c['f_nombre']}}</p>
+        <p>{{ c['nombre_cliente'] }}</p>
         <p>{{ c['fecha_cot']|replace('-', '/') }}</p>
         <p>S/.{{ c['monto_cot'] }}</p>
         <p>

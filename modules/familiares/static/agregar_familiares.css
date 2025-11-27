@@ -287,3 +287,39 @@ body {
     margin-bottom: 32px;
   }
 }
+.telefono-con-codigo {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.codigo-pais-editable {
+  width: 80px;
+  padding: 12px 8px;
+  border: none;
+  border-right: 1px solid #ddd;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  background: #f8f9fa;
+  color: #2c3e50;
+}
+
+.codigo-pais-editable:focus {
+  outline: none;
+  background: #e3f2fd;
+}
+
+.telefono-numero {
+  flex: 1;
+  border: none !important;
+  padding: 12px;
+  font-size: 16px;
+}
+
+.telefono-con-codigo:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}

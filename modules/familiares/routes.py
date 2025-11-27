@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, send_f
 from database import conection
 import pandas as pd
 import io
+import re
 from decoradores import permiso_requerido
 
 familiares_bd = Blueprint(
@@ -25,7 +26,7 @@ def listar():
     cursor.execute("SELECT COUNT(*) AS total FROM Familiares")
     total = cursor.fetchone()["total"]
 
-    cursor.execute("SELECT * FROM Familiares LIMIT ? OFFSET ?", (per_page, offset))
+    cursor.execute("SELECT * FROM Familiares ORDER BY id_familiar DESC LIMIT ? OFFSET ?", (per_page, offset))
     familiares = cursor.fetchall()
 
     cursor.close()
@@ -57,8 +58,10 @@ def buscador():
             SELECT * FROM Familiares
             WHERE LOWER(remove_acentos(f_nombre)) LIKE ?
             OR LOWER(remove_acentos(f_apellido)) LIKE ?
+            OR LOWER(remove_acentos(f_parentesco)) LIKE ?
+            OR LOWER(remove_acentos(f_telefono)) LIKE ?
             """,
-            (f"%{search}%", f"%{search}%"),
+            (f"%{search}%", f"%{search}%", f"%{search}%", f"%{search}%"),
         ).fetchall()
 
         conn.close()
@@ -165,34 +168,43 @@ def agregar_familiar():
     if "id_usuario" not in session:
         return redirect(url_for("login"))
 
+    # Valor por defecto para el formulario (GET)
+    telefono_completo = "+51"  # o lo que quieras mostrar por defecto
+
     if request.method == "POST":
         nombre = request.form["nombre"]
         apellido = request.form["apellido"]
         parentesco = request.form["parentesco"]
-        telefono = request.form["telefono"]
+        codigo_pais = request.form["codigo_pais"]
+        telefono = request.form["telefono"].strip()
         correo = request.form["correo"]
         estado = request.form["estado"]
         fechaRegistro = request.form["fechaRegistro"]
 
-        usuario_id = 1  # ajusta según tu lógica de login
+        # Limpiar y combinar el teléfono
+        telefono_limpio = re.sub(r"\D", "", telefono)  # solo números
+        telefono_completo = codigo_pais + telefono_limpio
+
+        usuario_id = session.get("id_usuario", 1)
 
         conn = conection()
         cursor = conn.cursor()
         cursor.execute(
             """
             INSERT INTO Familiares (
-                f_nombre, f_apellido, f_parentesco, f_telefono, f_correo, f_estado, fechaRegistro, usuario_id
+                f_nombre, f_apellido, f_parentesco, f_telefono, f_correo,
+                f_estado, fechaRegistro, usuario_id
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-            (nombre, apellido, parentesco, telefono, correo, estado, fechaRegistro, usuario_id),
+            """,
+            (nombre, apellido, parentesco, telefono_completo, correo, estado, fechaRegistro, usuario_id),
         )
         conn.commit()
         conn.close()
 
-        # Aquí el cambio: redirige a la lista de familiares
         return redirect(url_for("familiares.listar"))
 
-    return render_template("agregar_familiar.html", title="Familiar")
+    # Aquí llega cuando es GET → solo muestra el formulario
+    return render_template("agregar_familiar.html", telefono_completo=telefono_completo, title="Agregar Familiar")
 
 
 @familiares_bd.route("/exel")

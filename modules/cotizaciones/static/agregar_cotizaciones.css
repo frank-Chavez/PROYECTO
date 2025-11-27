@@ -246,7 +246,6 @@ form {
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
   transition: all 0.2s;
   border: none;
 }
@@ -256,7 +255,6 @@ form {
   color: #2d3748;
   border: solid 1px #a0aec0;
 }
-
 .butom_cancelar:hover {
   background-color: #9f9f9f;
 }

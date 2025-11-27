@@ -36,14 +36,21 @@
                   <label for="nombre_cliente" class="text"
                     >Nombre del Cliente</label
                   >
-                  <select name="nombre_cliente" class="campo_nombre" required>
-                    <option value="">Elije un familiar</option>
+
+                  <input
+                    list="lista_familiares"
+                    name="nombre_cliente"
+                    class="campo_nombre"
+                    required
+                  />
+
+                  <datalist id="lista_familiares">
                     {% for familiar in familiares %}
-                    <option value="{{ familiar['id_familiar'] }}">
-                      {{ familiar['f_nombre'] }} {{ familiar['f_apellido'] }}
-                    </option>
+                    <option
+                      value="{{ familiar['f_nombre'] }} {{ familiar['f_apellido'] }}"
+                    ></option>
                     {% endfor %}
-                  </select>
+                  </datalist>
                 </div>
               </div>
 

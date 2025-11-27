@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, send_f
 from database import conection
 import pandas as pd
 import io
+import re
 from decoradores import permiso_requerido
 
 proveedor_bd = Blueprint(
@@ -25,7 +26,7 @@ def listar():
     cursor.execute("SELECT COUNT(*) AS total FROM Proveedores")
     total = cursor.fetchone()["total"]
 
-    cursor.execute("SELECT * FROM Proveedores LIMIT ? OFFSET ?", (per_page, offset))
+    cursor.execute("SELECT * FROM Proveedores ORDER BY id_proveedor DESC LIMIT ? OFFSET ?", (per_page, offset))
     proveedor = cursor.fetchall()
 
     cursor.close()
@@ -55,8 +56,9 @@ def buscador():
         proveedor = conn.execute(
             """SELECT * FROM Proveedores 
             WHERE LOWER(remove_acentos(nombre_p)) LIKE ?
-            OR LOWER(remove_acentos(servicio_p)) LIKE ?""",
-            (f"%{search.lower()}%", f"%{search.lower()}%"),
+            OR LOWER(remove_acentos(servicio_p)) LIKE ?
+            or LOWER(remove_acentos(telefono_p)) LIKE ?""",
+            (f"%{search.lower()}%", f"%{search.lower()}%", f"%{search.lower()}%"),
         ).fetchall()
         conn.close()
         return render_template(
@@ -163,11 +165,15 @@ def agregar_fallecido():
 
     if request.method == "POST":
         nombre = request.form["nombre"]
-        telefono = request.form["Telefono"]
+        codigo_pais = request.form["codigo_pais"]
+        telefono = request.form["telefono"].strip()
         correo = request.form["correo"]
         servicio = request.form["servicio"]
         fechaRegistro = request.form["fechaRegistro"]
         estado = request.form["estado"]
+
+        telefono_limpio = re.sub(r"\D", "", telefono)  # solo números
+        telefono_completo = codigo_pais + telefono_limpio
 
         conn = conection()
         cursor = conn.cursor()
@@ -177,7 +183,7 @@ def agregar_fallecido():
                 nombre_p, telefono_p, correo_p, servicio_p, fechaRegistro_p, estado_p
             ) VALUES (?, ?, ?, ?, ?, ?)
         """,
-            (nombre, telefono, correo, servicio, fechaRegistro, estado),
+            (nombre, telefono_completo, correo, servicio, fechaRegistro, estado),
         )
         conn.commit()
         conn.close()

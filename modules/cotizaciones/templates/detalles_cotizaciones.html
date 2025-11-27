@@ -71,19 +71,9 @@
           <div class="panel-titulo">Clientes</div>
 
           <div class="info-item">
-            <div class="info-label">Familiares</div>
+            <div class="info-label">Cliente</div>
             <div class="info-value">
-              {% if familiares %}
-              <div class="clientes-list">
-                {% for f in familiares %}
-                <div class="cliente-item">
-                  {{ f.f_nombre }} {{ f.f_apellido }}
-                </div>
-                {% endfor %}
-              </div>
-              {% else %}
-              <span class="sin-datos">Sin familiares</span>
-              {% endif %}
+              <div class="cliente-item">{{ cotizacion['nombre_cliente'] }}</div>
             </div>
           </div>
         </div>
