@@ -7,22 +7,19 @@ from flask import (
     request,
     session,
 )
-from datetime import date
+import urllib.parse
 from database import conection
-from weasyprint import HTML
-import io
 from decoradores import permiso_requerido
+from datetime import date
+import io
+import base64
+from weasyprint import HTML
 
 cotizaciones_bd = Blueprint(
-    "cotizacion",
-    __name__,
-    url_prefix="/cotizacion",
-    template_folder="templates",
-    static_folder="static",
+    "cotizaciones", __name__, url_prefix="/cotizacion", template_folder="templates", static_folder="static"
 )
 
 
-# ----------------------------------------Tabla principal de cotizaciones----------------------------------------
 @cotizaciones_bd.route("/")
 def listar():
     if "id_usuario" not in session:
@@ -111,7 +108,7 @@ def buscador():
             total_pages=1,
             title="Cotizaciones",
         )
-    return redirect(url_for("cotizacion.listar"))
+    return redirect(url_for("cotizaciones.listar"))
 
 
 # ----------------------------------------Opcion de cambiar el estado----------------------------------------
@@ -133,7 +130,7 @@ def cambiar_estado(id):
         conn.commit()
 
     conn.close()
-    return redirect(url_for("cotizacion.listar"))
+    return redirect(url_for("cotizaciones.listar"))
 
 
 # ----------------------------------------Opcion de editar----------------------------------------
@@ -148,11 +145,10 @@ def editar(id):
     if request.method == "POST":
         numerocot = request.form["numero_cot"]
         montocot = request.form["monto_cot"]
-        nombre_cliente = request.form.get("nombre_cliente")  # Obtener nombre del cliente
+        nombre_cliente = request.form.get("nombre_cliente")
         plan_seleccionado = request.form.get("plan_cremacion")
         servicios_seleccionadoss = request.form.getlist("servicios_adicionales")
 
-        # Actualizar cotizacion principal (ahora con nombre_cliente)
         conn.execute(
             """
             UPDATE Cotizacion 
@@ -162,10 +158,8 @@ def editar(id):
             (numerocot, montocot, nombre_cliente, id),
         )
 
-        # Primero eliminamos los detalles antiguos
         conn.execute("DELETE FROM cotizacion_detalles WHERE id_cotizacion = ?", (id,))
 
-        # Insertamos el plan seleccionado
         if plan_seleccionado:
             conn.execute(
                 """
@@ -175,7 +169,6 @@ def editar(id):
                 (id, int(plan_seleccionado)),
             )
 
-        # Insertamos servicios seleccionados (ahora con cantidad)
         for s_id in servicios_seleccionadoss:
             cantidad = request.form.get(f"cantidad_servicio[{s_id}]", 1)
             conn.execute(
@@ -188,9 +181,8 @@ def editar(id):
 
         conn.commit()
         conn.close()
-        return redirect(url_for("cotizacion.listar"))
+        return redirect(url_for("cotizaciones.listar"))
 
-    # GET: Traemos cotizacion principal
     cotizacion = conn.execute(
         """
         SELECT id_cotizacion, numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot, nombre_cliente
@@ -199,7 +191,6 @@ def editar(id):
         (id,),
     ).fetchone()
 
-    # Traemos plan asociado
     plan = conn.execute(
         """
         SELECT p.id_plan, p.tipo_plan, precio_plan
@@ -210,7 +201,6 @@ def editar(id):
         (id,),
     ).fetchone()
 
-    # Traemos servicios asociados
     servicios = conn.execute(
         """
         SELECT s.id_servicio, s.tipo_serv, precio_serv, cd.cantidad
@@ -223,7 +213,6 @@ def editar(id):
 
     servicios_cantidades = {s["id_servicio"]: s["cantidad"] for s in servicios}
 
-    # Traemos familiares asociados
     familiares = conn.execute(
         """
         SELECT f.id_familiar, f.f_nombre, f.f_apellido
@@ -234,7 +223,6 @@ def editar(id):
         (id,),
     ).fetchall()
 
-    # Traemos todas las opciones para mostrar en el form
     planes_disponibles = conn.execute(
         "SELECT id_plan, tipo_plan, precio_plan FROM Planes WHERE estado_plan=1"
     ).fetchall()
@@ -269,7 +257,6 @@ def VerDetalles(id):
     conn = conection()
     cur = conn.cursor()
 
-    # Cotizacion principal :)
     cotizacion = cur.execute(
         """
         SELECT id_cotizacion, numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot, nombre_cliente
@@ -282,7 +269,6 @@ def VerDetalles(id):
         conn.close()
         return "cotizacion no encontrado", 404
 
-    # Obtener el plan asociado
     plan = cur.execute(
         """
         SELECT p.id_plan, p.tipo_plan, p.precio_plan
@@ -293,7 +279,6 @@ def VerDetalles(id):
         (id,),
     ).fetchone()
 
-    # Obtener los servicios asociados
     servicios = cur.execute(
         """
         SELECT DISTINCT s.id_servicio, s.tipo_serv, s.precio_serv, cd.cantidad
@@ -304,7 +289,6 @@ def VerDetalles(id):
         (id,),
     ).fetchall()
 
-    # Obtener los familiares asociados
     familiares = cur.execute(
         """
         SELECT DISTINCT f.id_familiar, f.f_nombre, f.f_apellido
@@ -336,7 +320,6 @@ def agregar():
     with conection() as conn:
         cur = conn.cursor()
 
-        # Obtener último número de cotización
         ultimo = cur.execute("SELECT numero_cot FROM Cotizacion ORDER BY id_cotizacion DESC LIMIT 1").fetchone()
         if ultimo and ultimo["numero_cot"]:
             try:
@@ -348,24 +331,31 @@ def agregar():
             new_num = 1
         numero_cot = f"COT-{new_num:03d}"
 
-        # Obtener planes, servicios y familiares activos
         cur.execute("SELECT id_plan, tipo_plan, precio_plan FROM Planes WHERE estado_plan = '1'")
         planes = cur.fetchall()
         cur.execute("SELECT id_servicio, tipo_serv, precio_serv FROM Servicios WHERE estado_serv = '1'")
         servicios = cur.fetchall()
-        cur.execute("SELECT id_familiar, f_nombre, f_apellido FROM Familiares WHERE f_estado = '1'")
+        cur.execute(
+            "SELECT id_familiar, f_nombre, f_apellido, f_correo, f_telefono FROM Familiares WHERE f_estado = '1'"
+        )
         familiares = cur.fetchall()
 
         if request.method == "POST":
             fecha_cot = request.form.get("fecha_cot")
             monto_cot = request.form.get("monto_cot")
-            nombre_cliente = request.form.get("nombre_cliente")  # Obtener el nombre del cliente (manual o de lista)
+            nombre_cliente = request.form.get("nombre_cliente")
+            cliente_correo = request.form.get("cliente_correo", "").strip() or None
+
+            # Combinar código de país con teléfono
+            codigo_pais = request.form.get("codigo_pais", "+51").strip()
+            telefono_numero = request.form.get("cliente_telefono", "").strip()
+            cliente_telefono = f"{codigo_pais}{telefono_numero}" if telefono_numero else None
+
             validacion_cot = "Aprobada"
             estado_cot = 1
-            planes_seleccionado = request.form.get("plan_cremacion")
-            servicios_seleccionados = request.form.getlist("servicio_adicional")
+            plan_seleccionado = request.form.get("plan_cremacion")
+            servicios_seleccionados = request.form.getlist("servicios_adicionales")
 
-            # Validación: campos obligatorios
             if not monto_cot or not nombre_cliente:
                 return render_template(
                     "agregar_cotizacion.html",
@@ -377,8 +367,7 @@ def agregar():
                     numero_cot=numero_cot,
                 )
 
-            # Validación: al menos un Plan o Servicio
-            if not (planes_seleccionado or servicios_seleccionados):
+            if not (plan_seleccionado or servicios_seleccionados):
                 return render_template(
                     "agregar_cotizacion.html",
                     title="Agregar Cotización",
@@ -389,27 +378,33 @@ def agregar():
                     numero_cot=numero_cot,
                 )
 
-            # Insertar la cotización principal (ahora con nombre_cliente)
             cur.execute(
                 """
-                INSERT INTO Cotizacion (numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot, nombre_cliente)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO Cotizacion (numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot, nombre_cliente, cliente_correo, cliente_telefono)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
-                (numero_cot, fecha_cot, monto_cot, validacion_cot, estado_cot, nombre_cliente),
+                (
+                    numero_cot,
+                    fecha_cot,
+                    monto_cot,
+                    validacion_cot,
+                    estado_cot,
+                    nombre_cliente,
+                    cliente_correo,
+                    cliente_telefono,
+                ),
             )
             id_cotizacion = cur.lastrowid
 
-            # Insertar detalle del plan (si existe)
-            if planes_seleccionado:
+            if plan_seleccionado:
                 cur.execute(
                     """
                     INSERT INTO cotizacion_detalles (id_cotizacion, id_plan, id_servicio, id_familiar)
                     VALUES (?, ?, ?, ?)
                 """,
-                    (id_cotizacion, int(planes_seleccionado), None, None),
+                    (id_cotizacion, int(plan_seleccionado), None, None),
                 )
 
-            # Insertar detalle de servicios
             for s_id in set(servicios_seleccionados):
                 cantidad = request.form.get(f"cantidad_{s_id}", 1)
                 cur.execute(
@@ -420,9 +415,8 @@ def agregar():
                     (id_cotizacion, None, int(s_id), None, int(cantidad)),
                 )
 
-            # Commit único al final
             conn.commit()
-            return redirect(url_for("cotizacion.listar"))
+            return redirect(url_for("cotizaciones.listar"))
 
         return render_template(
             "agregar_cotizacion.html",
@@ -433,23 +427,17 @@ def agregar():
             numero_cot=numero_cot,
         )
 
-# ----------------------------------------Opcion de descargar PDF----------------------------------------
-@cotizaciones_bd.route("/pdf/<int:id>", methods=["GET"])
-@permiso_requerido("cotizacion", "exportar")
-def descargar_pdf(id):
-    if "id_usuario" not in session:
-        return redirect(url_for("login"))
 
+# ----------------------------------------Opcion de descargar PDF----------------------------------------
+def obtener_pdf_cotizacion(id):
     conn = conection()
     cur = conn.cursor()
-
     fecha_actual = date.today()
 
-    # Cotizacion principal
     cotizacion = cur.execute(
         """
         SELECT id_cotizacion, numero_cot, fecha_cot, monto_cot, 
-               validacion_cot, estado_cot, nombre_cliente
+               validacion_cot, estado_cot, nombre_cliente, cliente_correo
         FROM Cotizacion 
         WHERE id_cotizacion = ?
         """,
@@ -458,9 +446,8 @@ def descargar_pdf(id):
 
     if not cotizacion:
         conn.close()
-        return "Cotización no encontrada", 404
+        return None, None
 
-    # Obtener el plan asociado
     plan = cur.execute(
         """
         SELECT p.id_plan, p.tipo_plan, p.precio_plan, cd.cantidad
@@ -471,7 +458,6 @@ def descargar_pdf(id):
         (id,),
     ).fetchone()
 
-    # Obtener los servicios asociados
     servicios = cur.execute(
         """
         SELECT DISTINCT s.id_servicio, s.tipo_serv, s.precio_serv, cd.cantidad
@@ -482,67 +468,63 @@ def descargar_pdf(id):
         (id,),
     ).fetchall()
 
-    # Obtener cliente (manual o familiar)
     result = cur.execute(
         """
         SELECT 
             f.f_nombre,
             f.f_apellido,
-            f.f_correo,
-            c.nombre_cliente
+            f.f_correo
         FROM cotizacion_detalles cd
         LEFT JOIN Familiares f ON cd.id_familiar = f.id_familiar
-        LEFT JOIN Cotizacion c ON cd.id_cotizacion = c.id_cotizacion
         WHERE cd.id_cotizacion = ?
         LIMIT 1
         """,
-        (id,)
+        (id,),
     ).fetchone()
 
     cliente = None
+    nombre = cotizacion["nombre_cliente"]
+    correo = cotizacion["cliente_correo"]
 
-    if result:
-        nombre = result["nombre_cliente"]
+    if not correo and result and result["f_correo"]:
         correo = result["f_correo"]
 
-        # Si hay nombre pero no correo, intentamos buscar el familiar por nombre para obtener el correo
-        if nombre and not correo:
-            # Intentar buscar coincidencia exacta de nombre completo
-            familiar_encontrado = cur.execute(
-                "SELECT f_correo FROM Familiares WHERE (f_nombre || ' ' || f_apellido) = ?",
-                (nombre,)
-            ).fetchone()
-            
-            if familiar_encontrado:
-                correo = familiar_encontrado["f_correo"]
+    if nombre and not correo:
+        familiar_encontrado = cur.execute(
+            "SELECT f_correo FROM Familiares WHERE (f_nombre || ' ' || f_apellido) = ?", (nombre,)
+        ).fetchone()
 
-        if nombre:
-            cliente = {
-                "nombre": nombre,
-                "correo": correo
-            }
-        else:
-            # Fallback para registros antiguos donde solo se guardaba id_familiar
-            cliente = {
-                "nombre": f"{result['f_nombre']} {result['f_apellido']}",
-                "correo": result["f_correo"]
-            }
+        if familiar_encontrado:
+            correo = familiar_encontrado["f_correo"]
+
+    if nombre:
+        cliente = {"nombre": nombre, "correo": correo}
+    elif result:
+        cliente = {"nombre": f"{result['f_nombre']} {result['f_apellido']}", "correo": result["f_correo"]}
 
     conn.close()
 
-    # Render PDF
-    try:
-        rendered_html = render_template(
-            "pdf.html",
-            cotizacion=cotizacion,
-            plan=plan,
-            servicios=servicios,
-            cliente=cliente, 
-            fecha_actual=fecha_actual
-        )
+    rendered_html = render_template(
+        "pdf.html", cotizacion=cotizacion, plan=plan, servicios=servicios, cliente=cliente, fecha_actual=fecha_actual
+    )
 
-        pdf_buffer = io.BytesIO()
-        HTML(string=rendered_html, base_url=request.host_url).write_pdf(target=pdf_buffer)
+    pdf_buffer = io.BytesIO()
+    HTML(string=rendered_html, base_url=request.host_url).write_pdf(target=pdf_buffer)
+    return pdf_buffer, cliente
+
+
+# ----------------------------------------Opcion de descargar PDF----------------------------------------
+@cotizaciones_bd.route("/pdf/<int:id>", methods=["GET"])
+@permiso_requerido("cotizacion", "exportar")
+def descargar_pdf(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    try:
+        pdf_buffer, _ = obtener_pdf_cotizacion(id)
+
+        if not pdf_buffer:
+            return "Cotización no encontrada", 404
 
         response = Response(pdf_buffer.getvalue(), content_type="application/pdf")
         response.headers["Content-Disposition"] = "inline; filename=cotizacion.pdf"
@@ -551,3 +533,149 @@ def descargar_pdf(id):
 
     except Exception as e:
         return f"Error al generar el PDF: {str(e)}", 500
+
+
+## ----------------------------------------Opcion de enviar por WhatsApp----------------------------------------
+@cotizaciones_bd.route("/whatsapp/<int:id>", methods=["GET"])
+@permiso_requerido("cotizacion", "exportar")
+def enviar_whatsapp(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    conn = conection()
+    cur = conn.cursor()
+
+    cotizacion = cur.execute(
+        """
+        SELECT c.id_cotizacion, c.numero_cot, c.nombre_cliente, c.cliente_telefono
+        FROM Cotizacion c
+        WHERE c.id_cotizacion = ?
+        """,
+        (id,),
+    ).fetchone()
+
+    if not cotizacion:
+        conn.close()
+        return "Cotización no encontrada", 404
+
+    nombre_cliente = cotizacion["nombre_cliente"]
+    telefono = cotizacion["cliente_telefono"]
+    nombre_para_mensaje = nombre_cliente
+
+    if not telefono and nombre_cliente:
+        familiar_por_nombre = cur.execute(
+            """
+            SELECT f_telefono, f_nombre 
+            FROM Familiares 
+            WHERE (f_nombre || ' ' || f_apellido) = ?
+            """,
+            (nombre_cliente,),
+        ).fetchone()
+
+        if familiar_por_nombre and familiar_por_nombre["f_telefono"]:
+            telefono = familiar_por_nombre["f_telefono"]
+            nombre_para_mensaje = familiar_por_nombre["f_nombre"]
+
+    if not telefono:
+        familiar_por_id = cur.execute(
+            """
+            SELECT 
+                f.f_nombre,
+                f.f_telefono
+            FROM cotizacion_detalles cd
+            JOIN Familiares f ON cd.id_familiar = f.id_familiar
+            WHERE cd.id_cotizacion = ?
+            LIMIT 1
+            """,
+            (id,),
+        ).fetchone()
+
+        if familiar_por_id and familiar_por_id["f_telefono"]:
+            telefono = familiar_por_id["f_telefono"]
+            nombre_para_mensaje = familiar_por_id["f_nombre"]
+
+    conn.close()
+
+    if not telefono:
+        return (
+            f"No se encontró un número de teléfono para el cliente '{nombre_cliente}'. Por favor, asegúrate de que el cliente esté registrado en Familiares con un número válido o ingresa el teléfono manualmente.",
+            404,
+        )
+
+    mensaje = f"Hola {nombre_para_mensaje}, te enviamos los detalles de su cotización."
+
+    whatsapp_url = f"https://api.whatsapp.com/send?phone={telefono}&text={urllib.parse.quote(mensaje)}"
+    return redirect(whatsapp_url)
+
+
+@cotizaciones_bd.route("/email/<int:id>", methods=["GET"])
+@permiso_requerido("cotizacion", "exportar")
+def enviar_email(id):
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    conn = conection()
+    cur = conn.cursor()
+
+    cotizacion = cur.execute(
+        """
+        SELECT numero_cot, nombre_cliente, cliente_correo, monto_cot
+        FROM Cotizacion WHERE id_cotizacion = ?
+    """,
+        (id,),
+    ).fetchone()
+
+    if not cotizacion:
+        conn.close()
+        return "Cotización no encontrada", 404
+
+    correo = cotizacion["cliente_correo"] or ""
+    nombre_cliente = cotizacion["nombre_cliente"]
+    numero_cot = cotizacion["numero_cot"]
+    monto = cotizacion["monto_cot"]
+
+    # Buscar correo en familiares si no tiene
+    if not correo:
+        familiar = cur.execute(
+            """
+            SELECT f_correo FROM Familiares 
+            WHERE TRIM(LOWER(f_nombre || ' ' || f_apellido)) = LOWER(?)
+        """,
+            (nombre_cliente.strip(),),
+        ).fetchone()
+        if familiar and familiar["f_correo"]:
+            correo = familiar["f_correo"]
+
+    conn.close()
+    if not correo:
+        return f"No se encontró correo para {nombre_cliente}", 404
+
+    # Generamos solo para tener el nombre del archivo y el saludo
+    pdf_buffer, cliente_info = obtener_pdf_cotizacion(id)
+    nombre_saludo = cliente_info["nombre"] if cliente_info else nombre_cliente
+
+    asunto = f"Cotización {numero_cot} - Servicios Funerarios"
+    cuerpo = f"""Hola {nombre_saludo}.
+
+Muchas gracias por confiar en nosotros.
+
+Te enviamos la cotización solicitada:
+
+• Monto total: S/ {monto:,}
+
+Quedamos a tu disposición para cualquier consulta o para coordinar los siguientes pasos.
+
+Con cariño y respeto,
+Crematorio Virgen de la Natividad
+WhatsApp: +51 931 112 364 
+https://crematoriovirgendelanatividadtpp.com/"""
+
+    # ← URL corta y 100 % segura (nunca dará 400)
+    gmail_url = (
+        "https://mail.google.com/mail/u/0/?view=cm&fs=1"
+        f"&to={urllib.parse.quote(correo)}"
+        f"&su={urllib.parse.quote(asunto)}"
+        f"&body={urllib.parse.quote(cuerpo)}"
+    )
+
+    return redirect(gmail_url)

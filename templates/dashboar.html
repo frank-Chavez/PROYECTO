@@ -89,11 +89,11 @@
           Servicios
         </a>
         <a
-          href="{{ url_for('cotizacion.listar') }}"
-          class="{% if request.endpoint.startswith('cotizacion') %}active{% endif %}"
+          href="{{ url_for('cotizaciones.listar') }}"
+          class="{% if request.endpoint.startswith('cotizaciones') %}active{% endif %}"
         >
           <img
-            class="{% if request.endpoint == 'cotizacion' %}active{% endif %}"
+            class="{% if request.endpoint == 'cotizaciones' %}active{% endif %}"
             src="{{ url_for('static', filename='icons/cotizaciones.svg') }}"
             alt=""
           />
@@ -259,7 +259,7 @@
               Agregar Familiar
             </a>
             <a
-              href="{{ url_for('cotizacion.agregar') }}"
+              href="{{ url_for('cotizaciones.agregar') }}"
               class="action-btn action-btn-success"
             >
               <img
