@@ -5,7 +5,7 @@
     <title>Agregar Cotización</title>
     <link
       rel="stylesheet"
-      href="{{url_for('cotizacion.static', filename='agregar_cotizaciones.css')}}"
+      href="{{url_for('cotizaciones.static', filename='agregar_cotizaciones.css')}}"
     />
   </head>
 
@@ -40,6 +40,7 @@
                   <input
                     list="lista_familiares"
                     name="nombre_cliente"
+                    id="nombre_cliente"
                     class="campo_nombre"
                     required
                   />
@@ -51,6 +52,73 @@
                     ></option>
                     {% endfor %}
                   </datalist>
+                </div>
+              </div>
+
+              <!-- Campos de contacto (se muestran solo para clientes manuales) -->
+              <div
+                class="content_campos"
+                id="contact_fields_container"
+                style="display: none"
+              >
+                <div>
+                  <label for="cliente_correo" class="text"
+                    >Correo Electrónico</label
+                  >
+                  <input
+                    type="email"
+                    name="cliente_correo"
+                    id="cliente_correo"
+                    class="campo_nombre"
+                    placeholder="Ingresa el correo del cliente"
+                  />
+                </div>
+
+                <div>
+                  <label for="cliente_telefono" class="text"
+                    >Número de Teléfono</label
+                  >
+                  <div style="display: flex; gap: 8px">
+                    <input
+                      type="text"
+                      name="codigo_pais"
+                      id="codigo_pais_cotizacion"
+                      value="+51"
+                      list="codigos-populares-cotizacion"
+                      placeholder="+51"
+                      style="
+                        width: 80px;
+                        padding: 8px;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                      "
+                    />
+                    <datalist id="codigos-populares-cotizacion">
+                      <option value="+51">Perú</option>
+                      <option value="+58">Venezuela</option>
+                      <option value="+57">Colombia</option>
+                      <option value="+54">Argentina</option>
+                      <option value="+56">Chile</option>
+                      <option value="+52">México</option>
+                      <option value="+34">España</option>
+                      <option value="+1">EE.UU / Canadá</option>
+                      <option value="+55">Brasil</option>
+                      <option value="+591">Bolivia</option>
+                      <option value="+593">Ecuador</option>
+                      <option value="+595">Paraguay</option>
+                      <option value="+598">Uruguay</option>
+                    </datalist>
+                    <input
+                      type="tel"
+                      name="cliente_telefono"
+                      id="cliente_telefono"
+                      class="campo_nombre"
+                      placeholder="912 345 678"
+                      pattern="[0-9\s]{7,15}"
+                      title="Solo números y espacios"
+                      style="flex: 1"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -130,7 +198,9 @@
           </div>
 
           <div class="content_boton">
-            <a href="{{ url_for('cotizacion.listar') }}" class="butom_cancelar"
+            <a
+              href="{{ url_for('cotizaciones.listar') }}"
+              class="butom_cancelar"
               >Cancelar</a
             >
             <button type="submit" class="butom_agregar">Agregar</button>
@@ -139,8 +209,66 @@
       </div>
     </div>
 
+    <script id="familiares-data" type="application/json">
+      [
+        {% for familiar in familiares %}
+          {
+            "nombre": "{{ familiar['f_nombre'] }}",
+            "apellido": "{{ familiar['f_apellido'] }}",
+            "correo": "{{ familiar['f_correo'] if familiar['f_correo'] else '' }}",
+            "telefono": "{{ familiar['f_telefono'] if familiar['f_telefono'] else '' }}"
+          }{{ "," if not loop.last }}
+        {% endfor %}
+      ]
+    </script>
+
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        // Crear un mapa de familiares registrados
+        const familiaresMap = new Map();
+        const familiaresData = JSON.parse(
+          document.getElementById('familiares-data').textContent
+        );
+
+        familiaresData.forEach((familiar) => {
+          const nombreCompleto = `${familiar.nombre} ${familiar.apellido}`
+            .toLowerCase()
+            .trim();
+          familiaresMap.set(nombreCompleto, {
+            correo: familiar.correo,
+            telefono: familiar.telefono,
+          });
+        });
+
+        const nombreClienteInput = document.getElementById('nombre_cliente');
+        const contactFieldsContainer = document.getElementById(
+          'contact_fields_container'
+        );
+        const correoInput = document.getElementById('cliente_correo');
+        const telefonoInput = document.getElementById('cliente_telefono');
+
+        function checkClientType() {
+          const nombreIngresado = nombreClienteInput.value.toLowerCase().trim();
+
+          if (familiaresMap.has(nombreIngresado)) {
+            // Es un familiar registrado - ocultar campos y limpiarlos
+            contactFieldsContainer.style.display = 'none';
+            correoInput.value = '';
+            telefonoInput.value = '';
+          } else if (nombreIngresado.length > 0) {
+            // Es un cliente manual - mostrar campos
+            contactFieldsContainer.style.display = 'block';
+          } else {
+            // Campo vacío - ocultar campos
+            contactFieldsContainer.style.display = 'none';
+          }
+        }
+
+        // Detectar cambios en el input de nombre
+        nombreClienteInput.addEventListener('input', checkClientType);
+        nombreClienteInput.addEventListener('change', checkClientType);
+
+        // Cálculo de total
         const planSelect = document.getElementById('plan_cremacion');
         const servicioCheckboxes = Array.from(
           document.querySelectorAll('input[type="checkbox"].servicio')
@@ -192,6 +320,25 @@
         });
 
         calcularTotal();
+
+        // Validación del código de país
+        const codigoPais = document.getElementById('codigo_pais_cotizacion');
+        if (codigoPais) {
+          // Al perder foco, si está vacío o no tiene +, poner +51
+          codigoPais.addEventListener('blur', function () {
+            if (!this.value.trim() || !this.value.startsWith('+')) {
+              this.value = '+51';
+            }
+          });
+
+          // Mientras escribe, forzar que empiece con +
+          codigoPais.addEventListener('input', function () {
+            let val = this.value.trim();
+            if (val && !val.startsWith('+')) {
+              this.value = '+' + val.replace(/[^\d+]/g, '');
+            }
+          });
+        }
       });
 
       document.getElementById('fecha_cot').value = new Date()

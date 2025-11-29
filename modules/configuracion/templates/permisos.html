@@ -6,9 +6,9 @@
   <title>{{title}}</title>
   <link rel="stylesheet" href="{{ url_for('configuracion.static', filename='permisos.css')}}">
 </head>
-<body>
   {% extends "configuracion.html" %} {% block options %}
-    <div class="container-fluid mt-4">
+<body>
+    <div class="container container-fluid mt-4">
       <h3 class="mb-4 text-center text-primary font-weight-bold">
         Permisos por Módulo
       </h3>
@@ -168,8 +168,9 @@
         {% endfor %}
       </div>
     </div>
-{% endblock %}
 </body>
+{% endblock %}
+
 </html>
 
 

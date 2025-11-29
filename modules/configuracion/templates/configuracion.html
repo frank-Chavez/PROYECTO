@@ -33,19 +33,6 @@
 
       <nav>
         <a
-          href="{{ url_for('configuracion.permisos') }}"
-          class="{% if request.endpoint.startswith('configuracion.permisos') %}active{% endif %}"
-        >
-          <img
-            src="{{ url_for('static', filename='icons/permisos.svg') }}"
-            alt="Permisos"
-            class="{% if request.endpoint == 'configuracion' %}active{% endif %}"
-          />
-          Permisos
-        </a>
-      </nav>
-      <nav>
-        <a
           href="{{ url_for('configuracion.agregar_usuario') }}"
           class="{% if request.endpoint.startswith('configuracion.agregar_usuario') %}active{% endif %}"
         >
@@ -54,18 +41,6 @@
             alt="Agregar_usuarios"
             class="{% if request.endpoint == 'configuracion' %}active{% endif %}"
           />Agregar Usuario
-        </a>
-      </nav>
-      <nav>
-        <a
-          href="{{ url_for('configuracion.seguridad') }}"
-          class="{% if request.endpoint.startswith('configuracion.seguridad') %}active{% endif %}"
-        >
-          <img
-            src="{{ url_for('static', filename='icons/seguridad.svg') }}"
-            alt="seguridad"
-            class="{% if request.endpoint == 'configuracion' %}active{% endif %}"
-          />Seguridad
         </a>
       </nav>
     </section>
@@ -131,18 +106,32 @@
             {% endif %}
           </td>
           <td class="cont-cont">
-            <form
-              action="{{ url_for('configuracion.eliminar_usuario', usuario_id=usuario['id_usuario']) }}"
-              method="POST"
-            >
-              <button
-                type="submit"
-                class="btn"
-                onclick="return confirm('¿Seguro que deseas eliminar este usuario?')"
+            <div class="acciones-buttons">
+              <!-- Botón ELIMINAR (izquierda) -->
+              <form
+                action="{{ url_for('configuracion.eliminar_usuario', usuario_id=usuario['id_usuario']) }}"
+                method="POST"
+                style="display: inline"
               >
-                <img src="/static/icons/borrar.svg" alt="el" />
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  class="btn btn-eliminar"
+                  onclick="return confirm('¿Seguro que deseas eliminar este usuario?')"
+                  title="Eliminar"
+                >
+                  <img src="/static/icons/borrar.svg" alt="Eliminar" />
+                </button>
+              </form>
+
+              <!-- Botón EDITAR (derecha) -->
+              <a
+                href="{{ url_for('configuracion.editar_usuario', usuario_id=usuario['id_usuario']) }}"
+                class="btn btn-editar"
+                title="Editar"
+              >
+                <img src="/static/icons/editar.svg" alt="Editar" />
+              </a>
+            </div>
           </td>
         </tr>
 

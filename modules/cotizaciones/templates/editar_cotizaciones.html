@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="{{url_for('cotizacion.static', filename='editar_cotizaciones.css')}}">
+    <link rel="stylesheet" href="{{url_for('cotizaciones.static', filename='editar_cotizaciones.css')}}">
 </head>
 
 <body>
@@ -74,7 +74,7 @@
             <div class="items_resumen" id="resumen">
             </div>
             <button type="submit" form="form-cotizacion" class="butom_guardar">Guardar</button>
-            <a href="{{ url_for('cotizacion.listar') }}" class="butom_cancelar">Cancelar</a>
+            <a href="{{ url_for('cotizaciones.listar') }}" class="butom_cancelar">Cancelar</a>
         </section>
     </div>
 
